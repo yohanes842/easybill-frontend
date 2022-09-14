@@ -4,33 +4,26 @@
   </ng-template>
   <ng-template pTemplate="header">
     <tr>
-      <th>Orderer</th>
-      <th>Order Total</th>
-      <th>Order Description</th>
-      <th>Order by</th>
+      <th>Buyer</th>
       <th>Order Status</th>
+      <th>Order Description</th>
+      <th>Order Total</th>
     </tr>
   </ng-template>
   <ng-template pTemplate="body" let-order>
     <tr class="py-3">
-      <td class="pt-2 pb-1 md:py-3">{{ order.name }}</td>
-      <td class="py-1 md:py-3">{{ order.price | currency: "IDR" }}</td>
-      <td class="py-1 md:py-3">{{ order.category }}</td>
-      <td class="py-1 md:py-3">
-        <p-rating
-          [ngModel]="order.rating"
-          [readonly]="true"
-          [cancel]="false"
-        ></p-rating>
-      </td>
-      <td class="pt-1 pb-2 md:py-3">
+      <td class="pt-2 pb-1 md:py-3">{{ order.buyerName }}</td>
+      <td class="py-1 md:py-3">{{ order.totalPayment | currency: "IDR" }}</td>
+      <td class="py-1 md:py-3">{{ order.orderDescription }}</td>
+      <td class="py-1 md:py-3">{{ order.discount }}</td>
+      <!-- <td class="pt-1 pb-2 md:py-3">
         <span
           [class]="
             'product-badge status-' + order.inventoryStatus.toLowerCase()
           "
-          >{{ order.inventoryStatus }}</span
+          >{{ order.status }}</span
         >
-      </td>
+      </td> -->
     </tr>
   </ng-template>
   <ng-template pTemplate="summary">

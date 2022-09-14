@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { OrderList } from './order-list';
+import { OrderHeader } from './order-list';
 import { OrderService } from './order-list.service';
 
 @Component({
@@ -9,7 +9,7 @@ import { OrderService } from './order-list.service';
   providers: [OrderService],
 })
 export class OrderListComponent implements OnInit {
-  orders!: OrderList[];
+  orders!: OrderHeader[];
 
   constructor(private orderService: OrderService) {}
 

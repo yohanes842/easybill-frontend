@@ -1,0 +1,77 @@
+<div class="card">
+  <p-dataView
+    #dv
+    [value]="orders"
+    [paginator]="true"
+    [rows]="9"
+    filterBy="name"
+    layout="grid"
+  >
+    <ng-template pTemplate="header">
+      <div class="flex flex-column md:flex-row md:justify-content-between">
+        <span class="p-input-icon-left mb-2 md:mb-0">
+          <i class="pi pi-search"></i>
+          <input
+            type="search"
+            pInputText
+            placeholder="Search by Name"
+            (input)="dv.filter(getValue($event))"
+          />
+        </span>
+        <p-dataViewLayoutOptions></p-dataViewLayoutOptions>
+      </div>
+    </ng-template>
+    <ng-template let-order pTemplate="listItem">
+      <div class="p-col-12 w-full">
+        <div class="order-list-item">
+          <div class="order-list-detail">
+            <div class="order-name">{{ order.buyerName }}</div>
+            <div class="order-description">{{ order.orderDescription }}</div>
+            <i class="pi pi-tag order-category-icon"></i
+            ><span class="order-category">{{ order.totalPayment }}</span>
+          </div>
+          <div class="order-list-action">
+            <span class="order-price">${{ order.buyerName }}</span>
+            <!-- <span
+              [class]="
+                'order-badge status-' + order.inventoryStatus.toLowerCase()
+              "
+              >{{ order.inventoryStatus }}</span
+            > -->
+          </div>
+        </div>
+      </div>
+    </ng-template>
+    <ng-template let-order pTemplate="gridItem">
+      <div class="col-12 md:col-4">
+        <div class="order-grid-item card">
+          <div class="order-grid-item-top">
+            <div>
+              <i class="pi pi-tag order-category-icon"></i>
+              <span class="order-category">{{ order.description }}</span>
+            </div>
+            <!-- <span
+              [class]="
+                'order-badge status-' + order.inventoryStatus.toLowerCase()
+              "
+              >{{ order.inventoryStatus }}</span
+            > -->
+          </div>
+          <div class="order-grid-item-content">
+            <div class="order-name">{{ order.buyerName }}</div>
+            <div class="order-description">{{ order.orderDescription }}</div>
+            <i class="pi pi-tag order-category-icon"></i
+            ><span class="order-category">{{ order.totalPayment }}</span>
+          </div>
+          <div class="order-grid-item-bottom">
+            <span class="order-price">${{ order.buyerName }}</span>
+            <p-button
+              icon="pi pi-shopping-cart"
+              [disabled]="order.inventoryStatus === 'OUTOFSTOCK'"
+            ></p-button>
+          </div>
+        </div>
+      </div>
+    </ng-template>
+  </p-dataView>
+</div>

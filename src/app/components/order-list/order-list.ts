@@ -1,12 +1,17 @@
-export interface OrderList {
-  id?: string;
-  code?: string;
-  name?: string;
-  description?: string;
-  price?: number;
-  quantity?: number;
-  inventoryStatus?: string;
-  category?: string;
-  image?: string;
-  rating?: number;
+export interface OrderHeader {
+  id: number;
+  buyerName: string;
+  orderDescription: string;
+  totalPayment: number;
+  discount: number;
+  upto: number;
+  orders?: OrderDetail[];
+}
+
+export interface OrderDetail {
+  id: number;
+  username: string;
+  description: string;
+  qty: number;
+  price: number;
 }

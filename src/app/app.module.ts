@@ -14,12 +14,25 @@ import { ButtonModule } from 'primeng/button';
 import { RatingModule } from 'primeng/rating';
 import { HttpClientModule } from '@angular/common/http';
 import { HeaderComponent } from './components/header/header.component';
-import { InvoiceComponent } from './components/invoice/invoice.component';
+import { BillComponent } from './components/bill/bill.component';
 import { ContainerComponent } from './components/container/container.component';
+
 import { DataViewModule } from 'primeng/dataview';
+import { PanelModule } from 'primeng/panel';
+import { DropdownModule } from 'primeng/dropdown';
+import { DialogModule } from 'primeng/dialog';
+import { InputTextModule } from 'primeng/inputtext';
+import { RippleModule } from 'primeng/ripple';
 
 @NgModule({
-  declarations: [AppComponent, QuickActionComponent, OrderListComponent, HeaderComponent, InvoiceComponent, ContainerComponent],
+  declarations: [
+    AppComponent,
+    QuickActionComponent,
+    OrderListComponent,
+    HeaderComponent,
+    BillComponent,
+    ContainerComponent,
+  ],
   imports: [
     BrowserModule,
     FormsModule,
@@ -30,7 +43,12 @@ import { DataViewModule } from 'primeng/dataview';
     TableModule,
     ButtonModule,
     RatingModule,
-    DataViewModule
+    DataViewModule,
+    PanelModule,
+    DropdownModule,
+    DialogModule,
+    InputTextModule,
+    RippleModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
