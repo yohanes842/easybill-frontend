@@ -13,9 +13,13 @@ import { TableModule } from 'primeng/table';
 import { ButtonModule } from 'primeng/button';
 import { RatingModule } from 'primeng/rating';
 import { HttpClientModule } from '@angular/common/http';
+import { HeaderComponent } from './components/header/header.component';
+import { InvoiceComponent } from './components/invoice/invoice.component';
+import { ContainerComponent } from './components/container/container.component';
+import { DataViewModule } from 'primeng/dataview';
 
 @NgModule({
-  declarations: [AppComponent, QuickActionComponent, OrderListComponent],
+  declarations: [AppComponent, QuickActionComponent, OrderListComponent, HeaderComponent, InvoiceComponent, ContainerComponent],
   imports: [
     BrowserModule,
     FormsModule,
@@ -26,6 +30,7 @@ import { HttpClientModule } from '@angular/common/http';
     TableModule,
     ButtonModule,
     RatingModule,
+    DataViewModule
   ],
   providers: [],
   bootstrap: [AppComponent],

@@ -12,18 +12,18 @@
     </tr>
   </ng-template>
   <ng-template pTemplate="body" let-order>
-    <tr>
-      <td>{{ order.name }}</td>
-      <td>{{ order.price | currency: "IDR" }}</td>
-      <td>{{ order.category }}</td>
-      <td>
+    <tr class="py-3">
+      <td class="pt-2 pb-1 md:py-3">{{ order.name }}</td>
+      <td class="py-1 md:py-3">{{ order.price | currency: "IDR" }}</td>
+      <td class="py-1 md:py-3">{{ order.category }}</td>
+      <td class="py-1 md:py-3">
         <p-rating
           [ngModel]="order.rating"
           [readonly]="true"
           [cancel]="false"
         ></p-rating>
       </td>
-      <td>
+      <td class="pt-1 pb-2 md:py-3">
         <span
           [class]="
             'product-badge status-' + order.inventoryStatus.toLowerCase()

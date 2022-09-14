@@ -1,49 +1,44 @@
-import { Component, OnInit } from '@angular/core';
-import { MenuItem, MessageService } from 'primeng/api';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Router } from '@angular/router';
+import { MenuItem} from 'primeng/api';
+import { Route } from '../../constant/Route';
 
 @Component({
   selector: 'app-quick-action',
   templateUrl: './quick-action.component.html',
   styleUrls: ['./quick-action.component.css'],
-  providers: [MessageService],
+  providers: [],
 })
 export class QuickActionComponent implements OnInit {
+  @Output() updateUrl: EventEmitter<Route> = new EventEmitter();
   items!: MenuItem[];
-
-  constructor(private messageService: MessageService) {}
+  
+  constructor(private router: Router) {
+    
+  }
 
   ngOnInit(): void {
     this.items = [
       {
         icon: 'pi pi-sign-out',
         command: () => {
-          this.messageService.add({
-            severity: 'info',
-            summary: 'Add',
-            detail: 'Data Added',
-          });
+          alert('sign out');
         },
       },
       {
         icon: 'pi pi-user',
         command: () => {
-          this.messageService.add({
-            severity: 'success',
-            summary: 'Update',
-            detail: 'Data Updated',
-          });
+          this.router.navigateByUrl(Route.BillPath);
+          this.updateUrl.emit(Route.BillPath);
         },
       },
       {
         icon: 'pi pi-home',
         command: () => {
-          this.messageService.add({
-            severity: 'success',
-            summary: 'Update',
-            detail: 'Data Updated',
-          });
-        },
-      },
+          this.router.navigateByUrl(Route.HomePath);
+          this.updateUrl.emit(Route.HomePath);
+        }
+      }
     ];
   }
 }
