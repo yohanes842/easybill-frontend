@@ -6,6 +6,7 @@ export interface OrderHeader {
   discount: number;
   upto: number;
   orders?: OrderDetail[];
+  createdAt: Date;
 }
 
 export interface OrderDetail {

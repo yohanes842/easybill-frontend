@@ -16,4 +16,8 @@ export class OrderListComponent implements OnInit {
   ngOnInit() {
     this.orderService.getProductsSmall().then((data) => (this.orders = data));
   }
+
+  getValue(event: Event): string {
+    return (event.target as HTMLInputElement).value;
+  }
 }
