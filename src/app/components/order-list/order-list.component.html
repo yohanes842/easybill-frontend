@@ -5,8 +5,8 @@
     [paginator]="true"
     [rows]="9"
     filterBy="name"
-    layout="grid"
-    [ngStyle]="{color:'var(--blue-500)'}"
+    layout="list"
+    [ngStyle]="{ color: 'var(--blue-500)' }"
   >
     <ng-template pTemplate="header">
       <div class="flex flex-row justify-content-between">
@@ -19,29 +19,45 @@
             (input)="dv.filter(getValue($event))"
           />
         </span>
-        <p-dataViewLayoutOptions></p-dataViewLayoutOptions>
+        <p-button label="" icon="pi pi-plus"></p-button>
+        <!-- <p-dataViewLayoutOptions></p-dataViewLayoutOptions> -->
       </div>
     </ng-template>
-    <ng-template let-order pTemplate="listItem">
-      <div class="p-col-12 w-full">
+    <ng-template let-order pTemplate="listItem" class="flex flex-column gap-2">
+      <div class="p-col-12 w-full py-2">
         <div class="order-list-item">
-          <h6 class="p-0 mt-1 mb-2">{{ order.createdAt | date: 'medium' }}</h6>
-          <div class="order-list-detail flex gap-4">
-            <div class="pr-3" style="border-right: 3px dashed #bbb;">
-              <div class="order-name">Buyer </div>
-              <div class="order-description">Description </div>
-              <div class="order-category">Total </div>
-              <div class="order-category">Participants </div>
+          <h5 class="p-0 m-0 mt-1">
+            {{ order.createdAt | date: "fullDate" }}
+          </h5>
+          <h5 class="p-0 m-0 mb-2">
+            {{ order.createdAt | date: "shortTime" }}
+          </h5>
+          <div class="order-list-detail flex">
+            <div class="pr-5">
+              <div class="order-name">Buyer</div>
+              <div class="order-description">Description</div>
+              <div class="order-category">Total</div>
+              <div class="order-category">Participants</div>
             </div>
             <div>
+              <div>:</div>
+              <div>:</div>
+              <div>:</div>
+              <div>:</div>
+            </div>
+            <div class="pl-4">
               <div class="order-name">{{ order.buyerName }}</div>
               <div class="order-description">{{ order.orderDescription }}</div>
-              <div class="order-category">{{ order.totalPayment }}</div>
+              <div class="order-category">
+                {{ order.totalPayment | currency: "Rp ":"symbol":"3.2" }}
+              </div>
               <div class="order-category"></div>
             </div>
           </div>
           <div class="order-list-action">
-            <span class="order-price text-500">&gt;&gt; Tap for details</span>
+            <span class="order-price text-500 text-xs"
+              >&gt;&gt; Tap for details</span
+            >
             <!-- <span
               [class]="
                 'order-badge status-' + order.inventoryStatus.toLowerCase()
@@ -52,7 +68,7 @@
         </div>
       </div>
     </ng-template>
-    <ng-template let-order pTemplate="gridItem">
+    <!-- <ng-template let-order pTemplate="gridItem">
       <div class="col-12 md:col-4">
         <div class="order-grid-item card">
           <div class="order-grid-item-top">
@@ -60,12 +76,12 @@
               <i class="pi pi-tag order-category-icon"></i>
               <span class="order-category">{{ order.description }}</span>
             </div>
-            <!-- <span
+            <span
               [class]="
                 'order-badge status-' + order.inventoryStatus.toLowerCase()
               "
               >{{ order.inventoryStatus }}</span
-            > -->
+            >
           </div>
           <div class="order-grid-item-content">
             <div class="order-name">{{ order.buyerName }}</div>
@@ -82,6 +98,6 @@
           </div>
         </div>
       </div>
-    </ng-template>
+    </ng-template> -->
   </p-dataView>
 </div>
