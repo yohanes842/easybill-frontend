@@ -20,7 +20,7 @@
             class="w-full"
           />
         </span>
-        <p-button label="" icon="pi pi-plus"></p-button>
+        <p-button label="" icon="pi pi-plus" routerLink="add"></p-button>
         <!-- <p-dataViewLayoutOptions></p-dataViewLayoutOptions> -->
       </div>
     </ng-template>
@@ -59,46 +59,9 @@
             <span class="order-price text-500 text-xs"
               >&gt;&gt; Tap for details</span
             >
-            <!-- <span
-              [class]="
-                'order-badge status-' + order.inventoryStatus.toLowerCase()
-              "
-              >{{ order.inventoryStatus }}</span
-            > -->
           </div>
         </div>
       </div>
     </ng-template>
-    <!-- <ng-template let-order pTemplate="gridItem">
-      <div class="col-12 md:col-4">
-        <div class="order-grid-item card">
-          <div class="order-grid-item-top">
-            <div>
-              <i class="pi pi-tag order-category-icon"></i>
-              <span class="order-category">{{ order.description }}</span>
-            </div>
-            <span
-              [class]="
-                'order-badge status-' + order.inventoryStatus.toLowerCase()
-              "
-              >{{ order.inventoryStatus }}</span
-            >
-          </div>
-          <div class="order-grid-item-content">
-            <div class="order-name">{{ order.buyerName }}</div>
-            <div class="order-description">{{ order.orderDescription }}</div>
-            <i class="pi pi-tag order-category-icon"></i
-            ><span class="order-category">{{ order.totalPayment }}</span>
-          </div>
-          <div class="order-grid-item-bottom">
-            <span class="order-price">${{ order.buyerName }}</span>
-            <p-button
-              icon="pi pi-shopping-cart"
-              [disabled]="order.inventoryStatus === 'OUTOFSTOCK'"
-            ></p-button>
-          </div>
-        </div>
-      </div>
-    </ng-template> -->
   </p-dataView>
 </div>

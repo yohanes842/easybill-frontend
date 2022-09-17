@@ -23,6 +23,9 @@ import { DropdownModule } from 'primeng/dropdown';
 import { DialogModule } from 'primeng/dialog';
 import { InputTextModule } from 'primeng/inputtext';
 import { RippleModule } from 'primeng/ripple';
+import { InputNumberModule } from 'primeng/inputnumber';
+import { AddFormComponent } from './components/add-form/add-form.component';
+import { CalendarModule } from 'primeng/calendar';
 
 @NgModule({
   declarations: [
@@ -32,6 +35,7 @@ import { RippleModule } from 'primeng/ripple';
     HeaderComponent,
     BillComponent,
     ContainerComponent,
+    AddFormComponent,
   ],
   imports: [
     BrowserModule,
@@ -49,6 +53,8 @@ import { RippleModule } from 'primeng/ripple';
     DialogModule,
     InputTextModule,
     RippleModule,
+    InputNumberModule,
+    CalendarModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

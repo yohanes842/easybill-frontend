@@ -1,0 +1,96 @@
+<div class="w-full">
+  <h2 class="text-center">Add New Order</h2>
+  <form #addOrder="ngForm" class="mt-5 mx-auto w-full p-5 md:w-5" action="">
+    <div class="mb-2 w-full">
+      <input class="w-full" type="text" pInputText placeholder="Order by" />
+    </div>
+    <div class="p-inputgroup mb-2 w-full">
+      <p-calendar
+        [(ngModel)]="orderAt"
+        name="orderAt"
+        [showTime]="true"
+        hourFormat="24"
+        [showIcon]="true"
+      ></p-calendar>
+    </div>
+    <div class="mb-2 w-full">
+      <input
+        class="w-full"
+        type="text"
+        pInputText
+        placeholder="Order description"
+      />
+    </div>
+    <div class="mb-2 flex gap-2">
+      <div class="p-inputgroup w-full">
+        <p-inputNumber mode="decimal" placeholder="Discount"></p-inputNumber>
+        <span class="p-inputgroup-addon">%</span>
+      </div>
+      <div class="p-inputgroup w-full">
+        <p-inputNumber
+          mode="decimal"
+          placeholder="Up to amount"
+          mode="currency"
+          currency="IDR"
+          locale="in-IN"
+        ></p-inputNumber>
+      </div>
+    </div>
+    <div class="p-inputgroup mb-2 w-full">
+      <p-inputNumber
+        mode="decimal"
+        placeholder="Total payment"
+        mode="currency"
+        currency="IDR"
+        locale="in-IN"
+      ></p-inputNumber>
+    </div>
+    <div class="mb-2 w-full text-right">
+      <p-button
+        label="Add sub-order"
+        icon="pi pi-plus"
+        (click)="showAddModal()"
+      ></p-button>
+    </div>
+  </form>
+</div>
+
+<div
+  class="fixed top-0 w-screen h-screen bg-black-alpha-60 z-5"
+  *ngIf="display"
+></div>
+<p-dialog header="Add Sub-Order" [(visible)]="display">
+  <form action="" class="flex flex-column p-2">
+    <div class="mb-2 w-full">
+      <input type="text" pInputText placeholder="Order by" />
+    </div>
+    <div class="mb-2 w-full">
+      <p-inputNumber
+        placeholder="Price before discount"
+        mode="currency"
+        currency="IDR"
+        locale="in-IN"
+      ></p-inputNumber>
+    </div>
+    <div class="mb-2 w-full">
+      <input type="text" pInputText placeholder="Description (optional)" />
+    </div>
+    <div class="mb-2">
+      <p-inputNumber
+        [(ngModel)]="qty"
+        class="text-center"
+        name="qty"
+        [showButtons]="true"
+        buttonLayout="horizontal"
+        spinnerMode="vertical"
+        decrementButtonClass="p-button-danger"
+        incrementButtonClass="p-button-success"
+        incrementButtonIcon="pi pi-plus"
+        decrementButtonIcon="pi pi-minus"
+        [min]="0"
+        [max]="9999"
+        [size]="1"
+      ></p-inputNumber>
+    </div>
+  </form>
+</p-dialog>
