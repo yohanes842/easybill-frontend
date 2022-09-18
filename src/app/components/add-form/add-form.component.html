@@ -1,10 +1,14 @@
 <div class="w-full">
-  <h2 class="text-center">Add New Order</h2>
+  <h1 class="p-component text-center">Add New Order</h1>
   <form #addOrder="ngForm" class="mt-5 mx-auto w-full p-5 md:w-5" action="">
-    <div class="mb-2 w-full">
+    <div class="mb-3 w-full">
+      <p-autoComplete
+        [suggestions]="results"
+        (completeMethod)="search($event)"
+      ></p-autoComplete>
       <input class="w-full" type="text" pInputText placeholder="Order by" />
     </div>
-    <div class="p-inputgroup mb-2 w-full">
+    <div class="p-inputgroup mb-3 w-full">
       <p-calendar
         [(ngModel)]="orderAt"
         name="orderAt"
@@ -13,7 +17,7 @@
         [showIcon]="true"
       ></p-calendar>
     </div>
-    <div class="mb-2 w-full">
+    <div class="mb-3 w-full">
       <input
         class="w-full"
         type="text"
@@ -21,9 +25,14 @@
         placeholder="Order description"
       />
     </div>
-    <div class="mb-2 flex gap-2">
+    <div class="mb-3 flex gap-2">
       <div class="p-inputgroup w-full">
-        <p-inputNumber mode="decimal" placeholder="Discount"></p-inputNumber>
+        <p-inputNumber
+          mode="decimal"
+          placeholder="Discount"
+          [min]="0"
+          [max]="100"
+        ></p-inputNumber>
         <span class="p-inputgroup-addon">%</span>
       </div>
       <div class="p-inputgroup w-full">
@@ -33,24 +42,71 @@
           mode="currency"
           currency="IDR"
           locale="in-IN"
+          [min]="0"
         ></p-inputNumber>
       </div>
     </div>
-    <div class="p-inputgroup mb-2 w-full">
+    <div class="p-inputgroup mb-3 w-full">
       <p-inputNumber
         mode="decimal"
         placeholder="Total payment"
         mode="currency"
         currency="IDR"
         locale="in-IN"
+        [min]="0"
       ></p-inputNumber>
     </div>
-    <div class="mb-2 w-full text-right">
-      <p-button
-        label="Add sub-order"
-        icon="pi pi-plus"
-        (click)="showAddModal()"
-      ></p-button>
+
+    <div
+      class="card p-component border-round border-1 border-300 px-3 py-2"
+      style="background-color: var(--bg-custom-subOrder)"
+    >
+      <div class="flex justify-content-between py-2">
+        <h1 class="p-component text-lg font-bold">Sub-Order List</h1>
+        <p-button icon="pi pi-plus" (click)="showAddModal()"></p-button>
+      </div>
+      <div class="order-list-item flex align-items-center border-top-1 p-2">
+        <div class="p-3 text-pink-300 font-bold">2x</div>
+        <div
+          class="flex gap-5 justify-content-between align-items-center w-full"
+        >
+          <div>
+            <div class="order-description">Description</div>
+            <div class="text-xs">By Daniel</div>
+          </div>
+          <div>
+            <div class="order-category">Rp. 1233000</div>
+          </div>
+        </div>
+      </div>
+      <div class="order-list-item flex align-items-center border-top-1 p-2">
+        <div class="p-3 text-pink-300 font-bold">2x</div>
+        <div
+          class="flex gap-5 justify-content-between align-items-center w-full"
+        >
+          <div>
+            <div class="order-description">Description</div>
+            <div class="text-xs">By Daniel</div>
+          </div>
+          <div>
+            <div class="order-category">Rp. 1233000</div>
+          </div>
+        </div>
+      </div>
+      <div class="order-list-item flex align-items-center border-top-1 p-2">
+        <div class="p-3 text-pink-300 font-bold">2x</div>
+        <div
+          class="flex gap-5 justify-content-between align-items-center w-full"
+        >
+          <div>
+            <div class="order-description">Description</div>
+            <div class="text-xs">By Daniel</div>
+          </div>
+          <div>
+            <div class="order-category">Rp. 1233000</div>
+          </div>
+        </div>
+      </div>
     </div>
   </form>
 </div>
@@ -60,7 +116,7 @@
   *ngIf="display"
 ></div>
 <p-dialog header="Add Sub-Order" [(visible)]="display">
-  <form action="" class="flex flex-column p-2">
+  <form action="" class="flex flex-column p-2 align-items-center">
     <div class="mb-2 w-full">
       <input type="text" pInputText placeholder="Order by" />
     </div>
@@ -73,7 +129,7 @@
       ></p-inputNumber>
     </div>
     <div class="mb-2 w-full">
-      <input type="text" pInputText placeholder="Description (optional)" />
+      <input type="text" pInputText placeholder="Description" />
     </div>
     <div class="mb-2">
       <p-inputNumber
@@ -91,6 +147,11 @@
         [max]="9999"
         [size]="1"
       ></p-inputNumber>
+    </div>
+    <div class="text-center w-full mt-3">
+      <button class="border-none border-round-sm bg-primary p-3 w-full">
+        Add
+      </button>
     </div>
   </form>
 </p-dialog>

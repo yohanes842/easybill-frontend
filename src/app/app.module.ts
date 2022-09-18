@@ -26,6 +26,8 @@ import { RippleModule } from 'primeng/ripple';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { AddFormComponent } from './components/add-form/add-form.component';
 import { CalendarModule } from 'primeng/calendar';
+import { AutoCompleteModule } from 'primeng/autocomplete';
+import { UserService } from './services/user.service';
 
 @NgModule({
   declarations: [
@@ -55,8 +57,9 @@ import { CalendarModule } from 'primeng/calendar';
     RippleModule,
     InputNumberModule,
     CalendarModule,
+    AutoCompleteModule,
   ],
-  providers: [],
+  providers: [UserService],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
