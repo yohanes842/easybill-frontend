@@ -10,7 +10,6 @@ export class UserService {
   constructor(private http: HttpClient) {}
 
   public getUsers(): Observable<User[]> {
-    console.log(this.http.get<User[]>(`http://192.168.100.93:8080/api/users`));
-    return this.http.get<User[]>(`http://192.168.100.93:8080/api/users`);
+    return this.http.get<any>(`http://10.20.158.8:8080/api/users`);
   }
 }

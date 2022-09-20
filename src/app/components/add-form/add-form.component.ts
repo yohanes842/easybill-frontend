@@ -1,5 +1,6 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import { SubOrder } from 'src/app/interfaces/sub-order';
 import { User } from 'src/app/interfaces/user';
 import { UserService } from 'src/app/services/user.service';
 
@@ -10,17 +11,37 @@ import { UserService } from 'src/app/services/user.service';
   styles: ['span { width: 3rem !important; }'],
 })
 export class AddFormComponent implements OnInit {
-  qty: number = 1;
   display: boolean = false;
+
+  users!: User[];
+  filteredUsers!: string[];
+
+  orderBy!: string;
   orderAt: Date = new Date();
+  orderDescription!: string;
+  discount!: string;
+  uptoAmount!: string;
+  totalPayment!: string;
 
-  text!: string;
-
-  results!: string[];
+  subOrders: SubOrder[] = [];
+  newSubOrder!: SubOrder;
+  subOrderBy!: string;
+  subOrderDescription!: string;
+  subOrderPrice!: number;
+  qty: number = 1;
 
   constructor(private userService: UserService) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.userService.getUsers().subscribe(
+      (response: any) => {
+        this.users = response.output.data;
+      },
+      (error: HttpErrorResponse) => {
+        alert(error.message);
+      }
+    );
+  }
 
   showAddModal() {
     this.orderAt = new Date();
@@ -28,13 +49,19 @@ export class AddFormComponent implements OnInit {
   }
 
   search(event: any) {
-    this.userService.getUsers().subscribe(
-      (response: any) => {
-        console.log(response);
-      },
-      (error: HttpErrorResponse) => {
-        alert(error.message);
-      }
-    );
+    this.filteredUsers = this.users
+      .filter((user) => user.username.includes(event.query))
+      .map((user) => user.username);
+  }
+
+  addSubOrder() {
+    const order: SubOrder = {
+      username: this.subOrderBy,
+      orderMenuDesc: this.subOrderDescription,
+      price: this.subOrderPrice,
+      qty: this.qty,
+    };
+    this.subOrders.push(order);
+    this.display = false;
   }
 }

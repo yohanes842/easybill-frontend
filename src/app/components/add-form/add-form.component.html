@@ -3,10 +3,12 @@
   <form #addOrder="ngForm" class="mt-5 mx-auto w-full p-5 md:w-5" action="">
     <div class="mb-3 w-full">
       <p-autoComplete
-        [suggestions]="results"
+        [(ngModel)]="orderBy"
+        name="orderBy"
+        [suggestions]="filteredUsers"
         (completeMethod)="search($event)"
+        placeholder="Order by"
       ></p-autoComplete>
-      <input class="w-full" type="text" pInputText placeholder="Order by" />
     </div>
     <div class="p-inputgroup mb-3 w-full">
       <p-calendar
@@ -19,6 +21,8 @@
     </div>
     <div class="mb-3 w-full">
       <input
+        [(ngModel)]="orderDescription"
+        name="orderDescription"
         class="w-full"
         type="text"
         pInputText
@@ -28,6 +32,8 @@
     <div class="mb-3 flex gap-2">
       <div class="p-inputgroup w-full">
         <p-inputNumber
+          [(ngModel)]="discount"
+          name="discount"
           mode="decimal"
           placeholder="Discount"
           [min]="0"
@@ -37,6 +43,8 @@
       </div>
       <div class="p-inputgroup w-full">
         <p-inputNumber
+          [(ngModel)]="uptoAmount"
+          name="uptoAmount"
           mode="decimal"
           placeholder="Up to amount"
           mode="currency"
@@ -48,6 +56,8 @@
     </div>
     <div class="p-inputgroup mb-3 w-full">
       <p-inputNumber
+        [(ngModel)]="totalPayment"
+        name="totalPayment"
         mode="decimal"
         placeholder="Total payment"
         mode="currency"
@@ -65,45 +75,22 @@
         <h1 class="p-component text-lg font-bold">Sub-Order List</h1>
         <p-button icon="pi pi-plus" (click)="showAddModal()"></p-button>
       </div>
-      <div class="order-list-item flex align-items-center border-top-1 p-2">
-        <div class="p-3 text-pink-300 font-bold">2x</div>
+      <div
+        *ngFor="let subOrder of subOrders"
+        class="order-list-item flex align-items-center border-top-1 p-2"
+      >
+        <div class="p-3 text-pink-300 font-bold">{{ subOrder.qty }}x</div>
         <div
           class="flex gap-5 justify-content-between align-items-center w-full"
         >
           <div>
-            <div class="order-description">Description</div>
-            <div class="text-xs">By Daniel</div>
+            <div class="order-description">{{ subOrder.orderMenuDesc }}</div>
+            <div class="text-xs">By {{ subOrder.username }}</div>
           </div>
           <div>
-            <div class="order-category">Rp. 1233000</div>
-          </div>
-        </div>
-      </div>
-      <div class="order-list-item flex align-items-center border-top-1 p-2">
-        <div class="p-3 text-pink-300 font-bold">2x</div>
-        <div
-          class="flex gap-5 justify-content-between align-items-center w-full"
-        >
-          <div>
-            <div class="order-description">Description</div>
-            <div class="text-xs">By Daniel</div>
-          </div>
-          <div>
-            <div class="order-category">Rp. 1233000</div>
-          </div>
-        </div>
-      </div>
-      <div class="order-list-item flex align-items-center border-top-1 p-2">
-        <div class="p-3 text-pink-300 font-bold">2x</div>
-        <div
-          class="flex gap-5 justify-content-between align-items-center w-full"
-        >
-          <div>
-            <div class="order-description">Description</div>
-            <div class="text-xs">By Daniel</div>
-          </div>
-          <div>
-            <div class="order-category">Rp. 1233000</div>
+            <div class="order-category">
+              {{ subOrder.price | currency: "id-ID" }}
+            </div>
           </div>
         </div>
       </div>
@@ -118,10 +105,18 @@
 <p-dialog header="Add Sub-Order" [(visible)]="display">
   <form action="" class="flex flex-column p-2 align-items-center">
     <div class="mb-2 w-full">
-      <input type="text" pInputText placeholder="Order by" />
+      <input
+        [(ngModel)]="subOrderBy"
+        name="subOrderBy"
+        type="text"
+        pInputText
+        placeholder="Order by"
+      />
     </div>
     <div class="mb-2 w-full">
       <p-inputNumber
+        [(ngModel)]="subOrderPrice"
+        name="subOrderPrice"
         placeholder="Price before discount"
         mode="currency"
         currency="IDR"
@@ -129,11 +124,18 @@
       ></p-inputNumber>
     </div>
     <div class="mb-2 w-full">
-      <input type="text" pInputText placeholder="Description" />
+      <input
+        [(ngModel)]="subOrderDescription"
+        name="subOrderDescription"
+        type="text"
+        pInputText
+        placeholder="Description"
+      />
     </div>
     <div class="mb-2">
       <p-inputNumber
         [(ngModel)]="qty"
+        name="qty"
         class="text-center"
         name="qty"
         [showButtons]="true"
@@ -149,7 +151,10 @@
       ></p-inputNumber>
     </div>
     <div class="text-center w-full mt-3">
-      <button class="border-none border-round-sm bg-primary p-3 w-full">
+      <button
+        class="border-none border-round-sm bg-primary p-3 w-full"
+        (click)="addSubOrder()"
+      >
         Add
       </button>
     </div>
