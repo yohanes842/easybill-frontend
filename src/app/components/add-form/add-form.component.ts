@@ -1,6 +1,8 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { SubOrder } from 'src/app/interfaces/sub-order';
+import { NgForm } from '@angular/forms';
+import { OrderHeader } from 'src/app/interfaces/order-header';
+import { OrderDetail } from 'src/app/interfaces/order-detail';
 import { User } from 'src/app/interfaces/user';
 import { UserService } from 'src/app/services/user.service';
 
@@ -16,23 +18,16 @@ export class AddFormComponent implements OnInit {
   users!: User[];
   filteredUsers!: string[];
 
-  orderBy!: string;
-  orderAt: Date = new Date();
-  orderDescription!: string;
-  discount!: string;
-  uptoAmount!: string;
-  totalPayment!: string;
-
-  subOrders: SubOrder[] = [];
-  newSubOrder!: SubOrder;
-  subOrderBy!: string;
-  subOrderDescription!: string;
-  subOrderPrice!: number;
-  qty: number = 1;
+  newOrder: OrderHeader = new OrderHeader();
+  subOrders: OrderDetail[] = [];
+  newSubOrder: OrderDetail = new OrderDetail();
+  SubOrderIsEmpty: boolean = false;
 
   constructor(private userService: UserService) {}
 
   ngOnInit(): void {
+    this.newOrder.orderAt = new Date();
+
     this.userService.getUsers().subscribe(
       (response: any) => {
         this.users = response.output.data;
@@ -44,7 +39,6 @@ export class AddFormComponent implements OnInit {
   }
 
   showAddModal() {
-    this.orderAt = new Date();
     this.display = true;
   }
 
@@ -54,14 +48,19 @@ export class AddFormComponent implements OnInit {
       .map((user) => user.username);
   }
 
-  addSubOrder() {
-    const order: SubOrder = {
-      username: this.subOrderBy,
-      orderMenuDesc: this.subOrderDescription,
-      price: this.subOrderPrice,
-      qty: this.qty,
-    };
-    this.subOrders.push(order);
+  submitSubOrder() {
+    console.log(this.newSubOrder)
+    this.subOrders.push(this.newSubOrder);
     this.display = false;
+  }
+
+  submitOrder(){
+    if(this.subOrders.length < 1) {
+      this.SubOrderIsEmpty = true;
+      console.log("Isi dulu detailnya apa aja");
+    }else{
+      this.newOrder.orderDetailList = this.subOrders;
+      console.log(this.newOrder);
+    }
   }
 }

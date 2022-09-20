@@ -1,62 +1,68 @@
 <div class="w-full">
   <h1 class="p-component text-center">Add New Order</h1>
-  <form #addOrder="ngForm" class="mt-5 mx-auto w-full p-5 md:w-5" action="">
+  <form #addOrder="ngForm" (ngSubmit)="submitOrder()" class="mt-5 mx-auto w-full p-5 md:w-5" action="">
     <div class="mb-3 w-full">
       <p-autoComplete
-        [(ngModel)]="orderBy"
+        [(ngModel)]="newOrder.orderBy"
         name="orderBy"
+        [style]="{'width':'100%'}" [inputStyle]="{'width':'100%'}"
         [suggestions]="filteredUsers"
         (completeMethod)="search($event)"
         placeholder="Order by"
+        [required]="true"
       ></p-autoComplete>
     </div>
     <div class="p-inputgroup mb-3 w-full">
       <p-calendar
-        [(ngModel)]="orderAt"
+        [(ngModel)]="newOrder.orderAt"
         name="orderAt"
         [showTime]="true"
         hourFormat="24"
         [showIcon]="true"
+        [required]="true"
       ></p-calendar>
     </div>
     <div class="mb-3 w-full">
       <input
-        [(ngModel)]="orderDescription"
+        [(ngModel)]="newOrder.orderDescription"
         name="orderDescription"
         class="w-full"
         type="text"
         pInputText
         placeholder="Order description"
+        required
       />
     </div>
     <div class="mb-3 flex gap-2">
       <div class="p-inputgroup w-full">
         <p-inputNumber
-          [(ngModel)]="discount"
+          [(ngModel)]="newOrder.discount"
           name="discount"
           mode="decimal"
           placeholder="Discount"
           [min]="0"
           [max]="100"
+          [ariaRequired]="true"
         ></p-inputNumber>
         <span class="p-inputgroup-addon">%</span>
       </div>
       <div class="p-inputgroup w-full">
         <p-inputNumber
-          [(ngModel)]="uptoAmount"
-          name="uptoAmount"
+          [(ngModel)]="newOrder.upto"
+          name="upto"
           mode="decimal"
           placeholder="Up to amount"
           mode="currency"
           currency="IDR"
           locale="in-IN"
           [min]="0"
+          [ariaRequired]="true"
         ></p-inputNumber>
       </div>
     </div>
     <div class="p-inputgroup mb-3 w-full">
       <p-inputNumber
-        [(ngModel)]="totalPayment"
+        [(ngModel)]="newOrder.totalPayment"
         name="totalPayment"
         mode="decimal"
         placeholder="Total payment"
@@ -64,6 +70,7 @@
         currency="IDR"
         locale="in-IN"
         [min]="0"
+        [ariaRequired]="true"
       ></p-inputNumber>
     </div>
 
@@ -75,6 +82,7 @@
         <h1 class="p-component text-lg font-bold">Sub-Order List</h1>
         <p-button icon="pi pi-plus" (click)="showAddModal()"></p-button>
       </div>
+      <p *ngIf="SubOrderIsEmpty" class="text-red-500 m-0">Sub-order list can not be empty!</p>
       <div
         *ngFor="let subOrder of subOrders"
         class="order-list-item flex align-items-center border-top-1 p-2"
@@ -89,11 +97,21 @@
           </div>
           <div>
             <div class="order-category">
-              {{ subOrder.price | currency: "id-ID" }}
+              {{ subOrder.price | currency: "Rp " }}
             </div>
           </div>
         </div>
       </div>
+    </div>
+
+    <div class="text-center mt-5">
+      <button
+          class="border-none border-round-sm bg-primary p-3 w-5"
+          [ngClass]="{'disabled-btn': addOrder.invalid}"
+          [disabled]="addOrder.invalid"
+        >
+          Add New Order
+        </button>
     </div>
   </form>
 </div>
@@ -103,41 +121,43 @@
   *ngIf="display"
 ></div>
 <p-dialog header="Add Sub-Order" [(visible)]="display">
-  <form action="" class="flex flex-column p-2 align-items-center">
+  <form #addSubOrder="ngForm" (ngSubmit)="submitSubOrder()" class="flex flex-column p-2 align-items-center">
     <div class="mb-2 w-full">
-      <input
-        [(ngModel)]="subOrderBy"
-        name="subOrderBy"
-        type="text"
-        pInputText
+      <p-autoComplete
+      [(ngModel)]="newSubOrder.username"
+      name="subOrderBy"
+        [suggestions]="filteredUsers"
+        (completeMethod)="search($event)"
         placeholder="Order by"
-      />
+        [required]="true"
+      ></p-autoComplete>
     </div>
     <div class="mb-2 w-full">
       <p-inputNumber
-        [(ngModel)]="subOrderPrice"
+        [(ngModel)]="newSubOrder.price"
         name="subOrderPrice"
         placeholder="Price before discount"
         mode="currency"
         currency="IDR"
         locale="in-IN"
+        [ariaRequired]="true"
       ></p-inputNumber>
     </div>
     <div class="mb-2 w-full">
       <input
-        [(ngModel)]="subOrderDescription"
-        name="subOrderDescription"
+        [(ngModel)]="newSubOrder.orderMenuDesc"
+        name="subOrderMenuDesc"
         type="text"
         pInputText
         placeholder="Description"
+        required
       />
     </div>
     <div class="mb-2">
       <p-inputNumber
-        [(ngModel)]="qty"
+        [(ngModel)]="newSubOrder.qty"
         name="qty"
         class="text-center"
-        name="qty"
         [showButtons]="true"
         buttonLayout="horizontal"
         spinnerMode="vertical"
@@ -148,12 +168,14 @@
         [min]="0"
         [max]="9999"
         [size]="1"
+        [ariaRequired]="true"
       ></p-inputNumber>
     </div>
     <div class="text-center w-full mt-3">
       <button
         class="border-none border-round-sm bg-primary p-3 w-full"
-        (click)="addSubOrder()"
+        [ngClass]="{'disabled-btn': addSubOrder.invalid}"
+        [disabled]="addSubOrder.invalid"
       >
         Add
       </button>

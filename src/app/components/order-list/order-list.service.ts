@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { OrderHeader } from 'src/app/interfaces/order-header';
 
-import { OrderHeader } from './order-list';
 
 @Injectable()
 export class OrderService {

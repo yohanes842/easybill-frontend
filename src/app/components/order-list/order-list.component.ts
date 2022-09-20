@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { OrderHeader } from './order-list';
+import { OrderHeader } from 'src/app/interfaces/order-header';
 import { OrderService } from './order-list.service';
 
 @Component({
