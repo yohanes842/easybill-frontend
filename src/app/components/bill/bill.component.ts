@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { Route } from 'src/app/constant/Route';
 import { OrderHeader } from 'src/app/interfaces/order-header';
+import { CommonService } from 'src/app/services/common.service';
 import { OrderService } from '../order-list/order-list.service';
 
 @Component({
@@ -11,9 +13,11 @@ import { OrderService } from '../order-list/order-list.service';
 export class BillComponent implements OnInit {
   orders!: OrderHeader[];
 
-  constructor(private orderService: OrderService) {}
+  constructor(private orderService: OrderService, private commonService: CommonService) {}
 
   ngOnInit() {
+    this.commonService.changePageTitle(Route.BillPath);
+
     this.orderService.getProductsSmall().then((data) => (this.orders = data));
   }
 

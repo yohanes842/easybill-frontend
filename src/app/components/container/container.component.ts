@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { CommonService } from 'src/app/services/common.service';
 import { Route } from '../../constant/Route';
 
 
@@ -12,18 +13,10 @@ export class ContainerComponent implements OnInit {
 
   pageTitle!: string;
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private commonService: CommonService) {}
 
   ngOnInit() {
-    this.onSetHeaderTitle(this.router.url);
+    this.commonService.changePageTitle(this.router.url); 
+    this.commonService.title$.subscribe(res => this.pageTitle = res); 
   }
-
-  onSetHeaderTitle(path: Route | string){
-    if(path == Route.HomePath){
-      this.pageTitle = 'Order History';
-    }else{
-      this.pageTitle = 'Your Bill';
-    }
-  }
-
 }

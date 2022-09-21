@@ -1,6 +1,7 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { MenuItem} from 'primeng/api';
+import { CommonService } from 'src/app/services/common.service';
 import { Route } from '../../constant/Route';
 
 @Component({
@@ -13,7 +14,7 @@ export class QuickActionComponent implements OnInit {
   @Output() updateUrl: EventEmitter<Route> = new EventEmitter();
   items!: MenuItem[];
   
-  constructor(private router: Router) {
+  constructor(private router: Router, private commonService: CommonService) {
     
   }
 
@@ -29,14 +30,12 @@ export class QuickActionComponent implements OnInit {
         icon: 'pi pi-user',
         command: () => {
           this.router.navigateByUrl(Route.BillPath);
-          this.updateUrl.emit(Route.BillPath);
         },
       },
       {
         icon: 'pi pi-home',
         command: () => {
           this.router.navigateByUrl(Route.HomePath);
-          this.updateUrl.emit(Route.HomePath);
         }
       }
     ];

@@ -3,7 +3,7 @@
   <form #addOrder="ngForm" (ngSubmit)="submitOrder()" class="mt-5 mx-auto w-full p-5 md:w-5" action="">
     <div class="mb-3 w-full">
       <p-autoComplete
-        [(ngModel)]="newOrder.orderBy"
+        [(ngModel)]="newOrder.username"
         name="orderBy"
         [style]="{'width':'100%'}" [inputStyle]="{'width':'100%'}"
         [suggestions]="filteredUsers"
@@ -14,7 +14,7 @@
     </div>
     <div class="p-inputgroup mb-3 w-full">
       <p-calendar
-        [(ngModel)]="newOrder.orderAt"
+        [(ngModel)]="currentTime"
         name="orderAt"
         [showTime]="true"
         hourFormat="24"
@@ -24,7 +24,7 @@
     </div>
     <div class="mb-3 w-full">
       <input
-        [(ngModel)]="newOrder.orderDescription"
+        [(ngModel)]="newOrder.order_description"
         name="orderDescription"
         class="w-full"
         type="text"
@@ -42,7 +42,7 @@
           placeholder="Discount"
           [min]="0"
           [max]="100"
-          [ariaRequired]="true"
+          [required]="true"
         ></p-inputNumber>
         <span class="p-inputgroup-addon">%</span>
       </div>
@@ -56,13 +56,13 @@
           currency="IDR"
           locale="in-IN"
           [min]="0"
-          [ariaRequired]="true"
+          [required]="true"
         ></p-inputNumber>
       </div>
     </div>
     <div class="p-inputgroup mb-3 w-full">
       <p-inputNumber
-        [(ngModel)]="newOrder.totalPayment"
+        [(ngModel)]="newOrder.total_payment"
         name="totalPayment"
         mode="decimal"
         placeholder="Total payment"
@@ -92,7 +92,7 @@
           class="flex gap-5 justify-content-between align-items-center w-full"
         >
           <div>
-            <div class="order-description">{{ subOrder.orderMenuDesc }}</div>
+            <div class="order-description">{{ subOrder.order_menu_desc }}</div>
             <div class="text-xs">By {{ subOrder.username }}</div>
           </div>
           <div>
@@ -145,7 +145,7 @@
     </div>
     <div class="mb-2 w-full">
       <input
-        [(ngModel)]="newSubOrder.orderMenuDesc"
+        [(ngModel)]="newSubOrder.order_menu_desc"
         name="subOrderMenuDesc"
         type="text"
         pInputText

@@ -28,6 +28,9 @@ import { AddFormComponent } from './components/add-form/add-form.component';
 import { CalendarModule } from 'primeng/calendar';
 import { AutoCompleteModule } from 'primeng/autocomplete';
 import { UserService } from './services/user.service';
+import { DatePipe } from '@angular/common';
+import { OrderService } from './services/order.service';
+import { CommonService } from './services/common.service';
 
 @NgModule({
   declarations: [
@@ -59,7 +62,7 @@ import { UserService } from './services/user.service';
     CalendarModule,
     AutoCompleteModule,
   ],
-  providers: [UserService],
+  providers: [UserService, OrderService, CommonService, DatePipe],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
