@@ -1,16 +1,16 @@
 
-import { NodeWithI18n } from "@angular/compiler";
 import { OrderDetail } from "./order-detail";
 import { User } from "./user"
 
 export class OrderHeader {
     id?: number;
-    orderBy?: string;
-    orderAt?: Date;
-    orderDescription!: string;
-    totalPayment!: number;
+    username?: string;
+    buyer_id?: number;
+    order_at?: string;
+    order_description!: string;
+    total_payment!: number;
     user!: User;
     upto!: number;
     discount!: number;
-    orderDetailList!: OrderDetail[];
+    order_list!: OrderDetail[];
 }
