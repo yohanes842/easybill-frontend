@@ -1,5 +1,5 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { OrderHeader } from 'src/app/interfaces/order-header';
 import { OrderDetail } from 'src/app/interfaces/order-detail';
 import { User } from 'src/app/interfaces/user';
@@ -30,12 +30,10 @@ export class AddFormComponent implements OnInit {
   currentTime!: Date;
 
   constructor(private userService: UserService, private orderService: OrderService, private datePipe: DatePipe, private router: Router, private commonService: CommonService) {}
-
-  ngOnChanges(): void{
-    this.commonService.changePageTitle(Route.AddOrderPath);
-  }
-
+  
   ngOnInit(): void {
+    this.commonService.changePageTitle(Route.AddOrderPath);
+    
     this.currentTime = new Date();
 
     this.userService.getUsers().subscribe(
@@ -77,9 +75,9 @@ export class AddFormComponent implements OnInit {
       this.newOrder.order_at =  this.datePipe.transform(this.currentTime, 'yyyy-MM-dd hh:mm:ss')!;
 
       // Hit add order service
-      // this.orderService.addOrder(this.newOrder).subscribe((res: any) => {
-      //   console.log(res);
-      // });
+      this.orderService.addOrder(this.newOrder).subscribe((res: any) => {
+        console.log(res);
+      });
 
       // Redirect to home page
       this.router.navigateByUrl(Route.HomePath);

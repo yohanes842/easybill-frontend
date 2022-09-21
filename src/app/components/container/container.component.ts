@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { Router } from '@angular/router';
 import { CommonService } from 'src/app/services/common.service';
 import { Route } from '../../constant/Route';
@@ -13,10 +13,14 @@ export class ContainerComponent implements OnInit {
 
   pageTitle!: string;
 
-  constructor(private router: Router, private commonService: CommonService) {}
+  constructor(private router: Router, private commonService: CommonService, private cd: ChangeDetectorRef) {}
+  
 
   ngOnInit() {
     this.commonService.changePageTitle(this.router.url); 
-    this.commonService.title$.subscribe(res => this.pageTitle = res); 
+    this.commonService.title$.subscribe(res => {
+      this.pageTitle = res;
+      this.cd.detectChanges();
+    }); 
   }
 }
