@@ -116,11 +116,7 @@
   </form>
 </div>
 
-<div
-  class="fixed top-0 w-screen h-screen bg-black-alpha-60 z-5"
-  *ngIf="display"
-></div>
-<p-dialog header="Add Sub-Order" [(visible)]="display">
+<p-dialog header="Add Sub-Order" [(visible)]="display" [modal]="true">
   <form #addSubOrder="ngForm" (ngSubmit)="submitSubOrder()" class="flex flex-column p-2 align-items-center">
     <div class="mb-2 w-full">
       <p-autoComplete
