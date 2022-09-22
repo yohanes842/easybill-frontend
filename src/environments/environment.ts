@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  url: 'http://p090whp547094.intra.bca.co.id:8081',
+  url: 'http://p090whp547094.intra.bca.co.id:9090',
 };
 
 /*

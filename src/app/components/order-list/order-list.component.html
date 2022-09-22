@@ -4,7 +4,7 @@
     [value]="orders"
     [paginator]="true"
     [rows]="9"
-    filterBy="name"
+      filterBy="order_description,buyer_id"
     layout="list"
     [ngStyle]="{ color: 'var(--blue-500)' }"
   >
@@ -15,7 +15,7 @@
           <input
             type="search"
             pInputText
-            placeholder="Search by Name"
+            placeholder="Search by buyer name or description ..."
             (input)="dv.filter(getValue($event))"
             class="w-full"
           />
@@ -28,10 +28,10 @@
       <div class="p-col-12 w-full py-2">
         <div class="order-list-item">
           <h5 class="p-0 m-0 mt-1">
-            {{ order.createdAt | date: "fullDate" }}
+            {{ order.order_at | date: "fullDate" }}
           </h5>
           <h5 class="p-0 m-0 mb-2">
-            {{ order.createdAt | date: "shortTime" }}
+            {{ order.order_at | date: "shortTime" }}
           </h5>
           <div class="order-list-detail flex">
             <div class="pr-5">
@@ -47,10 +47,10 @@
               <div>:</div>
             </div>
             <div class="pl-4">
-              <div class="order-name">{{ order.buyerName }}</div>
-              <div class="order-description">{{ order.orderDescription }}</div>
+              <div class="order-name">{{ order.buyer_id }}</div>
+              <div class="order-description">{{ order.order_description }}</div>
               <div class="order-category">
-                {{ order.totalPayment | currency: "Rp ":"symbol":"3.2" }}
+                {{ order.total_payment | currency: "Rp ":"symbol":"3.2" }}
               </div>
               <div class="order-category"></div>
             </div>
