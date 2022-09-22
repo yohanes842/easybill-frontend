@@ -1,5 +1,5 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, EventEmitter, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { OrderHeader } from 'src/app/interfaces/order-header';
 import { OrderDetail } from 'src/app/interfaces/order-detail';
 import { User } from 'src/app/interfaces/user';
@@ -18,7 +18,6 @@ import { MessageService } from 'primeng/api';
   styles: ['span { width: 3rem !important; }'],
 })
 export class AddFormComponent implements OnInit {
-  @Output() updateUrl: EventEmitter<Route> = new EventEmitter();
   display: boolean = false;
 
   users!: User[];
@@ -41,6 +40,7 @@ export class AddFormComponent implements OnInit {
         this.users = response.output.data;
       },
       (error: HttpErrorResponse) => {
+        this.messageService.clear();
         this.messageService.add({severity:'warn', summary:'Warning', detail:'There is an error occurred!'});
       }
     );
@@ -60,6 +60,7 @@ export class AddFormComponent implements OnInit {
     this.newSubOrder.user_id = this.users.find((u: User) => u.username === this.newSubOrder.username)?.id ?? 0;
     //validate if user not exist in the list
     if(this.newSubOrder.user_id === 0){
+      this.messageService.clear();
       this.messageService.add({severity:'error', summary:'Error', detail:'User not found!'});
       return;
     }
@@ -68,6 +69,7 @@ export class AddFormComponent implements OnInit {
 
     this.display = false;
 
+    this.messageService.clear();
     this.messageService.add({severity:'success', summary:'Success', detail:'Successfully added sub-order!'});
   }
 
@@ -75,11 +77,13 @@ export class AddFormComponent implements OnInit {
     this.newOrder.buyer_id = this.users.find((u: User) => u.username === this.newOrder.username)?.id;
     //validate if user not exist in the list
     if(this.newOrder.buyer_id === 0){
+      this.messageService.clear();
       this.messageService.add({severity:'error', summary:'Error', detail:'User not found!'});
       return;
     }
 
     if(this.subOrders.length < 1) {
+      this.messageService.clear();
       this.messageService.add({severity:'error', summary:'Error', detail:'Sub-order can not be empty!'});
     }else{
       //prepare object to be passed
@@ -93,6 +97,7 @@ export class AddFormComponent implements OnInit {
       });
 
       // Redirect to home page
+      this.messageService.clear();
       this.messageService.add({severity:'success', summary:'Success', detail:'Successfully added order!'});
       this.router.navigateByUrl(Route.HomePath);
     }

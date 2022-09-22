@@ -7,7 +7,6 @@ import { OrderHeader } from 'src/app/interfaces/order-header';
 import { User } from 'src/app/interfaces/user';
 import { CommonService } from 'src/app/services/common.service';
 import { OrderService } from 'src/app/services/order.service'; 
-import { UserService } from 'src/app/services/user.service';
 
 @Component({
   selector: 'app-order-list',
@@ -34,6 +33,7 @@ export class OrderListComponent implements OnInit {
       this.orders = (this.currentUser.order_list as OrderHeader[]);
     },
     (error: HttpErrorResponse) => {
+      this.messageService.clear();
       this.messageService.add({severity:'warn', summary:'Warning', detail:'There is an error occurred!'});
     });
   }
@@ -49,6 +49,7 @@ export class OrderListComponent implements OnInit {
       this.display = true;
     },
     (error: HttpErrorResponse) => {
+      this.messageService.clear();
       this.messageService.add({severity:'warn', summary:'Warning', detail:'There is an error occurred!'});
     });
   }
