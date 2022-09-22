@@ -27,10 +27,14 @@ import { InputNumberModule } from 'primeng/inputnumber';
 import { AddFormComponent } from './components/add-form/add-form.component';
 import { CalendarModule } from 'primeng/calendar';
 import { AutoCompleteModule } from 'primeng/autocomplete';
+import {MessagesModule} from 'primeng/messages';
+import {MessageModule} from 'primeng/message';
+
 import { UserService } from './services/user.service';
 import { DatePipe } from '@angular/common';
 import { OrderService } from './services/order.service';
 import { CommonService } from './services/common.service';
+import { MessageService } from 'primeng/api';
 
 @NgModule({
   declarations: [
@@ -61,8 +65,10 @@ import { CommonService } from './services/common.service';
     InputNumberModule,
     CalendarModule,
     AutoCompleteModule,
+    MessageModule,
+    MessagesModule
   ],
-  providers: [UserService, OrderService, CommonService, DatePipe],
+  providers: [UserService, OrderService, CommonService, MessageService, DatePipe],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

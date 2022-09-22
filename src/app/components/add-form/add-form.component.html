@@ -1,4 +1,5 @@
 <div class="w-full">
+  <button pButton label="Back to Home"  type="button" icon="pi pi-chevron-left" iconPos="left" class="p-button-text p-button-sm absolute top-5 left-0" (click)="backToHome()"></button>
   <h1 class="p-component text-center">Add New Order</h1>
   <form #addOrder="ngForm" (ngSubmit)="submitOrder()" class="mt-5 mx-auto w-full p-5 md:w-5" action="">
     <div class="mb-3 w-full">
