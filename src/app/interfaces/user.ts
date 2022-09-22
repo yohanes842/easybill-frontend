@@ -1,7 +1,7 @@
 import { OrderHeader } from "./order-header";
 
-export interface User {
+export class User {
   id?: number;
-  username: string;
+  username!: string;
   order_list?: OrderHeader[];
 }

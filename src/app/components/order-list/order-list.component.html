@@ -4,7 +4,7 @@
     [value]="orders"
     [paginator]="true"
     [rows]="9"
-      filterBy="order_description,buyer_id"
+      filterBy="order_description,user.username"
     layout="list"
     [ngStyle]="{ color: 'var(--blue-500)' }"
   >
@@ -47,7 +47,7 @@
               <div>:</div>
             </div>
             <div class="pl-4">
-              <div class="order-name">{{ order.buyer_id }}</div>
+              <div class="order-name">{{ order.user.username }}</div>
               <div class="order-description">{{ order.order_description }}</div>
               <div class="order-category">
                 {{ order.total_payment | currency: "Rp ":"symbol":"3.2" }}
@@ -56,12 +56,55 @@
             </div>
           </div>
           <div class="order-list-action">
-            <span class="order-price text-500 text-xs"
-              >&gt;&gt; Tap for details</span
-            >
+            <button pButton label="Tap for details" type="button" class="p-button-sm" (click)="showDetail(order)"></button>
           </div>
         </div>
       </div>
     </ng-template>
   </p-dataView>
 </div>
+
+<p-dialog *ngIf="display" class="flex flex-column" [modal]="true" header="Detail Order" [(visible)]="display" [style]="{width: 'calc(100vw - 5rem)', 'max-width': '27rem', 'overflow-x': 'hidden'}">
+    <div class="mb-2 border-bottom-1">
+      <h5>Order By:</h5>
+      <p>{{ selectedOrder.user.username }}</p>
+    </div>
+    <div class="mb-2 border-bottom-1">
+      <h5>Order Description:</h5>
+      <p>{{ selectedOrder.order_description }}</p>
+    </div>
+    <div class="mb-2 border-bottom-1">
+      <h5>Total Payment:</h5>
+      <p>{{ selectedOrder.total_payment | currency: "Rp ":"symbol":"3.2" }}</p>
+    </div>
+    <div class="mb-2 border-bottom-1">
+      <h5>Discount:</h5>
+      <p>{{ selectedOrder.discount }}%</p>
+    </div>
+    <div class="mb-2 border-bottom-1">
+      <h5>Up to amount:</h5>
+      <p>{{ selectedOrder.upto | currency: "Rp ":"symbol":"3.2" }}</p>
+    </div>
+    <div class="mb-2 border-bottom-1">
+      <h1 class="p-component text-lg font-bold">Sub-Order List</h1>
+      <div
+        *ngFor="let subOrder of selectedOrder.order_list"
+        class="order-list-item flex align-items-center border-top-1 p-2"
+      >
+        <div class="p-3 text-pink-300 font-bold">{{ subOrder.qty }}x</div>
+        <div
+          class="flex gap-5 justify-content-between align-items-center w-full"
+        >
+          <div>
+            <div class="order-description">{{ subOrder.order_menu_desc }}</div>
+            <div class="text-xs">By {{ subOrder.user.username }}</div>
+          </div>
+          <div>
+            <div class="order-category">
+              {{ subOrder.price | currency: "Rp " }}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+</p-dialog>

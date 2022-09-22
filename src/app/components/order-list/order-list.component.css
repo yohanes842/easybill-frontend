@@ -109,4 +109,7 @@
     :host ::ng-deep .order-list-item {
       padding-inline: 0.7rem;
     }
+    .eb-dialog-content {
+        width: 100vw;
+    }
 }

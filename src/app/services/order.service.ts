@@ -19,4 +19,8 @@ export class OrderService {
   public addOrder(orderHeader: OrderHeader): Observable<OrderHeader>{
     return this.http.post<any>(`${env.url}/api/orders`, orderHeader);
   }
+
+  public getOrder(orderId: number): Observable<OrderHeader>{
+    return this.http.get<any>(`${env.url}/api/orders/${orderId}`);
+  }
 }
