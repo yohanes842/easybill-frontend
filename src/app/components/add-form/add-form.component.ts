@@ -27,7 +27,6 @@ export class AddFormComponent implements OnInit {
   newOrder: OrderHeader = new OrderHeader();
   subOrders: OrderDetail[] = [];
   newSubOrder: OrderDetail = new OrderDetail();
-  SubOrderIsEmpty: boolean = false;
   currentTime!: Date;
 
   constructor(private userService: UserService, private orderService: OrderService, private datePipe: DatePipe, private router: Router, private commonService: CommonService, private messageService: MessageService) {}
@@ -68,7 +67,6 @@ export class AddFormComponent implements OnInit {
     this.subOrders.push(this.newSubOrder);
 
     this.display = false;
-    this.SubOrderIsEmpty = false;
 
     this.messageService.add({severity:'success', summary:'Success', detail:'Successfully added sub-order!'});
   }

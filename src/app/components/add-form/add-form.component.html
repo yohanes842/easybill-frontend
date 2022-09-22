@@ -83,7 +83,6 @@
         <h1 class="p-component text-lg font-bold">Sub-Order List</h1>
         <p-button icon="pi pi-plus" (click)="showAddModal()"></p-button>
       </div>
-      <p *ngIf="SubOrderIsEmpty" class="text-red-500 m-0">Sub-order list can not be empty!</p>
       <div
         *ngFor="let subOrder of subOrders"
         class="order-list-item flex align-items-center border-top-1 p-2"
