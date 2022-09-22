@@ -50,6 +50,16 @@ export class AddFormComponent implements OnInit {
     this.display = true;
   }
 
+  showEditModal(index: number){
+    console.log(index);
+    this.newSubOrder = this.subOrders[index];
+    this.display = true;
+  }
+
+  deleteSubOrder(index: number){
+    this.subOrders.splice(index, 1);
+  }
+
   search(event: any) {
     this.filteredUsers = this.users
       .filter((user) => user.username.includes(event.query))
@@ -66,6 +76,7 @@ export class AddFormComponent implements OnInit {
     }
 
     this.subOrders.push(this.newSubOrder);
+    this.newSubOrder = new OrderDetail();
 
     this.display = false;
 

@@ -84,8 +84,8 @@
         <p-button icon="pi pi-plus" (click)="showAddModal()"></p-button>
       </div>
       <div
-        *ngFor="let subOrder of subOrders"
-        class="order-list-item flex align-items-center border-top-1 p-2"
+        *ngFor="let subOrder of subOrders; let i = index" [attr.data-index]="i"
+        class="order-list-item flex align-items-center border-top-1 border-300"
       >
         <div class="p-3 text-pink-300 font-bold">{{ subOrder.qty }}x</div>
         <div
@@ -95,9 +95,13 @@
             <div class="order-description">{{ subOrder.order_menu_desc }}</div>
             <div class="text-xs">By {{ subOrder.username }}</div>
           </div>
-          <div>
-            <div class="order-category">
-              {{ subOrder.price | currency: "Rp " }}
+          <div class="flex align-items-center gap-3">
+            <div>
+              {{ subOrder.price * subOrder.qty | currency: "Rp " }}
+            </div>
+            <div class="border-left-1">
+              <button pButton type="button" icon="pi pi-pencil" class="p-button-sm p-button-link" [style]="{'padding-block': '0.5rem', 'padding-inline': '1rem', width: 'fit-content'}" (click)="showEditModal(i)"></button>
+              <button pButton type="button" icon="pi pi-trash" class="p-button-sm p-button-link p-button-danger text-red-300" [style]="{'padding-block': '0.5rem', 'padding-inline': '1rem', width: 'fit-content'}" (click)="deleteSubOrder(i)"></button>
             </div>
           </div>
         </div>
@@ -161,7 +165,7 @@
         incrementButtonClass="p-button-success"
         incrementButtonIcon="pi pi-plus"
         decrementButtonIcon="pi pi-minus"
-        [min]="0"
+        [min]="1"
         [max]="9999"
         [size]="1"
         [ariaRequired]="true"
