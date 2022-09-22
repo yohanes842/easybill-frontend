@@ -9,6 +9,7 @@ import { DatePipe } from '@angular/common';
 import { Router } from '@angular/router';
 import { Route } from 'src/app/constant/Route';
 import { CommonService } from 'src/app/services/common.service';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-add-form',
@@ -29,7 +30,7 @@ export class AddFormComponent implements OnInit {
   SubOrderIsEmpty: boolean = false;
   currentTime!: Date;
 
-  constructor(private userService: UserService, private orderService: OrderService, private datePipe: DatePipe, private router: Router, private commonService: CommonService) {}
+  constructor(private userService: UserService, private orderService: OrderService, private datePipe: DatePipe, private router: Router, private commonService: CommonService, private messageService: MessageService) {}
   
   ngOnInit(): void {
     this.commonService.changePageTitle(Route.AddOrderPath);
@@ -41,7 +42,7 @@ export class AddFormComponent implements OnInit {
         this.users = response.output.data;
       },
       (error: HttpErrorResponse) => {
-        alert(error.message);
+        this.messageService.add({severity:'warn', summary:'Warning', detail:'There is an error occurred!'});
       }
     );
   }
@@ -57,17 +58,31 @@ export class AddFormComponent implements OnInit {
   }
 
   submitSubOrder() {
-    this.newSubOrder.user_id = this.users.find((u: User) => u.username === this.newSubOrder.username)?.id;
+    this.newSubOrder.user_id = this.users.find((u: User) => u.username === this.newSubOrder.username)?.id ?? 0;
+    //validate if user not exist in the list
+    if(this.newSubOrder.user_id === 0){
+      this.messageService.add({severity:'error', summary:'Error', detail:'User not found!'});
+      return;
+    }
+
     this.subOrders.push(this.newSubOrder);
 
     this.display = false;
     this.SubOrderIsEmpty = false;
+
+    this.messageService.add({severity:'success', summary:'Success', detail:'Successfully added sub-order!'});
   }
 
   submitOrder(){
     this.newOrder.buyer_id = this.users.find((u: User) => u.username === this.newOrder.username)?.id;
+    //validate if user not exist in the list
+    if(this.newOrder.buyer_id === 0){
+      this.messageService.add({severity:'error', summary:'Error', detail:'User not found!'});
+      return;
+    }
+
     if(this.subOrders.length < 1) {
-      this.SubOrderIsEmpty = true;
+      this.messageService.add({severity:'error', summary:'Error', detail:'Sub-order can not be empty!'});
     }else{
       //prepare object to be passed
       this.newOrder.order_list = this.subOrders;
@@ -80,7 +95,12 @@ export class AddFormComponent implements OnInit {
       });
 
       // Redirect to home page
+      this.messageService.add({severity:'success', summary:'Success', detail:'Successfully added order!'});
       this.router.navigateByUrl(Route.HomePath);
     }
+  }
+
+  backToHome(){
+    this.router.navigateByUrl(Route.HomePath);
   }
 }
