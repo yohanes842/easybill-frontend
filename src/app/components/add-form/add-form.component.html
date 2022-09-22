@@ -1,12 +1,25 @@
 <div class="w-full">
-  <button pButton label="Back to Home"  type="button" icon="pi pi-chevron-left" iconPos="left" class="p-button-text p-button-sm absolute top-5 left-0" (click)="backToHome()"></button>
-  <h1 class="p-component text-center">Add New Order</h1>
-  <form #addOrder="ngForm" (ngSubmit)="submitOrder()" class="mt-5 mx-auto w-full p-5 md:w-5" action="">
+  <button
+    pButton
+    label="Back to Home"
+    type="button"
+    icon="pi pi-chevron-left"
+    iconPos="left"
+    class="p-button-text p-button-sm my-3"
+    (click)="backToHome()"
+  ></button>
+  <form
+    #addOrder="ngForm"
+    (ngSubmit)="submitOrder()"
+    class="mx-auto w-full px-5 py-2 md:w-5"
+    action=""
+  >
     <div class="mb-3 w-full">
       <p-autoComplete
         [(ngModel)]="newOrder.username"
         name="orderBy"
-        [style]="{'width':'100%'}" [inputStyle]="{'width':'100%'}"
+        [style]="{ width: '100%' }"
+        [inputStyle]="{ width: '100%' }"
         [suggestions]="filteredUsers"
         (completeMethod)="search($event)"
         placeholder="Order by"
@@ -80,11 +93,14 @@
       style="background-color: var(--bg-custom-subOrder)"
     >
       <div class="flex justify-content-between py-2">
-        <h1 class="p-component text-lg font-bold">Sub-Order List</h1>
+        <h1 class="p-component text-lg text-pink-200 font-bold">
+          Sub-Order List
+        </h1>
         <p-button icon="pi pi-plus" (click)="showAddModal()"></p-button>
       </div>
       <div
-        *ngFor="let subOrder of subOrders; let i = index" [attr.data-index]="i"
+        *ngFor="let subOrder of subOrders; let i = index"
+        [attr.data-index]="i"
         class="order-list-item flex align-items-center border-top-1 border-300"
       >
         <div class="p-3 text-pink-300 font-bold">{{ subOrder.qty }}x</div>
@@ -100,8 +116,30 @@
               {{ subOrder.price * subOrder.qty | currency: "Rp " }}
             </div>
             <div class="border-left-1">
-              <button pButton type="button" icon="pi pi-pencil" class="p-button-sm p-button-link" [style]="{'padding-block': '0.5rem', 'padding-inline': '1rem', width: 'fit-content'}" (click)="showEditModal(i)"></button>
-              <button pButton type="button" icon="pi pi-trash" class="p-button-sm p-button-link p-button-danger text-red-300" [style]="{'padding-block': '0.5rem', 'padding-inline': '1rem', width: 'fit-content'}" (click)="deleteSubOrder(i)"></button>
+              <button
+                pButton
+                type="button"
+                icon="pi pi-pencil"
+                class="p-button-sm p-button-link"
+                [style]="{
+                  'padding-block': '0.5rem',
+                  'padding-inline': '1rem',
+                  width: 'fit-content'
+                }"
+                (click)="showEditModal(i)"
+              ></button>
+              <button
+                pButton
+                type="button"
+                icon="pi pi-trash"
+                class="p-button-sm p-button-link p-button-danger text-red-300"
+                [style]="{
+                  'padding-block': '0.5rem',
+                  'padding-inline': '1rem',
+                  width: 'fit-content'
+                }"
+                (click)="deleteSubOrder(i)"
+              ></button>
             </div>
           </div>
         </div>
@@ -110,22 +148,26 @@
 
     <div class="text-center mt-5">
       <button
-          class="border-none border-round-sm bg-primary p-3 w-5"
-          [ngClass]="{'disabled-btn': addOrder.invalid}"
-          [disabled]="addOrder.invalid"
-        >
-          Add New Order
-        </button>
+        class="border-none border-round-sm bg-primary p-3 w-5"
+        [ngClass]="{ 'disabled-btn': addOrder.invalid }"
+        [disabled]="addOrder.invalid"
+      >
+        Add New Order
+      </button>
     </div>
   </form>
 </div>
 
 <p-dialog header="Add Sub-Order" [(visible)]="display" [modal]="true">
-  <form #addSubOrder="ngForm" (ngSubmit)="submitSubOrder()" class="flex flex-column p-2 align-items-center">
+  <form
+    #addSubOrder="ngForm"
+    (ngSubmit)="submitSubOrder()"
+    class="flex flex-column p-2 align-items-center"
+  >
     <div class="mb-2 w-full">
       <p-autoComplete
-      [(ngModel)]="newSubOrder.username"
-      name="subOrderBy"
+        [(ngModel)]="newSubOrder.username"
+        name="subOrderBy"
         [suggestions]="filteredUsers"
         (completeMethod)="search($event)"
         placeholder="Order by"
@@ -174,7 +216,7 @@
     <div class="text-center w-full mt-3">
       <button
         class="border-none border-round-sm bg-primary p-3 w-full"
-        [ngClass]="{'disabled-btn': addSubOrder.invalid}"
+        [ngClass]="{ 'disabled-btn': addSubOrder.invalid }"
         [disabled]="addSubOrder.invalid"
       >
         Add

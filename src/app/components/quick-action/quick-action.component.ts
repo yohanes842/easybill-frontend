@@ -1,6 +1,12 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  EventEmitter,
+  OnInit,
+  Output,
+} from '@angular/core';
 import { Router } from '@angular/router';
-import { MenuItem} from 'primeng/api';
+import { MenuItem } from 'primeng/api';
 import { CommonService } from 'src/app/services/common.service';
 import { Route } from '../../constant/Route';
 
@@ -10,13 +16,14 @@ import { Route } from '../../constant/Route';
   styleUrls: ['./quick-action.component.css'],
   providers: [],
 })
-export class QuickActionComponent implements OnInit {
+export class QuickActionComponent implements OnInit, AfterViewInit {
   @Output() updateUrl: EventEmitter<Route> = new EventEmitter();
   items!: MenuItem[];
-  
-  constructor(private router: Router, private commonService: CommonService) {
-    
-  }
+
+  quickActionDiv!: HTMLElement;
+  quickActionMainBtn!: HTMLElement;
+
+  constructor(private router: Router, private commonService: CommonService) {}
 
   ngOnInit(): void {
     this.items = [
@@ -36,8 +43,28 @@ export class QuickActionComponent implements OnInit {
         icon: 'pi pi-home',
         command: () => {
           this.router.navigateByUrl(Route.HomePath);
-        }
-      }
+        },
+      },
     ];
+  }
+
+  ngAfterViewInit(): void {
+    this.quickActionDiv = document.querySelector(
+      'p-speeddial>div'
+    ) as HTMLElement;
+    this.quickActionMainBtn = document.querySelector(
+      'p-speeddial>div>button'
+    ) as HTMLElement;
+    this.onHideMenu();
+  }
+
+  onHideMenu() {
+    this.quickActionMainBtn.style.visibility = 'visible';
+    this.quickActionDiv.style.visibility = 'hidden';
+  }
+
+  onShowMenu() {
+    this.quickActionDiv.style.visibility = 'visible';
+    this.quickActionMainBtn.style.visibility = 'visible';
   }
 }
