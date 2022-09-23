@@ -1,11 +1,11 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { MessageService } from 'primeng/api';
 import { Route } from 'src/app/constant/Route';
-import { OrderDetail } from 'src/app/interfaces/order-detail';
+import { Severity } from 'src/app/constant/Severity';
 import { OrderHeader } from 'src/app/interfaces/order-header';
 import { User } from 'src/app/interfaces/user';
 import { CommonService } from 'src/app/services/common.service';
+import { CustomMessageService } from 'src/app/services/custom-message.service';
 import { OrderService } from 'src/app/services/order.service';
 
 @Component({
@@ -21,16 +21,15 @@ export class OrderListComponent implements OnInit {
   orders!: OrderHeader[];
 
   selectedOrder!: OrderHeader;
-  selectedSubOrders!: OrderDetail[];
 
   constructor(
     private orderService: OrderService,
     private commonService: CommonService,
-    private messageService: MessageService
+    private messageService: CustomMessageService
   ) {}
 
   ngOnInit() {
-    this.commonService.changePageTitle(Route.HomePath);
+    this.commonService.changePageTitle(Route.HOME_PATH);
 
     this.orderService.getUserOrders(1).subscribe(
       (res: any) => {
@@ -38,12 +37,7 @@ export class OrderListComponent implements OnInit {
         this.orders = this.currentUser.order_list as OrderHeader[];
       },
       (error: HttpErrorResponse) => {
-        this.messageService.clear();
-        this.messageService.add({
-          severity: 'warn',
-          summary: 'Warning',
-          detail: 'There is an error occurred!',
-        });
+        this.messageService.showMessage(Severity.ERROR, 'Request Error');
       }
     );
   }
@@ -52,7 +46,7 @@ export class OrderListComponent implements OnInit {
     return (event.target as HTMLInputElement).value;
   }
 
-  showDetail(order: OrderHeader) {
+  onShowDetail(order: OrderHeader) {
     this.orderService.getOrder(order.id!).subscribe(
       (res: any) => {
         this.selectedOrder = res.output.data;
@@ -60,13 +54,12 @@ export class OrderListComponent implements OnInit {
         this.display = true;
       },
       (error: HttpErrorResponse) => {
-        this.messageService.clear();
-        this.messageService.add({
-          severity: 'warn',
-          summary: 'Warning',
-          detail: 'There is an error occurred!',
-        });
+        this.messageService.showMessage(Severity.ERROR, 'Request Error');
       }
     );
+  }
+
+  onHideDetail(): void {
+    this.display = false;
   }
 }

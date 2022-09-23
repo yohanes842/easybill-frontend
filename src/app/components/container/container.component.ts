@@ -7,7 +7,6 @@ import {
 } from '@angular/core';
 import { Router } from '@angular/router';
 import { CommonService } from 'src/app/services/common.service';
-import { Route } from '../../constant/Route';
 
 @Component({
   selector: 'app-container',

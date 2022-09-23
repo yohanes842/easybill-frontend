@@ -36,13 +36,13 @@ export class QuickActionComponent implements OnInit, AfterViewInit {
       {
         icon: 'pi pi-user',
         command: () => {
-          this.router.navigateByUrl(Route.BillPath);
+          this.router.navigateByUrl(Route.BILL_PATH);
         },
       },
       {
         icon: 'pi pi-home',
         command: () => {
-          this.router.navigateByUrl(Route.HomePath);
+          this.router.navigateByUrl(Route.HOME_PATH);
         },
       },
     ];

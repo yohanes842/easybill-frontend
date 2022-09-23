@@ -3,5 +3,5 @@
   position: absolute;
   top: 0.5rem;
   right: 0.5rem;
-  z-index: 100;
+  z-index: 1000;
 }

@@ -1,35 +1,34 @@
 <div class="w-full">
   <button
     pButton
-    label="Back to Home"
+    class="p-button-text p-button-sm my-3"
     type="button"
+    label="Back to Home"
     icon="pi pi-chevron-left"
     iconPos="left"
-    class="p-button-text p-button-sm my-3"
     (click)="backToHome()"
   ></button>
   <form
     #addOrder="ngForm"
-    (ngSubmit)="submitOrder()"
     class="mx-auto w-full px-5 py-2 md:w-5"
-    action=""
+    (ngSubmit)="submitOrder()"
   >
     <div class="mb-3 w-full">
       <p-autoComplete
-        [(ngModel)]="newOrder.username"
-        name="orderBy"
         [style]="{ width: '100%' }"
         [inputStyle]="{ width: '100%' }"
-        [suggestions]="filteredUsers"
-        (completeMethod)="search($event)"
-        placeholder="Order by"
+        name="orderBy"
+        [(ngModel)]="newOrder.username"
+        [suggestions]="filteredUsernames"
+        (completeMethod)="onSearch($event.query)"
         [required]="true"
+        placeholder="Order by"
       ></p-autoComplete>
     </div>
     <div class="p-inputgroup mb-3 w-full">
       <p-calendar
-        [(ngModel)]="currentTime"
         name="orderAt"
+        [(ngModel)]="currentTime"
         [showTime]="true"
         hourFormat="24"
         [showIcon]="true"
@@ -38,11 +37,11 @@
     </div>
     <div class="mb-3 w-full">
       <input
-        [(ngModel)]="newOrder.order_description"
-        name="orderDescription"
+        pInputText
         class="w-full"
         type="text"
-        pInputText
+        name="orderDescription"
+        [(ngModel)]="newOrder.order_description"
         placeholder="Order description"
         required
       />
@@ -50,41 +49,41 @@
     <div class="mb-3 flex gap-2">
       <div class="p-inputgroup w-full">
         <p-inputNumber
-          [(ngModel)]="newOrder.discount"
           name="discount"
+          [(ngModel)]="newOrder.discount"
           mode="decimal"
-          placeholder="Discount"
           [min]="0"
           [max]="100"
           [required]="true"
+          placeholder="Discount"
         ></p-inputNumber>
         <span class="p-inputgroup-addon">%</span>
       </div>
       <div class="p-inputgroup w-full">
         <p-inputNumber
-          [(ngModel)]="newOrder.upto"
           name="upto"
+          [(ngModel)]="newOrder.upto"
           mode="decimal"
-          placeholder="Up to amount"
           mode="currency"
           currency="IDR"
           locale="in-IN"
           [min]="0"
           [required]="true"
+          placeholder="Up to amount"
         ></p-inputNumber>
       </div>
     </div>
     <div class="p-inputgroup mb-3 w-full">
       <p-inputNumber
-        [(ngModel)]="newOrder.total_payment"
         name="totalPayment"
+        [(ngModel)]="newOrder.total_payment"
         mode="decimal"
-        placeholder="Total payment"
         mode="currency"
         currency="IDR"
         locale="in-IN"
         [min]="0"
         [ariaRequired]="true"
+        placeholder="Total payment"
       ></p-inputNumber>
     </div>
 
@@ -118,26 +117,26 @@
             <div class="border-left-1">
               <button
                 pButton
-                type="button"
-                icon="pi pi-pencil"
                 class="p-button-sm p-button-link"
                 [style]="{
                   'padding-block': '0.5rem',
                   'padding-inline': '1rem',
                   width: 'fit-content'
                 }"
+                type="button"
+                icon="pi pi-pencil"
                 (click)="showEditModal(i)"
               ></button>
               <button
                 pButton
-                type="button"
-                icon="pi pi-trash"
                 class="p-button-sm p-button-link p-button-danger text-red-300"
                 [style]="{
                   'padding-block': '0.5rem',
                   'padding-inline': '1rem',
                   width: 'fit-content'
                 }"
+                type="button"
+                icon="pi pi-trash"
                 (click)="deleteSubOrder(i)"
               ></button>
             </div>
@@ -158,69 +157,11 @@
   </form>
 </div>
 
-<p-dialog header="Add Sub-Order" [(visible)]="display" [modal]="true">
-  <form
-    #addSubOrder="ngForm"
-    (ngSubmit)="submitSubOrder()"
-    class="flex flex-column p-2 align-items-center"
-  >
-    <div class="mb-2 w-full">
-      <p-autoComplete
-        [(ngModel)]="newSubOrder.username"
-        name="subOrderBy"
-        [suggestions]="filteredUsers"
-        (completeMethod)="search($event)"
-        placeholder="Order by"
-        [required]="true"
-      ></p-autoComplete>
-    </div>
-    <div class="mb-2 w-full">
-      <p-inputNumber
-        [(ngModel)]="newSubOrder.price"
-        name="subOrderPrice"
-        placeholder="Price before discount"
-        mode="currency"
-        currency="IDR"
-        locale="in-IN"
-        [ariaRequired]="true"
-      ></p-inputNumber>
-    </div>
-    <div class="mb-2 w-full">
-      <input
-        [(ngModel)]="newSubOrder.order_menu_desc"
-        name="subOrderMenuDesc"
-        type="text"
-        pInputText
-        placeholder="Description"
-        required
-      />
-    </div>
-    <div class="mb-2">
-      <p-inputNumber
-        [(ngModel)]="newSubOrder.qty"
-        name="qty"
-        class="text-center"
-        [showButtons]="true"
-        buttonLayout="horizontal"
-        spinnerMode="vertical"
-        decrementButtonClass="p-button-danger"
-        incrementButtonClass="p-button-success"
-        incrementButtonIcon="pi pi-plus"
-        decrementButtonIcon="pi pi-minus"
-        [min]="1"
-        [max]="9999"
-        [size]="1"
-        [ariaRequired]="true"
-      ></p-inputNumber>
-    </div>
-    <div class="text-center w-full mt-3">
-      <button
-        class="border-none border-round-sm bg-primary p-3 w-full"
-        [ngClass]="{ 'disabled-btn': addSubOrder.invalid }"
-        [disabled]="addSubOrder.invalid"
-      >
-        Add
-      </button>
-    </div>
-  </form>
-</p-dialog>
+<dialog-add-sub-form
+  *ngIf="display"
+  [filteredUsernames]="filteredUsernames"
+  [subOrder]="newSubOrder"
+  (onSearchKeyChange)="onSearch($event)"
+  (onSubmit)="onSubmitSubOrder($event)"
+  (onClose)="onHideDetail()"
+></dialog-add-sub-form>

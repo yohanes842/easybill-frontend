@@ -8,11 +8,11 @@ export class CommonService {
   title$ = this.title.asObservable();
 
   changePageTitle(path: string) {
-    if(path == Route.HomePath){
+    if (path == Route.HOME_PATH) {
       this.title.next('Order History');
-    }else if(path == Route.BillPath){
+    } else if (path == Route.BILL_PATH) {
       this.title.next('Your Bill');
-    }else {
+    } else {
       this.title.next('Add New Order');
     }
   }

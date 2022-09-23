@@ -19,7 +19,7 @@ export class BillComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.commonService.changePageTitle(Route.BillPath);
+    this.commonService.changePageTitle(Route.BILL_PATH);
 
     this.orderService.getProductsSmall().then((data) => (this.orders = data));
   }

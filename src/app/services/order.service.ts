@@ -12,7 +12,7 @@ export class OrderService {
   constructor(private http: HttpClient) {}
 
   public getUserOrders(userId: number): Observable<User> {
-    return this.http.get<any>(`${env.url}/api/users/${userId}`);
+    return this.http.get<any>(`${env.url}/api/users/${userId}/relevant-orders`);
   }
 
   public addOrder(orderHeader: OrderHeader): Observable<OrderHeader> {

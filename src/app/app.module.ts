@@ -35,6 +35,9 @@ import { DatePipe } from '@angular/common';
 import { OrderService } from './services/order.service';
 import { CommonService } from './services/common.service';
 import { MessageService } from 'primeng/api';
+import { OrderDetailsComponent } from './components/order-list/order-details/order-details.component';
+import { CustomMessageService } from './services/custom-message.service';
+import { AddSubFormComponent } from './components/add-form/add-sub-form/add-sub-form.component';
 
 @NgModule({
   declarations: [
@@ -45,6 +48,8 @@ import { MessageService } from 'primeng/api';
     BillComponent,
     ContainerComponent,
     AddFormComponent,
+    OrderDetailsComponent,
+    AddSubFormComponent,
   ],
   imports: [
     BrowserModule,
@@ -74,6 +79,7 @@ import { MessageService } from 'primeng/api';
     CommonService,
     MessageService,
     DatePipe,
+    CustomMessageService,
   ],
   bootstrap: [AppComponent],
 })

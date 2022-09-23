@@ -9,7 +9,8 @@ import { DatePipe } from '@angular/common';
 import { Router } from '@angular/router';
 import { Route } from 'src/app/constant/Route';
 import { CommonService } from 'src/app/services/common.service';
-import { MessageService } from 'primeng/api';
+import { CustomMessageService } from 'src/app/services/custom-message.service';
+import { Severity } from 'src/app/constant/Severity';
 
 @Component({
   selector: 'app-add-form',
@@ -21,7 +22,7 @@ export class AddFormComponent implements OnInit {
   display: boolean = false;
 
   users!: User[];
-  filteredUsers!: string[];
+  filteredUsernames!: string[];
 
   newOrder: OrderHeader = new OrderHeader();
   subOrders: OrderDetail[] = [];
@@ -34,11 +35,11 @@ export class AddFormComponent implements OnInit {
     private datePipe: DatePipe,
     private router: Router,
     private commonService: CommonService,
-    private messageService: MessageService
+    private messageService: CustomMessageService
   ) {}
 
   ngOnInit(): void {
-    this.commonService.changePageTitle(Route.AddOrderPath);
+    this.commonService.changePageTitle(Route.ADD_ORDER_PATH);
 
     this.currentTime = new Date();
 
@@ -47,12 +48,7 @@ export class AddFormComponent implements OnInit {
         this.users = response.output.data;
       },
       (error: HttpErrorResponse) => {
-        this.messageService.clear();
-        this.messageService.add({
-          severity: 'warn',
-          summary: 'Warning',
-          detail: 'There is an error occurred!',
-        });
+        this.messageService.showMessage(Severity.ERROR, 'Request Error');
       }
     );
   }
@@ -62,7 +58,6 @@ export class AddFormComponent implements OnInit {
   }
 
   showEditModal(index: number) {
-    console.log(index);
     this.newSubOrder = this.subOrders[index];
     this.display = true;
   }
@@ -71,9 +66,9 @@ export class AddFormComponent implements OnInit {
     this.subOrders.splice(index, 1);
   }
 
-  search(event: any) {
-    this.filteredUsers = this.users
-      .filter((user) => user.username.includes(event.query))
+  onSearch(keyword: string) {
+    this.filteredUsernames = this.users
+      .filter((user) => user.username.includes(keyword))
       .map((user) => user.username);
   }
 
@@ -83,12 +78,11 @@ export class AddFormComponent implements OnInit {
         ?.id ?? 0;
     //validate if user not exist in the list
     if (this.newSubOrder.user_id === 0) {
-      this.messageService.clear();
-      this.messageService.add({
-        severity: 'error',
-        summary: 'Error',
-        detail: 'User not found!',
-      });
+      this.messageService.showMessage(
+        Severity.ERROR,
+        'Input Error',
+        'User not found!'
+      );
       return;
     }
 
@@ -97,12 +91,11 @@ export class AddFormComponent implements OnInit {
 
     this.display = false;
 
-    this.messageService.clear();
-    this.messageService.add({
-      severity: 'success',
-      summary: 'Success',
-      detail: 'Successfully added sub-order!',
-    });
+    this.messageService.showMessage(
+      Severity.SUCCESS,
+      'Successfully',
+      'Added new sub-order'
+    );
   }
 
   submitOrder() {
@@ -111,22 +104,20 @@ export class AddFormComponent implements OnInit {
     )?.id;
     //validate if user not exist in the list
     if (this.newOrder.buyer_id === 0) {
-      this.messageService.clear();
-      this.messageService.add({
-        severity: 'error',
-        summary: 'Error',
-        detail: 'User not found!',
-      });
+      this.messageService.showMessage(
+        Severity.ERROR,
+        'Input Error',
+        'User not found!'
+      );
       return;
     }
 
     if (this.subOrders.length < 1) {
-      this.messageService.clear();
-      this.messageService.add({
-        severity: 'error',
-        summary: 'Error',
-        detail: 'Sub-order can not be empty!',
-      });
+      this.messageService.showMessage(
+        Severity.ERROR,
+        'Input Error',
+        'Sub-order can not be empty'
+      );
     } else {
       //prepare object to be passed
       this.newOrder.order_list = this.subOrders;
@@ -142,17 +133,26 @@ export class AddFormComponent implements OnInit {
       });
 
       // Redirect to home page
-      this.messageService.clear();
-      this.messageService.add({
-        severity: 'success',
-        summary: 'Success',
-        detail: 'Successfully added order!',
-      });
-      this.router.navigateByUrl(Route.HomePath);
+      this.messageService.showMessage(
+        Severity.SUCCESS,
+        'Successfully',
+        'Added new order'
+      );
+      this.router.navigateByUrl(Route.HOME_PATH);
     }
   }
 
-  backToHome() {
-    this.router.navigateByUrl(Route.HomePath);
+  onSubmitSubOrder(event: Event): void {
+    console.log(this.newSubOrder);
+    this.display = false;
+    this.submitSubOrder();
+  }
+
+  onHideDetail(): void {
+    this.display = false;
+  }
+
+  backToHome(): void {
+    this.router.navigateByUrl(Route.HOME_PATH);
   }
 }

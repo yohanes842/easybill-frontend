@@ -1,7 +1,5 @@
 export enum Route {
-  HomePath = '/home',
-  AddOrderPath = '/home/add',
-  ProfilePath = '/profile',
-  BillPath = '/user',
-  LogoutPath = '/logout',
+  HOME_PATH = '/home',
+  ADD_ORDER_PATH = '/home/add',
+  BILL_PATH = '/user',
 }

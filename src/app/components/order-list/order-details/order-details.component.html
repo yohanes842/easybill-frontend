@@ -1,0 +1,53 @@
+<p-dialog
+  class="flex flex-column"
+  [style]="{
+    width: 'calc(100vw - 5rem)',
+    'max-width': '27rem',
+    'overflow-x': 'hidden'
+  }"
+  header="Detail Order"
+  [modal]="true"
+  [(visible)]="display"
+  (onHide)="onHideDetail()"
+>
+  <div class="mb-2 border-bottom-1">
+    <h5>Order By:</h5>
+    <p>{{ selectedOrder.user.username }}</p>
+  </div>
+  <div class="mb-2 border-bottom-1">
+    <h5>Order Description:</h5>
+    <p>{{ selectedOrder.order_description }}</p>
+  </div>
+  <div class="mb-2 border-bottom-1">
+    <h5>Total Payment:</h5>
+    <p>{{ selectedOrder.total_payment | currency: "Rp ":"symbol":"3.2" }}</p>
+  </div>
+  <div class="mb-2 border-bottom-1">
+    <h5>Discount:</h5>
+    <p>{{ selectedOrder.discount }}%</p>
+  </div>
+  <div class="mb-2 border-bottom-1">
+    <h5>Up to amount:</h5>
+    <p>{{ selectedOrder.upto | currency: "Rp ":"symbol":"3.2" }}</p>
+  </div>
+  <div class="mb-2 border-bottom-1">
+    <h1 class="p-component text-lg font-bold">Sub-Order List</h1>
+    <div
+      *ngFor="let subOrder of selectedOrder.order_list"
+      class="order-list-item flex align-items-center border-top-1 p-2"
+    >
+      <div class="p-3 text-pink-300 font-bold">{{ subOrder.qty }}x</div>
+      <div class="flex gap-5 justify-content-between align-items-center w-full">
+        <div>
+          <div>{{ subOrder.order_menu_desc }}</div>
+          <div class="text-xs">By {{ subOrder.user.username }}</div>
+        </div>
+        <div>
+          <div>
+            {{ subOrder.price | currency: "Rp " }}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</p-dialog>
