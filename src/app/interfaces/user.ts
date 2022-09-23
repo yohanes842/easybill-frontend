@@ -1,4 +1,4 @@
-import { OrderHeader } from "./order-header";
+import { OrderHeader } from './order-header';
 
 export class User {
   id?: number;

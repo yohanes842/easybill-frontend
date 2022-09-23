@@ -13,7 +13,10 @@ import { OrderService } from '../order-list/order-list.service';
 export class BillComponent implements OnInit {
   orders!: OrderHeader[];
 
-  constructor(private orderService: OrderService, private commonService: CommonService) {}
+  constructor(
+    private orderService: OrderService,
+    private commonService: CommonService
+  ) {}
 
   ngOnInit() {
     this.commonService.changePageTitle(Route.BillPath);

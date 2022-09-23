@@ -27,8 +27,8 @@ import { InputNumberModule } from 'primeng/inputnumber';
 import { AddFormComponent } from './components/add-form/add-form.component';
 import { CalendarModule } from 'primeng/calendar';
 import { AutoCompleteModule } from 'primeng/autocomplete';
-import {MessagesModule} from 'primeng/messages';
-import {MessageModule} from 'primeng/message';
+import { MessagesModule } from 'primeng/messages';
+import { MessageModule } from 'primeng/message';
 
 import { UserService } from './services/user.service';
 import { DatePipe } from '@angular/common';
@@ -66,9 +66,15 @@ import { MessageService } from 'primeng/api';
     CalendarModule,
     AutoCompleteModule,
     MessageModule,
-    MessagesModule
+    MessagesModule,
   ],
-  providers: [UserService, OrderService, CommonService, MessageService, DatePipe],
+  providers: [
+    UserService,
+    OrderService,
+    CommonService,
+    MessageService,
+    DatePipe,
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

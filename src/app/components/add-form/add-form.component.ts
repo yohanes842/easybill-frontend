@@ -28,11 +28,18 @@ export class AddFormComponent implements OnInit {
   newSubOrder: OrderDetail = new OrderDetail();
   currentTime!: Date;
 
-  constructor(private userService: UserService, private orderService: OrderService, private datePipe: DatePipe, private router: Router, private commonService: CommonService, private messageService: MessageService) {}
-  
+  constructor(
+    private userService: UserService,
+    private orderService: OrderService,
+    private datePipe: DatePipe,
+    private router: Router,
+    private commonService: CommonService,
+    private messageService: MessageService
+  ) {}
+
   ngOnInit(): void {
     this.commonService.changePageTitle(Route.AddOrderPath);
-    
+
     this.currentTime = new Date();
 
     this.userService.getUsers().subscribe(
@@ -41,7 +48,11 @@ export class AddFormComponent implements OnInit {
       },
       (error: HttpErrorResponse) => {
         this.messageService.clear();
-        this.messageService.add({severity:'warn', summary:'Warning', detail:'There is an error occurred!'});
+        this.messageService.add({
+          severity: 'warn',
+          summary: 'Warning',
+          detail: 'There is an error occurred!',
+        });
       }
     );
   }
@@ -50,13 +61,13 @@ export class AddFormComponent implements OnInit {
     this.display = true;
   }
 
-  showEditModal(index: number){
+  showEditModal(index: number) {
     console.log(index);
     this.newSubOrder = this.subOrders[index];
     this.display = true;
   }
 
-  deleteSubOrder(index: number){
+  deleteSubOrder(index: number) {
     this.subOrders.splice(index, 1);
   }
 
@@ -67,11 +78,17 @@ export class AddFormComponent implements OnInit {
   }
 
   submitSubOrder() {
-    this.newSubOrder.user_id = this.users.find((u: User) => u.username === this.newSubOrder.username)?.id ?? 0;
+    this.newSubOrder.user_id =
+      this.users.find((u: User) => u.username === this.newSubOrder.username)
+        ?.id ?? 0;
     //validate if user not exist in the list
-    if(this.newSubOrder.user_id === 0){
+    if (this.newSubOrder.user_id === 0) {
       this.messageService.clear();
-      this.messageService.add({severity:'error', summary:'Error', detail:'User not found!'});
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Error',
+        detail: 'User not found!',
+      });
       return;
     }
 
@@ -81,26 +98,43 @@ export class AddFormComponent implements OnInit {
     this.display = false;
 
     this.messageService.clear();
-    this.messageService.add({severity:'success', summary:'Success', detail:'Successfully added sub-order!'});
+    this.messageService.add({
+      severity: 'success',
+      summary: 'Success',
+      detail: 'Successfully added sub-order!',
+    });
   }
 
-  submitOrder(){
-    this.newOrder.buyer_id = this.users.find((u: User) => u.username === this.newOrder.username)?.id;
+  submitOrder() {
+    this.newOrder.buyer_id = this.users.find(
+      (u: User) => u.username === this.newOrder.username
+    )?.id;
     //validate if user not exist in the list
-    if(this.newOrder.buyer_id === 0){
+    if (this.newOrder.buyer_id === 0) {
       this.messageService.clear();
-      this.messageService.add({severity:'error', summary:'Error', detail:'User not found!'});
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Error',
+        detail: 'User not found!',
+      });
       return;
     }
 
-    if(this.subOrders.length < 1) {
+    if (this.subOrders.length < 1) {
       this.messageService.clear();
-      this.messageService.add({severity:'error', summary:'Error', detail:'Sub-order can not be empty!'});
-    }else{
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Error',
+        detail: 'Sub-order can not be empty!',
+      });
+    } else {
       //prepare object to be passed
       this.newOrder.order_list = this.subOrders;
       this.newOrder.discount /= 100;
-      this.newOrder.order_at =  this.datePipe.transform(this.currentTime, 'yyyy-MM-dd hh:mm:ss')!;
+      this.newOrder.order_at = this.datePipe.transform(
+        this.currentTime,
+        'yyyy-MM-dd hh:mm:ss'
+      )!;
 
       // Hit add order service
       this.orderService.addOrder(this.newOrder).subscribe((res: any) => {
@@ -109,12 +143,16 @@ export class AddFormComponent implements OnInit {
 
       // Redirect to home page
       this.messageService.clear();
-      this.messageService.add({severity:'success', summary:'Success', detail:'Successfully added order!'});
+      this.messageService.add({
+        severity: 'success',
+        summary: 'Success',
+        detail: 'Successfully added order!',
+      });
       this.router.navigateByUrl(Route.HomePath);
     }
   }
 
-  backToHome(){
+  backToHome() {
     this.router.navigateByUrl(Route.HomePath);
   }
 }

@@ -9,9 +9,9 @@ import { PrimeNGConfig } from 'primeng/api';
 export class AppComponent implements OnInit {
   title = 'easybill-frontend';
 
-constructor(private primengConfig: PrimeNGConfig){}
+  constructor(private primengConfig: PrimeNGConfig) {}
 
-  ngOnInit(){
+  ngOnInit() {
     this.primengConfig.ripple = true;
   }
 }

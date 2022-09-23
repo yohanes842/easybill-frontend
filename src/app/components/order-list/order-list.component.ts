@@ -6,7 +6,7 @@ import { OrderDetail } from 'src/app/interfaces/order-detail';
 import { OrderHeader } from 'src/app/interfaces/order-header';
 import { User } from 'src/app/interfaces/user';
 import { CommonService } from 'src/app/services/common.service';
-import { OrderService } from 'src/app/services/order.service'; 
+import { OrderService } from 'src/app/services/order.service';
 
 @Component({
   selector: 'app-order-list',
@@ -23,34 +23,50 @@ export class OrderListComponent implements OnInit {
   selectedOrder!: OrderHeader;
   selectedSubOrders!: OrderDetail[];
 
-  constructor(private orderService: OrderService, private commonService: CommonService, private messageService: MessageService) {}
+  constructor(
+    private orderService: OrderService,
+    private commonService: CommonService,
+    private messageService: MessageService
+  ) {}
 
   ngOnInit() {
     this.commonService.changePageTitle(Route.HomePath);
 
-    this.orderService.getUserOrders(1).subscribe((res: any) => {
-      this.currentUser = res.output.data;
-      this.orders = (this.currentUser.order_list as OrderHeader[]);
-    },
-    (error: HttpErrorResponse) => {
-      this.messageService.clear();
-      this.messageService.add({severity:'warn', summary:'Warning', detail:'There is an error occurred!'});
-    });
+    this.orderService.getUserOrders(1).subscribe(
+      (res: any) => {
+        this.currentUser = res.output.data;
+        this.orders = this.currentUser.order_list as OrderHeader[];
+      },
+      (error: HttpErrorResponse) => {
+        this.messageService.clear();
+        this.messageService.add({
+          severity: 'warn',
+          summary: 'Warning',
+          detail: 'There is an error occurred!',
+        });
+      }
+    );
   }
-  
+
   getValue(event: Event): string {
     return (event.target as HTMLInputElement).value;
   }
 
-  showDetail(order: OrderHeader){
-    this.orderService.getOrder(order.id!).subscribe((res: any) => {
-      this.selectedOrder = res.output.data;
-      this.selectedOrder.discount *= 100;
-      this.display = true;
-    },
-    (error: HttpErrorResponse) => {
-      this.messageService.clear();
-      this.messageService.add({severity:'warn', summary:'Warning', detail:'There is an error occurred!'});
-    });
+  showDetail(order: OrderHeader) {
+    this.orderService.getOrder(order.id!).subscribe(
+      (res: any) => {
+        this.selectedOrder = res.output.data;
+        this.selectedOrder.discount *= 100;
+        this.display = true;
+      },
+      (error: HttpErrorResponse) => {
+        this.messageService.clear();
+        this.messageService.add({
+          severity: 'warn',
+          summary: 'Warning',
+          detail: 'There is an error occurred!',
+        });
+      }
+    );
   }
 }
