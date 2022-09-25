@@ -11,6 +11,7 @@ import { Route } from 'src/app/constant/Route';
 import { CommonService } from 'src/app/services/common.service';
 import { CustomMessageService } from 'src/app/services/custom-message.service';
 import { Severity } from 'src/app/constant/Severity';
+import { ConfirmationService } from 'primeng/api';
 
 @Component({
   selector: 'app-add-form',
@@ -20,6 +21,7 @@ import { Severity } from 'src/app/constant/Severity';
 })
 export class AddFormComponent implements OnInit {
   display: boolean = false;
+  modalType!: string;
 
   users!: User[];
   filteredUsernames!: string[];
@@ -35,7 +37,8 @@ export class AddFormComponent implements OnInit {
     private datePipe: DatePipe,
     private router: Router,
     private commonService: CommonService,
-    private messageService: CustomMessageService
+    private messageService: CustomMessageService,
+    private confirmationService: ConfirmationService
   ) {}
 
   ngOnInit(): void {
@@ -54,16 +57,24 @@ export class AddFormComponent implements OnInit {
   }
 
   showAddModal() {
+    this.modalType = 'add';
+    this.newSubOrder = new OrderDetail();
     this.display = true;
   }
 
   showEditModal(index: number) {
+    this.modalType = 'edit';
     this.newSubOrder = this.subOrders[index];
     this.display = true;
   }
 
   deleteSubOrder(index: number) {
     this.subOrders.splice(index, 1);
+    this.messageService.showMessage(
+      Severity.SUCCESS,
+      'Successfully',
+      'deleted sub-order'
+    );
   }
 
   onSearch(keyword: string) {
@@ -86,7 +97,7 @@ export class AddFormComponent implements OnInit {
       return;
     }
 
-    this.subOrders.push(this.newSubOrder);
+    if (this.modalType === 'add') this.subOrders.push(this.newSubOrder);
     this.newSubOrder = new OrderDetail();
 
     this.display = false;
@@ -94,7 +105,7 @@ export class AddFormComponent implements OnInit {
     this.messageService.showMessage(
       Severity.SUCCESS,
       'Successfully',
-      'Added new sub-order'
+      this.modalType === 'add' ? 'added new sub-order' : 'edit sub-order'
     );
   }
 
@@ -143,8 +154,6 @@ export class AddFormComponent implements OnInit {
   }
 
   onSubmitSubOrder(event: Event): void {
-    console.log(this.newSubOrder);
-    this.display = false;
     this.submitSubOrder();
   }
 
@@ -154,5 +163,15 @@ export class AddFormComponent implements OnInit {
 
   backToHome(): void {
     this.router.navigateByUrl(Route.HOME_PATH);
+  }
+
+  showDeleteConfirmation(index: number): void {
+    this.confirmationService.confirm({
+      message: 'Are you sure that you want to delete this sub-order?',
+      accept: () => {
+        //Actual logic to perform a confirmation
+        this.deleteSubOrder(index);
+      },
+    });
   }
 }

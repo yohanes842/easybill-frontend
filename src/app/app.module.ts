@@ -29,12 +29,14 @@ import { CalendarModule } from 'primeng/calendar';
 import { AutoCompleteModule } from 'primeng/autocomplete';
 import { MessagesModule } from 'primeng/messages';
 import { MessageModule } from 'primeng/message';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
 
 import { UserService } from './services/user.service';
 import { DatePipe } from '@angular/common';
 import { OrderService } from './services/order.service';
 import { CommonService } from './services/common.service';
 import { MessageService } from 'primeng/api';
+import { ConfirmationService } from 'primeng/api';
 import { OrderDetailsComponent } from './components/order-list/order-details/order-details.component';
 import { CustomMessageService } from './services/custom-message.service';
 import { AddSubFormComponent } from './components/add-form/add-sub-form/add-sub-form.component';
@@ -72,6 +74,7 @@ import { AddSubFormComponent } from './components/add-form/add-sub-form/add-sub-
     AutoCompleteModule,
     MessageModule,
     MessagesModule,
+    ConfirmDialogModule,
   ],
   providers: [
     UserService,
@@ -80,6 +83,7 @@ import { AddSubFormComponent } from './components/add-form/add-sub-form/add-sub-
     MessageService,
     DatePipe,
     CustomMessageService,
+    ConfirmationService,
   ],
   bootstrap: [AppComponent],
 })

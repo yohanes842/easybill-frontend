@@ -1,5 +1,5 @@
 <p-dialog
-  header="Add Sub-Order"
+  [header]="headerTitle"
   [(visible)]="display"
   [modal]="true"
   (onHide)="hideDialog()"
@@ -64,7 +64,7 @@
         [ngClass]="{ 'disabled-btn': addSubOrder.invalid }"
         [disabled]="addSubOrder.invalid"
       >
-        Add
+        Save
       </button>
     </div>
   </form>

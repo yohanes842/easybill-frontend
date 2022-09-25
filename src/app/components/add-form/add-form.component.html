@@ -137,7 +137,7 @@
                 }"
                 type="button"
                 icon="pi pi-trash"
-                (click)="deleteSubOrder(i)"
+                (click)="showDeleteConfirmation(i)"
               ></button>
             </div>
           </div>
@@ -161,7 +161,17 @@
   *ngIf="display"
   [filteredUsernames]="filteredUsernames"
   [subOrder]="newSubOrder"
+  [modalType]="modalType"
   (onSearchKeyChange)="onSearch($event)"
   (onSubmit)="onSubmitSubOrder($event)"
   (onClose)="onHideDetail()"
 ></dialog-add-sub-form>
+
+<p-confirmDialog
+  header="Delete Confirmation"
+  icon="pi pi-exclamation-triangle"
+  acceptButtonStyleClass="p-button-success"
+  rejectButtonStyleClass="p-button-danger"
+  acceptIcon=""
+  rejectIcon=""
+></p-confirmDialog>
