@@ -35,9 +35,10 @@ export class OrderListComponent implements OnInit {
       (res: any) => {
         this.currentUser = res.output.data;
         this.orders = this.currentUser.order_list as OrderHeader[];
+        console.log(this.orders);
       },
       (error: HttpErrorResponse) => {
-        this.messageService.showMessage(Severity.ERROR, 'Request Error');
+        this.messageService.showMessage(Severity.ERROR, 'REQUEST ERROR');
       }
     );
   }
@@ -54,7 +55,7 @@ export class OrderListComponent implements OnInit {
         this.display = true;
       },
       (error: HttpErrorResponse) => {
-        this.messageService.showMessage(Severity.ERROR, 'Request Error');
+        this.messageService.showMessage(Severity.ERROR, 'REQUEST ERROR');
       }
     );
   }

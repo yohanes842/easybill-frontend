@@ -23,49 +23,85 @@
             class="w-full"
           />
         </span>
-        <p-button icon="pi pi-plus" routerLink="add"></p-button>
+        <button
+          pButton
+          class="p-button"
+          icon="pi pi-plus"
+          routerLink="add"
+        ></button>
       </div>
     </ng-template>
     <ng-template let-order pTemplate="listItem" class="flex flex-column gap-2">
-      <div class="p-col-12 w-full py-2">
-        <div class="order-list-item">
-          <h5 class="p-0 m-0 mt-1">
-            {{ order.order_at | date: "fullDate" }}
-          </h5>
-          <h5 class="p-0 m-0 mb-2">
-            {{ order.order_at | date: "shortTime" }}
-          </h5>
-          <div class="order-list-detail flex">
-            <div class="pr-5">
-              <div>Buyer</div>
-              <div>Description</div>
-              <div>Total</div>
-              <div>Participants</div>
+      <div class="p-col-12 w-full px-5">
+        <div>
+          <div class="flex justify-content-between align-items-center">
+            <div class="text-gray-300">
+              <h5 class="p-0 m-0 mt-1">
+                {{ order.order_at | date: "fullDate" }}
+              </h5>
+              <h5 class="p-0 m-0 mb-2">
+                {{ order.order_at | date: "shortTime" }}
+              </h5>
             </div>
+            <p class="bg-primary p-1 w-3rem border-round text-center text-sm">
+              Paid
+            </p>
+          </div>
+
+          <div class="flex justify-content-between">
             <div>
-              <div>:</div>
-              <div>:</div>
-              <div>:</div>
-              <div>:</div>
+              <p class="m-0">{{ order.order_description }}</p>
+              <p class="m-0 text-sm">
+                by
+                <span>
+                  <p-avatar
+                    styleClass="p-mr-2 "
+                    [style]="{
+                      'background-color': 'var(--pink-200)',
+                      color: '#ffffff',
+                      transform: 'scale(70%)'
+                    }"
+                    shape="circle"
+                    >{{
+                      order.user.username | uppercase | slice: 0:1
+                    }}</p-avatar
+                  >
+                </span>
+                <span>{{ order.user.username | uppercase }}</span>
+              </p>
             </div>
-            <div class="pl-4">
-              <div>{{ order.user.username }}</div>
-              <div>{{ order.order_description }}</div>
-              <div>
-                {{ order.total_payment | currency: "Rp ":"symbol":"3.2" }}
-              </div>
-              <div></div>
+            <div class="text-right">
+              <p class="m-0 text-sm text-gray-300">Total price</p>
+              <p class="m-0">
+                {{ order.total_payment | currency: "Rp. ":"symbol":"3.0" }}
+              </p>
             </div>
           </div>
-          <div>
-            <button
-              pButton
-              class="p-button-sm"
-              type="button"
-              label="Tap for details"
-              (click)="onShowDetail(order)"
-            ></button>
-          </div>
+        </div>
+        <div class="flex justify-content-between w-full">
+          <!-- <p-avatarGroup>
+            <div class="flex gap-1">
+              <p-avatar
+                *ngFor="let subOrder of order.order_list; index as i"
+                styleClass="p-mr-2"
+                [style]="{
+                  'background-color': 'var(--pink-200)',
+                  color: '#ffffff'
+                }"
+                label="lala"
+                shape="circle"
+              ></p-avatar>
+            </div>
+          </p-avatarGroup> -->
+        </div>
+        <div class="text-right relative bottom-0 right-0">
+          <button
+            pButton
+            class="p-button-sm p-button-link p-0 my-3"
+            type="button"
+            label="Tap for details"
+            (click)="onShowDetail(order)"
+          ></button>
         </div>
       </div>
     </ng-template>
