@@ -169,8 +169,16 @@ export class AddFormComponent implements OnInit {
     this.confirmationService.confirm({
       message: 'Are you sure that you want to delete this sub-order?',
       accept: () => {
-        //Actual logic to perform a confirmation
         this.deleteSubOrder(index);
+      },
+    });
+  }
+
+  showSaveOrderConfirmation(): void {
+    this.confirmationService.confirm({
+      message: 'Are you sure that you want to save this order?',
+      accept: () => {
+        this.submitOrder();
       },
     });
   }

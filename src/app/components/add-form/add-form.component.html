@@ -11,7 +11,7 @@
   <form
     #addOrder="ngForm"
     class="mx-auto w-full px-5 py-2 md:w-5"
-    (ngSubmit)="submitOrder()"
+    (ngSubmit)="showSaveOrderConfirmation()"
   >
     <div class="mb-3 w-full">
       <p-autoComplete
@@ -95,7 +95,13 @@
         <h1 class="p-component text-lg text-pink-200 font-bold">
           Sub-Order List
         </h1>
-        <p-button icon="pi pi-plus" (click)="showAddModal()"></p-button>
+        <button
+          pButton
+          type="button"
+          class="p-button"
+          icon="pi pi-plus"
+          (click)="showAddModal()"
+        ></button>
       </div>
       <div
         *ngFor="let subOrder of subOrders; let i = index"
@@ -166,12 +172,3 @@
   (onSubmit)="onSubmitSubOrder($event)"
   (onClose)="onHideDetail()"
 ></dialog-add-sub-form>
-
-<p-confirmDialog
-  header="Delete Confirmation"
-  icon="pi pi-exclamation-triangle"
-  acceptButtonStyleClass="p-button-success"
-  rejectButtonStyleClass="p-button-danger"
-  acceptIcon=""
-  rejectIcon=""
-></p-confirmDialog>
