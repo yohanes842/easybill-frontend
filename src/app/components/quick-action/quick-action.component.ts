@@ -7,6 +7,7 @@ import {
 } from '@angular/core';
 import { Router } from '@angular/router';
 import { MenuItem } from 'primeng/api';
+import { AuthService } from 'src/app/services/auth.service';
 import { CommonService } from 'src/app/services/common.service';
 import { Route } from '../../constant/Route';
 
@@ -23,14 +24,18 @@ export class QuickActionComponent implements OnInit, AfterViewInit {
   quickActionDiv!: HTMLElement;
   quickActionMainBtn!: HTMLElement;
 
-  constructor(private router: Router, private commonService: CommonService) {}
+  constructor(
+    private router: Router,
+    private commonService: CommonService,
+    private authService: AuthService
+  ) {}
 
   ngOnInit(): void {
     this.items = [
       {
         icon: 'pi pi-sign-out',
         command: () => {
-          alert('sign out');
+          this.authService.logout();
         },
       },
       {
