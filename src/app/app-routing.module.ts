@@ -4,8 +4,10 @@ import { ContainerComponent } from './components/container/container.component';
 import { BillComponent } from './components/bill/bill.component';
 import { OrderListComponent } from './components/order-list/order-list.component';
 import { AddFormComponent } from './components/add-form/add-form.component';
+import { AuthComponent } from './components/auth/auth.component';
 
 const routes: Routes = [
+  { path: 'login', component: AuthComponent },
   {
     path: '',
     redirectTo: 'home',
@@ -30,7 +32,6 @@ const routes: Routes = [
       },
     ],
   },
-  // { path: 'login', component: LoginComponent, canActivate: [LoginPageGuard] },
   // { path: '**',    component: NotFoundComponent}
 ];
 

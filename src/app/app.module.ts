@@ -7,15 +7,18 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { QuickActionComponent } from './components/quick-action/quick-action.component';
 import { OrderListComponent } from './components/order-list/order-list.component';
+import { HeaderComponent } from './components/header/header.component';
+import { BillComponent } from './components/bill/bill.component';
+import { ContainerComponent } from './components/container/container.component';
+import { OrderDetailsComponent } from './components/order-list/order-details/order-details.component';
+import { AddSubFormComponent } from './components/add-form/add-sub-form/add-sub-form.component';
+import { AuthComponent } from './components/auth/auth.component';
 
 import { SpeedDialModule } from 'primeng/speeddial';
 import { TableModule } from 'primeng/table';
 import { ButtonModule } from 'primeng/button';
 import { RatingModule } from 'primeng/rating';
-import { HttpClientModule } from '@angular/common/http';
-import { HeaderComponent } from './components/header/header.component';
-import { BillComponent } from './components/bill/bill.component';
-import { ContainerComponent } from './components/container/container.component';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
 import { DataViewModule } from 'primeng/dataview';
 import { PanelModule } from 'primeng/panel';
@@ -30,16 +33,20 @@ import { AutoCompleteModule } from 'primeng/autocomplete';
 import { MessagesModule } from 'primeng/messages';
 import { MessageModule } from 'primeng/message';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { FieldsetModule } from 'primeng/fieldset';
+import { AvatarModule } from 'primeng/avatar';
+import { AvatarGroupModule } from 'primeng/avatargroup';
+import { PasswordModule } from 'primeng/password';
 
 import { UserService } from './services/user.service';
-import { DatePipe } from '@angular/common';
 import { OrderService } from './services/order.service';
 import { CommonService } from './services/common.service';
 import { MessageService } from 'primeng/api';
 import { ConfirmationService } from 'primeng/api';
-import { OrderDetailsComponent } from './components/order-list/order-details/order-details.component';
 import { CustomMessageService } from './services/custom-message.service';
-import { AddSubFormComponent } from './components/add-form/add-sub-form/add-sub-form.component';
+import { DatePipe } from '@angular/common';
+import { AuthApiInterceptor } from './services/auth-http.interceptor';
+import { AuthService } from './services/auth.service';
 
 @NgModule({
   declarations: [
@@ -52,6 +59,7 @@ import { AddSubFormComponent } from './components/add-form/add-sub-form/add-sub-
     AddFormComponent,
     OrderDetailsComponent,
     AddSubFormComponent,
+    AuthComponent,
   ],
   imports: [
     BrowserModule,
@@ -75,15 +83,25 @@ import { AddSubFormComponent } from './components/add-form/add-sub-form/add-sub-
     MessageModule,
     MessagesModule,
     ConfirmDialogModule,
+    FieldsetModule,
+    AvatarModule,
+    AvatarGroupModule,
+    PasswordModule,
   ],
   providers: [
     UserService,
     OrderService,
+    AuthService,
     CommonService,
     MessageService,
     DatePipe,
     CustomMessageService,
     ConfirmationService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthApiInterceptor,
+      multi: true,
+    },
   ],
   bootstrap: [AppComponent],
 })
