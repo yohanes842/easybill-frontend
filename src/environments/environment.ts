@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  url: 'http://192.168.100.93:9090',
+  url: 'http://192.168.100.93:8080',
   // url: 'http://p090whp547094.intra.bca.co.id:9090',
 };
 

@@ -5,9 +5,11 @@ import { BillComponent } from './components/bill/bill.component';
 import { OrderListComponent } from './components/order-list/order-list.component';
 import { AddFormComponent } from './components/add-form/add-form.component';
 import { AuthComponent } from './components/auth/auth.component';
+import { AuthGuard } from './services/auth.guard';
+import { LoginGuard } from './services/login.guard';
 
 const routes: Routes = [
-  { path: 'login', component: AuthComponent },
+  { path: 'login', component: AuthComponent, canActivate: [LoginGuard] },
   {
     path: '',
     redirectTo: 'home',
@@ -16,7 +18,7 @@ const routes: Routes = [
   {
     path: '',
     component: ContainerComponent,
-    // canActivate: [AuthGuard],
+    canActivate: [AuthGuard],
     children: [
       {
         path: 'home',

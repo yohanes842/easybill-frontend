@@ -20,4 +20,8 @@ export class AuthService {
     localStorage.clear();
     this.router.navigateByUrl(Route.LOGIN_PATH);
   }
+
+  isAuthenticated(): boolean {
+    return localStorage.getItem('currentUser') != null ? true : false;
+  }
 }
