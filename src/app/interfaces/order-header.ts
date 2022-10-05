@@ -11,5 +11,8 @@ export class OrderHeader {
   user!: User;
   upto!: number;
   discount!: number;
+  total_order_amount!: number;
+  other_fee!: number;
+  discount_amount!: number;
   order_list!: OrderDetail[];
 }

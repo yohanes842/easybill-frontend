@@ -1,7 +1,10 @@
 <div class="flex flex-column align-items-center">
   <h1>Utang Bayar Woii</h1>
   <div class="flex justify-content-between w-full" style="max-width: 40rem">
-    <div class="card bg-gray-500 flex justify-content-between w-full">
+    <div
+      *ngFor="let bill of bills"
+      class="card bg-gray-500 flex justify-content-between w-full"
+    >
       <p class="m-0">
         <span>
           <p-avatar
@@ -12,12 +15,12 @@
               transform: 'scale(70%)'
             }"
             shape="circle"
-            >J</p-avatar
+            >{{ bill.owe.username | uppercase | slice: 0:1 }}</p-avatar
           >
         </span>
-        <span>Jossen</span>
+        <span>{{ bill.owe.username | uppercase }}</span>
       </p>
-      <p class="m-0">Rp. 100000</p>
+      <p class="m-0">{{ bill.owe_total | currency: "Rp. ":"symbol":"3.0" }}</p>
     </div>
   </div>
 </div>

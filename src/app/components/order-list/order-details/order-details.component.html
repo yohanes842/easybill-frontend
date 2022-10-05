@@ -36,13 +36,15 @@
         <div class="flex justify-content-between">
           <p class="m-0 text-sm">Order fee</p>
           <p class="m-0 text-sm">
-            {{ selectedOrder.total_payment | currency: "Rp. ":"symbol":"3.0" }}
+            {{
+              selectedOrder.total_order_amount | currency: "Rp. ":"symbol":"3.0"
+            }}
           </p>
         </div>
         <div class="flex justify-content-between">
           <p class="m-0 text-sm">Others fee</p>
           <p class="m-0 text-sm">
-            {{ selectedOrder.total_payment | currency: "":"":"3.0" }}
+            {{ selectedOrder.other_fee | currency: "":"":"3.0" }}
           </p>
         </div>
         <div class="flex justify-content-between text-green-400">
@@ -53,7 +55,7 @@
             </h6>
           </div>
           <p class="m-0 text-sm">
-            - {{ selectedOrder.total_payment | currency: "":"":"3.0" }}
+            - {{ selectedOrder.discount_amount | currency: "":"":"3.0" }}
           </p>
         </div>
       </div>

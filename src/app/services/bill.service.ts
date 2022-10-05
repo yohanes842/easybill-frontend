@@ -1,13 +1,16 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+import { environment as env } from 'src/environments/environment';
+import { Bill } from '../interfaces/bill';
 
 @Injectable({
   providedIn: 'root',
 })
 export class BillService {
-  constructor() {}
+  constructor(private http: HttpClient) {}
 
-  // public getBills(): Observable<Bill[]> {
-  //   return this.http.get<any>(`${env.url}/api/users`);
-  // return this.http.get<any>(`http://10.20.158.8:8080/api/users`);
-  // }
+  public getBills(): Observable<Bill[]> {
+    return this.http.get<any>(`${env.url}/api/users/bills`);
+  }
 }
