@@ -47,6 +47,7 @@ import { CustomMessageService } from './services/custom-message.service';
 import { DatePipe } from '@angular/common';
 import { AuthApiInterceptor } from './services/auth-http.interceptor';
 import { AuthService } from './services/auth.service';
+import { PaymentDialogComponent } from './components/bill/payment-dialog/payment-dialog.component';
 
 @NgModule({
   declarations: [
@@ -60,6 +61,7 @@ import { AuthService } from './services/auth.service';
     OrderDetailsComponent,
     AddSubFormComponent,
     AuthComponent,
+    PaymentDialogComponent,
   ],
   imports: [
     BrowserModule,

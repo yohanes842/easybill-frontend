@@ -1,45 +1,47 @@
 <p-messages class="message-notification"></p-messages>
-<div class="m-0 mb-3 absolute top-0 left-0 m-5 w-7rem">
-  <img
-    class="w-full h-full"
-    style="object-fit: cover; aspect-ratio: 19/5"
-    src="/assets/full.png"
-    alt=""
-  />
-</div>
-<div class="absolute w-full p-5" style="bottom: 5rem">
-  <form
-    class="flex flex-column align-items-center gap-4 w-21rem mx-auto"
-    #loginForm="ngForm"
-    (ngSubmit)="submitLogin()"
-  >
-    <h2 class="w-full m-0">Login</h2>
-    <div class="mb-2 w-full">
-      <input
-        pInputText
-        class="w-full"
-        type="text"
-        name="username"
-        [(ngModel)]="user.username"
-        placeholder="Username"
-      />
-    </div>
-    <div class="mb-2 w-full">
-      <input
-        pInputText
-        class="w-full"
-        type="password"
-        name="password"
-        [(ngModel)]="user.password"
-        placeholder="Password"
-      />
-    </div>
-    <div class="flex justify-content-between">
-      <button
-        pButton
-        class="p-button text-white w-21rem text-center"
-        label="Login"
-      ></button>
-    </div>
-  </form>
+<div class="flex flex-column justify-content-center gap-8 h-screen">
+  <div class="m-0 mb-3 m-5 w-22rem mx-auto">
+    <img
+      class="w-full h-full"
+      style="object-fit: cover; aspect-ratio: 19/5"
+      src="/assets/full.png"
+      alt=""
+    />
+  </div>
+  <div>
+    <form
+      class="flex flex-column align-items-center gap-4 w-21rem mx-auto"
+      #loginForm="ngForm"
+      (ngSubmit)="submitLogin()"
+    >
+      <h2 class="w-full m-0">Login</h2>
+      <div class="mb-2 w-full">
+        <input
+          pInputText
+          class="w-full"
+          type="text"
+          name="username"
+          [(ngModel)]="user.username"
+          placeholder="Username"
+        />
+      </div>
+      <div class="mb-2 w-full">
+        <input
+          pInputText
+          class="w-full"
+          type="password"
+          name="password"
+          [(ngModel)]="user.password"
+          placeholder="Password"
+        />
+      </div>
+      <div class="flex justify-content-between">
+        <button
+          pButton
+          class="p-button text-white w-21rem text-center"
+          label="Login"
+        ></button>
+      </div>
+    </form>
+  </div>
 </div>

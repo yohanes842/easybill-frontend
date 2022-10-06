@@ -1,0 +1,31 @@
+<p-dialog
+  class="flex flex-column p-0 w-fit"
+  [style]="{
+    width: 'calc(100vw - 2rem)',
+    'max-width': '30rem',
+    'overflow-x': 'hidden'
+  }"
+  header="Payment Form"
+  [modal]="true"
+  [(visible)]="display"
+  (onHide)="hideDialog()"
+>
+  <form
+    #paymentForm="ngForm"
+    class="flex flex-column gap-2 w-full"
+    (ngSubmit)="pay()"
+  >
+    <div class="flex gap-2 justify-content-center">
+      <p-inputNumber
+        [(ngModel)]="amount"
+        name="subOrderPrice"
+        placeholder="Enter amount"
+        mode="currency"
+        currency="IDR"
+        locale="in-IN"
+        [ariaRequired]="true"
+      ></p-inputNumber>
+      <button pButton class="p-button text-center">Pay</button>
+    </div>
+  </form>
+</p-dialog>

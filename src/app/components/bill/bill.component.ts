@@ -15,7 +15,9 @@ import { CustomMessageService } from 'src/app/services/custom-message.service';
   providers: [BillService],
 })
 export class BillComponent implements OnInit {
+  display!: boolean;
   bills!: Bill[];
+  selectedBill!: Bill;
 
   constructor(
     private billService: BillService,
@@ -38,5 +40,14 @@ export class BillComponent implements OnInit {
 
   getValue(event: Event): string {
     return (event.target as HTMLInputElement).value;
+  }
+
+  showDialog(bill: Bill) {
+    console.log(bill);
+    this.selectedBill = bill;
+    this.display = true;
+  }
+  hideDialog() {
+    this.display = false;
   }
 }
