@@ -1,8 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { environment as env} from 'src/environments/environment';
-import { User } from '../interfaces/user';
+import { environment as env } from 'src/environments/environment';
+import { User } from 'src/app/classes/user';
 
 @Injectable({
   providedIn: 'root',
@@ -16,6 +16,6 @@ export class UserService {
   }
 
   // private extractResponseData(response: Response){
-  //    return response.output.data; 
+  //    return response.output.data;
   // }
 }

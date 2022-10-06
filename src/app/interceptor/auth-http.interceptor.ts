@@ -13,15 +13,15 @@ export class AuthApiInterceptor implements HttpInterceptor {
     req: HttpRequest<any>,
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
-    const token = localStorage.getItem('currentUser'); //get token
-
-    if (token) {
+    const user = localStorage.getItem('currentUser');
+    if (user) {
+      const token = JSON.parse(user).access_token; //get token
       const authRequest = req.clone({
         headers: req.headers
           .set('Content-Type', 'application/json')
           .set('Authorization', 'Bearer ' + token),
       });
-      console.log('Intercepted HTTP call', authRequest);
+      // console.log('Intercepted HTTP call', authRequest);
       return next.handle(authRequest);
     } else {
       return next.handle(req);

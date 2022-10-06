@@ -7,9 +7,10 @@ import {
 } from '@angular/core';
 import { Router } from '@angular/router';
 import { MenuItem } from 'primeng/api';
-import { AuthService } from 'src/app/services/auth.service';
-import { CommonService } from 'src/app/services/common.service';
-import { Route } from '../../constant/Route';
+import { Severity } from 'src/app/enums/Severity';
+import { AuthService } from 'src/app/services/auth/auth.service';
+import { CustomMessageService } from 'src/app/services/message/custom-message.service';
+import { Route } from '../../enums/Route';
 
 @Component({
   selector: 'app-quick-action',
@@ -26,7 +27,7 @@ export class QuickActionComponent implements OnInit, AfterViewInit {
 
   constructor(
     private router: Router,
-    private commonService: CommonService,
+    private messageService: CustomMessageService,
     private authService: AuthService
   ) {}
 
@@ -39,7 +40,17 @@ export class QuickActionComponent implements OnInit, AfterViewInit {
         },
       },
       {
-        icon: 'pi pi-user',
+        icon: 'pi pi-check-square',
+        command: () => {
+          this.messageService.showMessage(
+            Severity.INFO,
+            'COMING SOON',
+            'by Daniel !!!'
+          );
+        },
+      },
+      {
+        icon: 'pi pi-dollar',
         command: () => {
           this.router.navigateByUrl(Route.BILL_PATH);
         },

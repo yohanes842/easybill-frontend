@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { OrderHeader } from 'src/app/interfaces/order-header';
+import { OrderHeader } from 'src/app/classes/order-header';
 
 @Component({
   selector: 'dialog-order-details',

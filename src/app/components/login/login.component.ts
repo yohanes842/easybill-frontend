@@ -1,18 +1,18 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { Route } from 'src/app/constant/Route';
-import { Severity } from 'src/app/constant/Severity';
-import { LoginForm } from 'src/app/interfaces/login-form';
-import { AuthService } from 'src/app/services/auth.service';
-import { CustomMessageService } from 'src/app/services/custom-message.service';
+import { Route } from 'src/app/enums/Route';
+import { Severity } from 'src/app/enums/Severity';
+import { LoginForm } from 'src/app/classes/login-form';
+import { AuthService } from 'src/app/services/auth/auth.service';
+import { CustomMessageService } from 'src/app/services/message/custom-message.service';
 
 @Component({
-  selector: 'app-auth',
-  templateUrl: './auth.component.html',
-  styleUrls: ['./auth.component.css'],
+  selector: 'app-login',
+  templateUrl: './login.component.html',
+  styleUrls: ['./login.component.css'],
 })
-export class AuthComponent implements OnInit {
+export class LoginComponent implements OnInit {
   user: LoginForm = new LoginForm();
 
   constructor(
@@ -33,17 +33,10 @@ export class AuthComponent implements OnInit {
     } else {
       this.authService.login(this.user).subscribe(
         (res) => {
-          console.log(res);
-          localStorage.setItem('currentUser', res.output.data.access_token);
           this.router.navigateByUrl(Route.HOME_PATH);
-          this.messageService.showMessage(
-            Severity.SUCCESS,
-            'Sucessfully',
-            'Login'
-          );
+          this.messageService.showMessage(Severity.SUCCESS, 'LOGIN SUCCESS');
         },
         (error: HttpErrorResponse) => {
-          console.log(error);
           this.messageService.showMessage(
             Severity.ERROR,
             'REQUEST ERROR',

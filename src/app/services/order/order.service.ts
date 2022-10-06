@@ -2,8 +2,8 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment as env } from 'src/environments/environment';
-import { OrderHeader } from '../interfaces/order-header';
-import { User } from '../interfaces/user';
+import { OrderHeader } from 'src/app/classes/order-header';
+import { User } from 'src/app/classes/user';
 
 @Injectable({
   providedIn: 'root',

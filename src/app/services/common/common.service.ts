@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { Route } from '../constant/Route';
+import { Route } from 'src/app/enums/Route';
 
 @Injectable()
 export class CommonService {

@@ -1,15 +1,15 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { ContainerComponent } from './components/container/container.component';
-import { BillComponent } from './components/bill/bill.component';
-import { OrderListComponent } from './components/order-list/order-list.component';
+import { ContainerComponent } from 'src/app/components/container/container.component';
+import { BillComponent } from 'src/app/components/bill/bill.component';
+import { OrderListComponent } from 'src/app/components/order-list/order-list.component';
 import { AddFormComponent } from './components/add-form/add-form.component';
-import { AuthComponent } from './components/auth/auth.component';
-import { AuthGuard } from './services/auth.guard';
-import { LoginGuard } from './services/login.guard';
+import { LoginComponent } from './components/login/login.component';
+import { AuthGuard } from 'src/app/guards/auth/auth.guard';
+import { LoginGuard } from 'src/app/guards/login/login.guard';
 
 const routes: Routes = [
-  { path: 'login', component: AuthComponent, canActivate: [LoginGuard] },
+  { path: 'login', component: LoginComponent, canActivate: [LoginGuard] },
   {
     path: '',
     redirectTo: 'home',

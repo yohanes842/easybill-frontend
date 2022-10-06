@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { Severity } from 'src/app/constant/Severity';
-import { Bill } from 'src/app/interfaces/bill';
-import { CustomMessageService } from 'src/app/services/custom-message.service';
+import { Severity } from 'src/app/enums/Severity';
+import { Bill } from 'src/app/classes/bill';
+import { CustomMessageService } from 'src/app/services/message/custom-message.service';
 
 @Component({
   selector: 'app-payment-dialog',

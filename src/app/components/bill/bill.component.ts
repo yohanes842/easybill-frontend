@@ -1,12 +1,11 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { Route } from 'src/app/constant/Route';
-import { Severity } from 'src/app/constant/Severity';
-import { Bill } from 'src/app/interfaces/bill';
-import { OrderHeader } from 'src/app/interfaces/order-header';
-import { BillService } from 'src/app/services/bill.service';
-import { CommonService } from 'src/app/services/common.service';
-import { CustomMessageService } from 'src/app/services/custom-message.service';
+import { Route } from 'src/app/enums/Route';
+import { Severity } from 'src/app/enums/Severity';
+import { Bill } from 'src/app/classes/bill';
+import { BillService } from 'src/app/services/bill/bill.service';
+import { CommonService } from 'src/app/services/common/common.service';
+import { CustomMessageService } from 'src/app/services/message/custom-message.service';
 
 @Component({
   selector: 'app-bill',

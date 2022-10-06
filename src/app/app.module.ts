@@ -3,16 +3,17 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule } from '@angular/forms';
 
-import { AppRoutingModule } from './app-routing.module';
-import { AppComponent } from './app.component';
-import { QuickActionComponent } from './components/quick-action/quick-action.component';
-import { OrderListComponent } from './components/order-list/order-list.component';
-import { HeaderComponent } from './components/header/header.component';
-import { BillComponent } from './components/bill/bill.component';
-import { ContainerComponent } from './components/container/container.component';
-import { OrderDetailsComponent } from './components/order-list/order-details/order-details.component';
-import { AddSubFormComponent } from './components/add-form/add-sub-form/add-sub-form.component';
-import { AuthComponent } from './components/auth/auth.component';
+import { AppRoutingModule } from 'src/app/app-routing.module';
+import { AppComponent } from 'src/app/app.component';
+import { QuickActionComponent } from 'src/app/components/quick-action/quick-action.component';
+import { OrderListComponent } from 'src/app/components/order-list/order-list.component';
+import { AddFormComponent } from 'src/app/components/add-form/add-form.component';
+import { HeaderComponent } from 'src/app/components/header/header.component';
+import { BillComponent } from 'src/app/components/bill/bill.component';
+import { ContainerComponent } from 'src/app/components/container/container.component';
+import { OrderDetailsComponent } from 'src/app/components/order-list/order-details/order-details.component';
+import { AddSubFormComponent } from 'src/app/components/add-form/add-sub-form/add-sub-form.component';
+import { LoginComponent } from 'src/app/components/login/login.component';
 
 import { SpeedDialModule } from 'primeng/speeddial';
 import { TableModule } from 'primeng/table';
@@ -27,7 +28,6 @@ import { DialogModule } from 'primeng/dialog';
 import { InputTextModule } from 'primeng/inputtext';
 import { RippleModule } from 'primeng/ripple';
 import { InputNumberModule } from 'primeng/inputnumber';
-import { AddFormComponent } from './components/add-form/add-form.component';
 import { CalendarModule } from 'primeng/calendar';
 import { AutoCompleteModule } from 'primeng/autocomplete';
 import { MessagesModule } from 'primeng/messages';
@@ -38,16 +38,16 @@ import { AvatarModule } from 'primeng/avatar';
 import { AvatarGroupModule } from 'primeng/avatargroup';
 import { PasswordModule } from 'primeng/password';
 
-import { UserService } from './services/user.service';
-import { OrderService } from './services/order.service';
-import { CommonService } from './services/common.service';
+import { UserService } from 'src/app/services/user/user.service';
+import { OrderService } from 'src/app/services/order/order.service';
+import { CommonService } from 'src/app/services/common/common.service';
 import { MessageService } from 'primeng/api';
 import { ConfirmationService } from 'primeng/api';
-import { CustomMessageService } from './services/custom-message.service';
+import { CustomMessageService } from 'src/app/services/message/custom-message.service';
 import { DatePipe } from '@angular/common';
-import { AuthApiInterceptor } from './services/auth-http.interceptor';
-import { AuthService } from './services/auth.service';
-import { PaymentDialogComponent } from './components/bill/payment-dialog/payment-dialog.component';
+import { AuthApiInterceptor } from 'src/app/interceptor/auth-http.interceptor';
+import { AuthService } from 'src/app/services/auth/auth.service';
+import { PaymentDialogComponent } from 'src/app/components/bill/payment-dialog/payment-dialog.component';
 
 @NgModule({
   declarations: [
@@ -60,7 +60,7 @@ import { PaymentDialogComponent } from './components/bill/payment-dialog/payment
     AddFormComponent,
     OrderDetailsComponent,
     AddSubFormComponent,
-    AuthComponent,
+    LoginComponent,
     PaymentDialogComponent,
   ],
   imports: [

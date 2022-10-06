@@ -1,16 +1,16 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { OrderHeader } from 'src/app/interfaces/order-header';
-import { OrderDetail } from 'src/app/interfaces/order-detail';
-import { User } from 'src/app/interfaces/user';
-import { UserService } from 'src/app/services/user.service';
-import { OrderService } from 'src/app/services/order.service';
+import { OrderHeader } from 'src/app/classes/order-header';
+import { OrderDetail } from 'src/app/classes/order-detail';
+import { User } from 'src/app/classes/user';
+import { UserService } from 'src/app/services/user/user.service';
+import { OrderService } from 'src/app/services/order/order.service';
 import { DatePipe } from '@angular/common';
 import { Router } from '@angular/router';
-import { Route } from 'src/app/constant/Route';
-import { CommonService } from 'src/app/services/common.service';
-import { CustomMessageService } from 'src/app/services/custom-message.service';
-import { Severity } from 'src/app/constant/Severity';
+import { Route } from 'src/app/enums/Route';
+import { CommonService } from 'src/app/services/common/common.service';
+import { CustomMessageService } from 'src/app/services/message/custom-message.service';
+import { Severity } from 'src/app/enums/Severity';
 import { ConfirmationService } from 'primeng/api';
 
 @Component({
