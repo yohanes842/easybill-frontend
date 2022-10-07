@@ -20,7 +20,8 @@ import { ConfirmationService } from 'primeng/api';
   styles: ['span { width: 3rem !important; }'],
 })
 export class AddFormComponent implements OnInit {
-  display: boolean = false;
+  addUserDisplay: boolean = false;
+  addSubOrderDisplay: boolean = false;
   modalType!: string;
 
   users!: User[];
@@ -30,6 +31,7 @@ export class AddFormComponent implements OnInit {
   subOrders: OrderDetail[] = [];
   newSubOrder: OrderDetail = new OrderDetail();
   currentTime!: Date;
+  participants: User[] = [];
 
   constructor(
     private userService: UserService,
@@ -56,16 +58,20 @@ export class AddFormComponent implements OnInit {
     );
   }
 
-  showAddModal() {
-    this.modalType = 'add';
-    this.newSubOrder = new OrderDetail();
-    this.display = true;
+  showAddUserDialog() {
+    this.addUserDisplay = true;
   }
 
-  showEditModal(index: number) {
+  showAddSubOrderDialog() {
+    this.modalType = 'add';
+    this.newSubOrder = new OrderDetail();
+    this.addSubOrderDisplay = true;
+  }
+
+  showEditSubOrderDialog(index: number) {
     this.modalType = 'edit';
     this.newSubOrder = this.subOrders[index];
-    this.display = true;
+    this.addSubOrderDisplay = true;
   }
 
   deleteSubOrder(index: number) {
@@ -77,7 +83,7 @@ export class AddFormComponent implements OnInit {
     );
   }
 
-  onSearch(keyword: string) {
+  filterUsername(keyword: string) {
     this.filteredUsernames = this.users
       .filter((user) => user.username.includes(keyword))
       .map((user) => user.username);
@@ -100,7 +106,7 @@ export class AddFormComponent implements OnInit {
     if (this.modalType === 'add') this.subOrders.push(this.newSubOrder);
     this.newSubOrder = new OrderDetail();
 
-    this.display = false;
+    this.addSubOrderDisplay = false;
 
     this.messageService.showMessage(
       Severity.SUCCESS,
@@ -135,8 +141,10 @@ export class AddFormComponent implements OnInit {
       this.newOrder.discount /= 100;
       this.newOrder.order_at = this.datePipe.transform(
         this.currentTime,
-        'yyyy-MM-dd hh:mm:ss'
+        'yyyy-MM-dd HH:mm:ss'
       )!;
+
+      console.log(this.newOrder);
 
       // Hit add order service
       this.orderService.addOrder(this.newOrder).subscribe((res: any) => {
@@ -153,19 +161,16 @@ export class AddFormComponent implements OnInit {
     }
   }
 
-  onSubmitSubOrder(event: Event): void {
-    this.submitSubOrder();
-  }
-
-  onHideDetail(): void {
-    this.display = false;
+  hideDialog(): void {
+    this.addUserDisplay = false;
+    this.addSubOrderDisplay = false;
   }
 
   backToHome(): void {
     this.router.navigateByUrl(Route.HOME_PATH);
   }
 
-  showDeleteConfirmation(index: number): void {
+  showDeleteSubOrderConfirmation(index: number): void {
     this.confirmationService.confirm({
       message: 'Are you sure that you want to delete this sub-order?',
       accept: () => {

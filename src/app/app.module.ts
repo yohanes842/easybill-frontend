@@ -48,6 +48,7 @@ import { DatePipe } from '@angular/common';
 import { AuthApiInterceptor } from 'src/app/interceptor/auth-http.interceptor';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { PaymentDialogComponent } from 'src/app/components/bill/payment-dialog/payment-dialog.component';
+import { AddUserFormComponent } from 'src/app/components/add-form/add-user-form/add-user-form.component';
 
 @NgModule({
   declarations: [
@@ -62,6 +63,7 @@ import { PaymentDialogComponent } from 'src/app/components/bill/payment-dialog/p
     AddSubFormComponent,
     LoginComponent,
     PaymentDialogComponent,
+    AddUserFormComponent,
   ],
   imports: [
     BrowserModule,

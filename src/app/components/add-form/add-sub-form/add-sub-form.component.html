@@ -20,17 +20,6 @@
       ></p-autoComplete>
     </div>
     <div class="mb-2 w-full">
-      <p-inputNumber
-        [(ngModel)]="subOrder.price"
-        name="subOrderPrice"
-        placeholder="Price before discount"
-        mode="currency"
-        currency="IDR"
-        locale="in-IN"
-        [ariaRequired]="true"
-      ></p-inputNumber>
-    </div>
-    <div class="mb-2 w-full">
       <input
         [(ngModel)]="subOrder.order_menu_desc"
         name="subOrderMenuDesc"
@@ -39,6 +28,21 @@
         placeholder="Description"
         required
       />
+    </div>
+    <div class="mb-2 w-full">
+      <p-inputNumber
+        [(ngModel)]="subOrder.price"
+        name="subOrderPrice"
+        placeholder="Total Price"
+        mode="currency"
+        currency="IDR"
+        locale="in-IN"
+        [ariaRequired]="true"
+      ></p-inputNumber>
+      <p class="m-0 mb-2 text-xs text-gray-300">
+        <span class="m-0 text-red-300">*</span> Input total price, not a single
+        item price
+      </p>
     </div>
     <div class="mb-2">
       <p-inputNumber

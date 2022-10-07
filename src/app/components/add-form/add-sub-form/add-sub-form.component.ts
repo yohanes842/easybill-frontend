@@ -1,6 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { OrderDetail } from 'src/app/classes/order-detail';
-import { User } from 'src/app/classes/user';
 
 @Component({
   selector: 'dialog-add-sub-form',

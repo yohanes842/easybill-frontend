@@ -20,7 +20,7 @@
         name="orderBy"
         [(ngModel)]="newOrder.username"
         [suggestions]="filteredUsernames"
-        (completeMethod)="onSearch($event.query)"
+        (completeMethod)="filterUsername($event.query)"
         [required]="true"
         placeholder="Order by"
       ></p-autoComplete>
@@ -98,62 +98,83 @@
         <button
           pButton
           type="button"
-          class="p-button"
+          class="p-button-sm"
           icon="pi pi-plus"
-          (click)="showAddModal()"
+          label="Add user"
+          (click)="showAddSubOrderDialog()"
         ></button>
       </div>
       <div
-        *ngFor="let subOrder of subOrders; let i = index"
+        *ngFor="let user of participants; let i = index"
         [attr.data-index]="i"
-        class="order-list-item flex align-items-center border-top-1 border-300"
+        class="flex align-items-center border-top-1 border-300"
       >
-        <div class="p-3 text-pink-300 font-bold">{{ subOrder.qty }}x</div>
-        <div
-          class="flex gap-5 justify-content-between align-items-center w-full"
-        >
-          <div>
-            <div class="order-description">{{ subOrder.order_menu_desc }}</div>
-            <div class="text-xs">By {{ subOrder.username }}</div>
-          </div>
-          <div class="flex align-items-center gap-3">
-            <div>
-              {{ subOrder.price * subOrder.qty | currency: "Rp " }}
-            </div>
-            <div class="border-left-1">
-              <button
-                pButton
-                class="p-button-sm p-button-link"
-                [style]="{
-                  'padding-block': '0.5rem',
-                  'padding-inline': '1rem',
-                  width: 'fit-content'
-                }"
-                type="button"
-                icon="pi pi-pencil"
-                (click)="showEditModal(i)"
-              ></button>
-              <button
-                pButton
-                class="p-button-sm p-button-link p-button-danger text-red-300"
-                [style]="{
-                  'padding-block': '0.5rem',
-                  'padding-inline': '1rem',
-                  width: 'fit-content'
-                }"
-                type="button"
-                icon="pi pi-trash"
-                (click)="showDeleteConfirmation(i)"
-              ></button>
-            </div>
-          </div>
+        <div>
+          by
+          <span>
+            <p-avatar
+              styleClass="p-mr-2 "
+              [style]="{
+                'background-color': 'var(--pink-200)',
+                color: '#ffffff',
+                transform: 'scale(70%)'
+              }"
+              shape="circle"
+              >{{ user.username | uppercase | slice: 0:1 }}</p-avatar
+            >
+          </span>
+          <span>{{ user.username | uppercase }}</span>
         </div>
+        <!-- <div>
+          <div class="p-3 text-pink-300 font-bold">{{ subOrder.qty }}x</div>
+          <div
+            class="flex gap-5 justify-content-between align-items-center w-full"
+          >
+            <div>
+              <div class="order-description">
+                {{ subOrder.order_menu_desc }}
+              </div>
+              <div class="text-xs">By {{ subOrder.username }}</div>
+            </div>
+            <div class="flex align-items-center gap-3">
+              <div>
+                {{ subOrder.price | currency: "Rp " }}
+              </div>
+              <div class="border-left-1">
+                <button
+                  pButton
+                  class="p-button-sm p-button-link"
+                  [style]="{
+                    'padding-block': '0.5rem',
+                    'padding-inline': '1rem',
+                    width: 'fit-content'
+                  }"
+                  type="button"
+                  icon="pi pi-pencil"
+                  (click)="showEditModal(i)"
+                ></button>
+                <button
+                  pButton
+                  class="p-button-sm p-button-link p-button-danger text-red-300"
+                  [style]="{
+                    'padding-block': '0.5rem',
+                    'padding-inline': '1rem',
+                    width: 'fit-content'
+                  }"
+                  type="button"
+                  icon="pi pi-trash"
+                  (click)="showDeleteConfirmation(i)"
+                ></button>
+              </div>
+            </div>
+          </div>
+        </div> -->
       </div>
     </div>
 
     <div class="text-center mt-5">
       <button
-        class="border-none border-round-sm bg-primary p-3 w-5"
+        class="p-button-sm border-none border-round-sm bg-primary p-3 w-5"
         [ngClass]="{ 'disabled-btn': addOrder.invalid }"
         [disabled]="addOrder.invalid"
       >
@@ -163,12 +184,21 @@
   </form>
 </div>
 
+<dialog-add-user-form
+  *ngIf="addUserDisplay"
+  [filteredUsernames]="filteredUsernames"
+  [users]="users"
+  [participants]="participants"
+  (onSearchKeyChange)="filterUsername($event)"
+  (onClose)="hideDialog()"
+></dialog-add-user-form>
+
 <dialog-add-sub-form
-  *ngIf="display"
+  *ngIf="addSubOrderDisplay"
   [filteredUsernames]="filteredUsernames"
   [subOrder]="newSubOrder"
   [modalType]="modalType"
-  (onSearchKeyChange)="onSearch($event)"
-  (onSubmit)="onSubmitSubOrder($event)"
-  (onClose)="onHideDetail()"
+  (onSearchKeyChange)="filterUsername($event)"
+  (onSubmit)="submitSubOrder()"
+  (onClose)="hideDialog()"
 ></dialog-add-sub-form>

@@ -1,0 +1,32 @@
+<p-dialog
+  [header]="headerTitle"
+  [(visible)]="display"
+  [modal]="true"
+  (onHide)="hideDialog()"
+>
+  <form
+    #addSubOrder="ngForm"
+    class="flex flex-column p-2 align-items-center"
+    (ngSubmit)="addParticipant()"
+  >
+    <div class="mb-2 w-full">
+      <p-autoComplete
+        [(ngModel)]="username"
+        name="subOrderBy"
+        [suggestions]="filteredUsernames"
+        (completeMethod)="search($event.query)"
+        placeholder="Order by"
+        [required]="true"
+      ></p-autoComplete>
+    </div>
+    <div class="text-center w-full mt-3">
+      <button
+        class="border-none border-round-sm bg-primary p-3 w-full"
+        [ngClass]="{ 'disabled-btn': addSubOrder.invalid }"
+        [disabled]="addSubOrder.invalid"
+      >
+        Add
+      </button>
+    </div>
+  </form>
+</p-dialog>
