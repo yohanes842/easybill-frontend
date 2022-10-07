@@ -14,9 +14,10 @@
     (ngSubmit)="showSaveOrderConfirmation()"
   >
     <div class="mb-3 w-full">
+      <label for="orderBy" class="font-bold">Order by</label>
       <p-autoComplete
-        [style]="{ width: '100%' }"
-        [inputStyle]="{ width: '100%' }"
+        [style]="{ width: '100%', 'margin-block': '0.5rem' }"
+        [inputStyle]="{ width: '100%', 'padding-block': '0.5rem' }"
         name="orderBy"
         [(ngModel)]="newOrder.username"
         [suggestions]="filteredUsernames"
@@ -25,8 +26,26 @@
         placeholder="Order by"
       ></p-autoComplete>
     </div>
-    <div class="p-inputgroup mb-3 w-full">
+
+    <div class="mb-3 w-full">
+      <label for="orderDescription">Description</label>
+      <input
+        pInputText
+        [style]="{ 'margin-block': '0.5rem' }"
+        class="w-full py-2"
+        type="text"
+        name="orderDescription"
+        [(ngModel)]="newOrder.order_description"
+        placeholder="Order description"
+        required
+      />
+    </div>
+
+    <div class="mb-3 w-full">
+      <label for="orderAt">Order time</label>
       <p-calendar
+        [style]="{ width: '100%', 'margin-block': '0.5rem' }"
+        [inputStyle]="{ width: '100%', 'padding-block': '0.5rem' }"
         name="orderAt"
         [(ngModel)]="currentTime"
         [showTime]="true"
@@ -35,46 +54,12 @@
         [required]="true"
       ></p-calendar>
     </div>
-    <div class="mb-3 w-full">
-      <input
-        pInputText
-        class="w-full"
-        type="text"
-        name="orderDescription"
-        [(ngModel)]="newOrder.order_description"
-        placeholder="Order description"
-        required
-      />
-    </div>
-    <div class="mb-3 flex gap-2">
-      <div class="p-inputgroup w-full">
-        <p-inputNumber
-          name="discount"
-          [(ngModel)]="newOrder.discount"
-          mode="decimal"
-          [min]="0"
-          [max]="100"
-          [required]="true"
-          placeholder="Discount"
-        ></p-inputNumber>
-        <span class="p-inputgroup-addon">%</span>
-      </div>
-      <div class="p-inputgroup w-full">
-        <p-inputNumber
-          name="upto"
-          [(ngModel)]="newOrder.upto"
-          mode="decimal"
-          mode="currency"
-          currency="IDR"
-          locale="in-IN"
-          [min]="0"
-          [required]="true"
-          placeholder="Up to amount"
-        ></p-inputNumber>
-      </div>
-    </div>
-    <div class="p-inputgroup mb-3 w-full">
+
+    <div class="mb-3 w-full flex flex-column">
+      <label for="totalPayment">Total Payment</label>
       <p-inputNumber
+        [style]="{ width: '100%', 'margin-block': '0.5rem' }"
+        [inputStyle]="{ width: '100%', 'padding-block': '0.5rem' }"
         name="totalPayment"
         [(ngModel)]="newOrder.total_payment"
         mode="decimal"
@@ -85,6 +70,41 @@
         [ariaRequired]="true"
         placeholder="Total payment"
       ></p-inputNumber>
+    </div>
+
+    <div class="mb-3">
+      <label for="discount">Discount</label>
+      <div class="flex gap-2 flex-auto">
+        <div class="p-inputgroup w-full">
+          <p-inputNumber
+            [style]="{ 'margin-block': '0.5rem' }"
+            [inputStyle]="{ 'padding-block': '0.5rem' }"
+            name="discount"
+            [(ngModel)]="newOrder.discount"
+            mode="decimal"
+            [min]="0"
+            [max]="100"
+            [required]="true"
+            placeholder="Discount"
+          ></p-inputNumber>
+          <span class="p-inputgroup-addon p-2 my-2">%</span>
+        </div>
+        <span> up to </span>
+        <div class="p-inputgroup w-full">
+          <span class="p-inputgroup-addon p-2 my-2">Rp</span>
+          <p-inputNumber
+            [style]="{ 'margin-block': '0.5rem' }"
+            [inputStyle]="{ 'padding-block': '0.5rem' }"
+            name="upto"
+            [(ngModel)]="newOrder.upto"
+            mode="decimal"
+            mode="currency"
+            [min]="0"
+            [required]="true"
+            placeholder="Max discount"
+          ></p-inputNumber>
+        </div>
+      </div>
     </div>
 
     <div
