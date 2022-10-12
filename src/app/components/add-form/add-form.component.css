@@ -1,3 +1,9 @@
 .disabled-btn {
-    filter: brightness(70%) !important;
+  filter: brightness(70%) !important;
+}
+
+:host ::ng-deep .p-dialog-header-close-icon {
+  background-color: var(--custom-red);
+  padding: 0.5rem;
+  border-radius: 50%;
 }

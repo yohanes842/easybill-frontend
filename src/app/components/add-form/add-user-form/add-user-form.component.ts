@@ -12,6 +12,7 @@ export class AddUserFormComponent implements OnInit {
   @Input() filteredUsernames!: string[];
   @Input() users!: User[];
   @Input() participants!: User[];
+  @Output() onSubmit: EventEmitter<any> = new EventEmitter();
   @Output() onSearchKeyChange: EventEmitter<any> = new EventEmitter();
   @Output() onClose: EventEmitter<any> = new EventEmitter();
 
@@ -21,9 +22,7 @@ export class AddUserFormComponent implements OnInit {
 
   constructor(private messageService: CustomMessageService) {}
 
-  ngOnInit(): void {
-    console.log(this.display);
-  }
+  ngOnInit(): void {}
 
   addParticipant() {
     let user =
@@ -37,10 +36,20 @@ export class AddUserFormComponent implements OnInit {
         'User not found!'
       );
       return;
+    } else if (
+      this.participants.find((u: User) => u.username === user!.username)
+    ) {
+      this.messageService.showMessage(
+        Severity.ERROR,
+        'Input Error',
+        'User already exist!'
+      );
+      return;
     }
-
+    user.sub_order_list = [];
     this.participants.push(user);
-    this.hideDialog();
+
+    this.onSubmit.emit(user);
   }
 
   search(keyword: string): void {

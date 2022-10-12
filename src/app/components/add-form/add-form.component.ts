@@ -29,9 +29,10 @@ export class AddFormComponent implements OnInit {
 
   newOrder: OrderHeader = new OrderHeader();
   subOrders: OrderDetail[] = [];
-  newSubOrder: OrderDetail = new OrderDetail();
   currentTime!: Date;
   participants: User[] = [];
+  selectedUser!: User;
+  selectedSubOrder!: OrderDetail;
 
   constructor(
     private userService: UserService,
@@ -62,15 +63,14 @@ export class AddFormComponent implements OnInit {
     this.addUserDisplay = true;
   }
 
-  showAddSubOrderDialog() {
+  showAddSubOrderDialog(user: User) {
     this.modalType = 'add';
-    this.newSubOrder = new OrderDetail();
+    this.selectedUser = user;
     this.addSubOrderDisplay = true;
   }
 
   showEditSubOrderDialog(index: number) {
     this.modalType = 'edit';
-    this.newSubOrder = this.subOrders[index];
     this.addSubOrderDisplay = true;
   }
 
@@ -89,31 +89,7 @@ export class AddFormComponent implements OnInit {
       .map((user) => user.username);
   }
 
-  submitSubOrder() {
-    this.newSubOrder.user_id =
-      this.users.find((u: User) => u.username === this.newSubOrder.username)
-        ?.id ?? 0;
-    //validate if user not exist in the list
-    if (this.newSubOrder.user_id === 0) {
-      this.messageService.showMessage(
-        Severity.ERROR,
-        'Input Error',
-        'User not found!'
-      );
-      return;
-    }
-
-    if (this.modalType === 'add') this.subOrders.push(this.newSubOrder);
-    this.newSubOrder = new OrderDetail();
-
-    this.addSubOrderDisplay = false;
-
-    this.messageService.showMessage(
-      Severity.SUCCESS,
-      'Successfully',
-      this.modalType === 'add' ? 'added new sub-order' : 'edit sub-order'
-    );
-  }
+  submitSubOrder() {}
 
   submitOrder() {
     this.newOrder.buyer_id = this.users.find(
@@ -129,11 +105,18 @@ export class AddFormComponent implements OnInit {
       return;
     }
 
+    if (this.participants.length > 0) {
+      this.participants.forEach(
+        (user) =>
+          (this.subOrders = [...this.subOrders, ...user.sub_order_list!])
+      );
+    }
+
     if (this.subOrders.length < 1) {
       this.messageService.showMessage(
         Severity.ERROR,
         'Input Error',
-        'Sub-order can not be empty'
+        'Order detail can not be empty'
       );
     } else {
       //prepare object to be passed
@@ -143,8 +126,6 @@ export class AddFormComponent implements OnInit {
         this.currentTime,
         'yyyy-MM-dd HH:mm:ss'
       )!;
-
-      console.log(this.newOrder);
 
       // Hit add order service
       this.orderService.addOrder(this.newOrder).subscribe((res: any) => {
@@ -180,6 +161,7 @@ export class AddFormComponent implements OnInit {
   }
 
   showSaveOrderConfirmation(): void {
+    console.log('amsuk');
     this.confirmationService.confirm({
       message: 'Are you sure that you want to save this order?',
       accept: () => {

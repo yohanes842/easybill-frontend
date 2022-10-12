@@ -25,14 +25,15 @@ const routes: Routes = [
         component: OrderListComponent,
       },
       {
-        path: 'home/add',
-        component: AddFormComponent,
-      },
-      {
         path: 'user',
         component: BillComponent,
       },
     ],
+  },
+  {
+    path: 'add-orders',
+    component: AddFormComponent,
+    canActivate: [AuthGuard],
   },
   // { path: '**',    component: NotFoundComponent}
 ];

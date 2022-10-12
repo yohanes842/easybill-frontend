@@ -1,6 +1,6 @@
 export enum Route {
   LOGIN_PATH = '/login',
   HOME_PATH = '/home',
-  ADD_ORDER_PATH = '/home/add',
+  ADD_ORDER_PATH = '/add-orders',
   BILL_PATH = '/user',
 }

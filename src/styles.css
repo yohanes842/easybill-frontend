@@ -6,6 +6,11 @@
 
 :root {
   --bg-custom-subOrder: #1e1e1e;
+  --custom-light-blue: #b3eced;
+  --custom-light-green: #b5eadb;
+  --custom-cyan: #55d1d8;
+  --custom-cream: #fff2e2;
+  --custom-red: #fe8062;
   font-family: "Poppins", sans-serif;
 }
 

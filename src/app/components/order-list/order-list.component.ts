@@ -7,6 +7,7 @@ import { User } from 'src/app/classes/user';
 import { CommonService } from 'src/app/services/common/common.service';
 import { CustomMessageService } from 'src/app/services/message/custom-message.service';
 import { OrderService } from 'src/app/services/order/order.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-order-list',
@@ -25,7 +26,8 @@ export class OrderListComponent implements OnInit {
   constructor(
     private orderService: OrderService,
     private commonService: CommonService,
-    private messageService: CustomMessageService
+    private messageService: CustomMessageService,
+    private router: Router
   ) {}
 
   ngOnInit() {
@@ -44,6 +46,10 @@ export class OrderListComponent implements OnInit {
 
   getValue(event: Event): string {
     return (event.target as HTMLInputElement).value;
+  }
+
+  navigateToAddOrdersForm(): void {
+    this.router.navigateByUrl(Route.ADD_ORDER_PATH);
   }
 
   onShowDetail(order: OrderHeader) {

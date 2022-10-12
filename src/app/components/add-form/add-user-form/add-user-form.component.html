@@ -1,5 +1,6 @@
 <p-dialog
-  [header]="headerTitle"
+  [contentStyle]="{ minHeight: '17rem' }"
+  header="Add Participant"
   [(visible)]="display"
   [modal]="true"
   (onHide)="hideDialog()"
@@ -9,23 +10,31 @@
     class="flex flex-column p-2 align-items-center"
     (ngSubmit)="addParticipant()"
   >
-    <div class="mb-2 w-full">
-      <p-autoComplete
-        [(ngModel)]="username"
-        name="subOrderBy"
-        [suggestions]="filteredUsernames"
-        (completeMethod)="search($event.query)"
-        placeholder="Order by"
-        [required]="true"
-      ></p-autoComplete>
+    <div class="mb-1 w-full">
+      <label for="subOrderBy" class="font-bold">Person</label>
+      <div>
+        <p-autoComplete
+          [style]="{
+            width: '100%',
+            'margin-block': '0.5rem'
+          }"
+          [inputStyle]="{ width: '100%', 'padding-block': '0.5rem' }"
+          name="subOrderBy"
+          [(ngModel)]="username"
+          [suggestions]="filteredUsernames"
+          (completeMethod)="search($event.query)"
+          placeholder="Username"
+          [required]="true"
+        ></p-autoComplete>
+      </div>
     </div>
-    <div class="text-center w-full mt-3">
+    <div class="text-center w-full">
       <button
-        class="border-none border-round-sm bg-primary p-3 w-full"
-        [ngClass]="{ 'disabled-btn': addSubOrder.invalid }"
+        pButton
+        class="p-button-primary py-2 px-7 w-fit"
         [disabled]="addSubOrder.invalid"
       >
-        Add
+        Next
       </button>
     </div>
   </form>
