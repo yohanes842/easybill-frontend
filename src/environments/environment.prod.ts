@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  url: 'https://easybill.arville.net',
+  url: 'http://app:8080',
 };

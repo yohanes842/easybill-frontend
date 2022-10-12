@@ -1,0 +1,16 @@
+version: "3"
+
+services:
+  easybill-frontend:
+    container_name: easybill-frontend
+    image: yohanes842/easybill-frontend:dev
+    build: .
+    ports:
+      - "80:80"
+    restart: always
+    networks:
+      - easybill_default
+
+networks:
+  easybill_default:
+    external: true
