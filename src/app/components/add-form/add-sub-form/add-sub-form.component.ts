@@ -14,23 +14,21 @@ export class AddSubFormComponent implements OnInit {
   @Input() users!: User[];
   @Input() modalType!: string;
   @Input() selectedUser!: User;
+  @Input() selectedSubOrder!: OrderDetail;
   @Output() onSubmit: EventEmitter<any> = new EventEmitter();
   @Output() onSearchKeyChange: EventEmitter<any> = new EventEmitter();
   @Output() onClose: EventEmitter<any> = new EventEmitter();
 
   display: boolean = true;
   headerTitle!: string;
-  subOrder!: OrderDetail;
 
-  constructor(private messageService: CustomMessageService) {
-    this.subOrder = new OrderDetail();
-  }
+  constructor(private messageService: CustomMessageService) {}
 
   ngOnInit(): void {
     this.headerTitle =
       this.modalType === 'add' ? 'Add Sub-Order' : 'Edit Sub-Order';
 
-    this.subOrder.username = this.selectedUser.username;
+      console.log(this.selectedSubOrder);
   }
 
   search(keyword: string): void {
@@ -38,10 +36,10 @@ export class AddSubFormComponent implements OnInit {
   }
 
   submitSubOrder(): void {
-    this.subOrder.user_id = this.selectedUser.id;
+    this.selectedSubOrder.user_id = this.selectedUser.id;
 
     if (this.modalType === 'add') {
-      this.selectedUser!.sub_order_list!.push(this.subOrder);
+      this.selectedUser!.sub_order_list!.push(this.selectedSubOrder);
     }
 
     this.messageService.showMessage(

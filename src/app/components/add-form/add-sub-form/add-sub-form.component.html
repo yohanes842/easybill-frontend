@@ -1,15 +1,16 @@
 <p-dialog
+  styleClass="dialog-box"
   [header]="headerTitle"
   [(visible)]="display"
   [modal]="true"
   (onHide)="hideDialog()"
 >
   <h4 class="text-primary font-italic m-0">
-    {{ selectedUser.username }} order detail
+    {{ selectedUser.username | uppercase }} Order Detail
   </h4>
   <form
     #addSubOrder="ngForm"
-    class="flex flex-column p-2 align-items-center"
+    class="flex flex-column p-2"
     (ngSubmit)="submitSubOrder()"
   >
     <div class="mb-2 w-full">
@@ -18,29 +19,29 @@
         pInputText
         [style]="{ 'margin-block': '0.5rem' }"
         class="w-full py-2"
-        [(ngModel)]="subOrder.order_menu_desc"
+        [(ngModel)]="selectedSubOrder.order_menu_desc"
         name="subOrderMenuDesc"
         placeholder="Order description"
         required
       />
     </div>
-    <div class="flex mb-2 justify-content-between gap-2">
+    <div class="flex mb-2 justify-content-between gap-3">
       <div>
         <label for="subOrdermeuDesc" class="font-bold">Price</label>
         <div class="p-inputgroup">
           <span class="p-inputgroup-addon p-2 my-2">Rp</span>
           <p-inputNumber
-            [style]="{ width: '100%', 'margin-block': '0.5rem' }"
+            [style]="{ width: '100%', 'max-width' : '7rem', 'margin-block': '0.5rem' }"
             [inputStyle]="{
               width: '100%',
+              'max-width' : '7rem',
               'padding-block': '0.5rem'
             }"
-            [(ngModel)]="subOrder.price"
+            [(ngModel)]="selectedSubOrder.price"
             name="subOrderPrice"
             placeholder="Price"
             mode="decimal"
             [min]="0"
-            [min]="999"
             [required]="true"
           ></p-inputNumber>
         </div>
@@ -52,13 +53,15 @@
         <label for="subOrdermeuDesc" class="font-bold">Qty</label>
         <div>
           <p-inputNumber
-            [style]="{ width: '100%', 'margin-block': '0.5rem' }"
-            [inputStyle]="{
-              width: '100%',
-              'padding-block': '0.5rem',
-              'text-align': 'center'
-            }"
-            [(ngModel)]="subOrder.qty"
+          [style]="{ width: '100%', 'max-width' : '7rem', 'margin-block': '0.5rem' }"
+          [inputStyle]="{
+            width: '100%',
+            'max-width' : '7rem',
+            'padding-block': '0.5rem',
+            'text-align' : 'center',
+            'padding-inline' : '0.1rem'
+          }"
+            [(ngModel)]="selectedSubOrder.qty"
             name="qty"
             class="text-center"
             [showButtons]="true"
@@ -69,7 +72,7 @@
             incrementButtonIcon="pi pi-plus"
             decrementButtonIcon="pi pi-minus"
             [min]="1"
-            [max]="9999"
+            [max]="999"
             [size]="1"
             [required]="true"
           ></p-inputNumber>

@@ -13,7 +13,7 @@
 
   <form
     #addOrder="ngForm"
-    class="mx-auto w-full px-5 py-2 md:w-5"
+    class="mx-auto w-full px-5 py-2 lg:w-6"
     (ngSubmit)="showSaveOrderConfirmation()"
   >
     <div class="mb-3 w-full">
@@ -60,26 +60,25 @@
 
     <div class="mb-3 w-full flex flex-column">
       <label for="totalPayment" class="font-bold">Total Payment</label>
-      <p-inputNumber
-        [style]="{ width: '100%', 'margin-block': '0.5rem' }"
-        [inputStyle]="{ width: '100%', 'padding-block': '0.5rem' }"
-        name="totalPayment"
-        [(ngModel)]="newOrder.total_payment"
-        mode="decimal"
-        mode="currency"
-        currency="IDR"
-        locale="in-IN"
-        [min]="0"
-        [ariaRequired]="true"
-        placeholder="Total payment"
-      ></p-inputNumber>
+      <div class="p-inputgroup">
+        <span class="p-inputgroup-addon p-2 my-2">Rp</span>
+        <p-inputNumber
+          [style]="{ width: '100%', 'margin-block': '0.5rem' }"
+          [inputStyle]="{ width: '100%', 'padding-block': '0.5rem' }"
+          name="totalPayment"
+          [(ngModel)]="newOrder.total_payment"
+          mode="decimal"
+          [min]="0"
+          [required]="true"
+          placeholder="Total payment"
+        ></p-inputNumber>
+      </div>
     </div>
 
     <div class="mb-3">
       <label for="discount" class="font-bold">Discount</label>
-      <div class="flex gap-2 align-items-center">
+      <div class="flex flex-column gap-0 align-items-center sm:flex-row sm:gap-2">
         <div class="p-inputgroup">
-          <span class="p-inputgroup-addon p-2 my-2">Rp</span>
           <p-inputNumber
             [style]="{ 'margin-block': '0.5rem' }"
             [inputStyle]="{ 'padding-block': '0.5rem' }"
@@ -93,7 +92,7 @@
           ></p-inputNumber>
           <span class="p-inputgroup-addon p-2 my-2">%</span>
         </div>
-        <p class="m-0 w-7rem text-center">up to</p>
+        <p class="m-0 w-7rem text-center text-sm">up to</p>
         <div class="p-inputgroup">
           <span class="p-inputgroup-addon p-2 my-2">Rp</span>
           <p-inputNumber
@@ -124,15 +123,15 @@
     </div>
     <div
       *ngIf="participants.length > 0"
-      class="card p-component border-round border-1 border-300 px-3 py-2"
+      class="card p-component border-round border-1 border-300"
       style="background-color: var(--bg-custom-subOrder)"
     >
       <div
-        *ngFor="let user of participants; let i = index"
-        [attr.data-index]="i"
-        class="border-bottom-2 border-300 py-2"
+        *ngFor="let user of participants; let participantIndex = index"
+        [attr.data-index]="participantIndex"
+        class="pb-1"
       >
-        <div class="flex align-items-center justify-content-between">
+        <div class="flex align-items-center justify-content-between py-2 px-2 bg-gray-700 border-round">
           <div>
             <span>
               <p-avatar
@@ -148,20 +147,29 @@
             </span>
             <span>{{ user.username | uppercase }}</span>
           </div>
-          <button
-            pButton
-            type="button"
-            class="p-button-sm p-button-secondary p-1 w-fit"
-            icon="pi pi-plus"
-            label="Add sub-order"
-            (click)="showAddSubOrderDialog(user)"
-          ></button>
+          <div class="flex">
+            <button
+              pButton
+              type="button"
+              class="p-button-sm p-button-primary p-2 w-fit"
+              icon="pi pi-plus"
+              label="Add sub-order"
+              (click)="showAddSubOrderDialog(user)"
+            ></button>
+            <button
+              pButton
+              type="button"
+              class="p-button-sm p-button-link p-button-danger text-red-300"
+              icon="pi pi-trash"
+              (click)="showDeleteParticipantConfirmation(user.username, participantIndex)"
+            ></button>
+          </div>
         </div>
         <div
-          *ngFor="let subOrder of user.sub_order_list; let i = index"
-          class="flex border-top-1 border-300 py-1"
+          *ngFor="let subOrder of user.sub_order_list; let subOrderIndex = index"
+          class="flex border-top-1 border-300 py-1 pl-3"
         >
-          <div class="p-3 text-pink-300 font-bold">{{ subOrder.qty }}x</div>
+          <div class="p-3 text-pink-300 font-bold w-4rem">{{ subOrder.qty }}x</div>
           <div
             class="flex gap-5 justify-content-between align-items-center w-full"
           >
@@ -173,7 +181,7 @@
             </div>
             <div class="flex align-items-center gap-3">
               <div>
-                {{ subOrder.price | currency: "Rp " }}
+                {{ subOrder.price * subOrder.qty | currency: "Rp " }}
               </div>
               <div class="border-left-1">
                 <button
@@ -186,7 +194,7 @@
                   }"
                   type="button"
                   icon="pi pi-pencil"
-                  (click)="showEditSubOrderDialog(i)"
+                  (click)="showEditSubOrderDialog(user, subOrder)"
                 ></button>
                 <button
                   pButton
@@ -198,7 +206,7 @@
                   }"
                   type="button"
                   icon="pi pi-trash"
-                  (click)="showDeleteSubOrderConfirmation(i)"
+                  (click)="showDeleteSubOrderConfirmation(user, subOrderIndex)"
                 ></button>
               </div>
             </div>
@@ -235,7 +243,8 @@
   [users]="users"
   [modalType]="modalType"
   [selectedUser]="selectedUser"
+  [selectedSubOrder]="selectedSubOrder"
   (onSearchKeyChange)="filterUsername($event)"
-  (onSubmit)="submitSubOrder()"
+  (onSubmit)="hideDialog()"
   (onClose)="hideDialog()"
 ></dialog-add-sub-form>

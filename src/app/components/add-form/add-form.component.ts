@@ -64,18 +64,22 @@ export class AddFormComponent implements OnInit {
   }
 
   showAddSubOrderDialog(user: User) {
+    this.hideDialog();
     this.modalType = 'add';
     this.selectedUser = user;
+    this.selectedSubOrder = new OrderDetail();
     this.addSubOrderDisplay = true;
   }
 
-  showEditSubOrderDialog(index: number) {
+  showEditSubOrderDialog(user: User, subOrder: OrderDetail) {
     this.modalType = 'edit';
+    this.selectedUser = user;
+    this.selectedSubOrder = subOrder;
     this.addSubOrderDisplay = true;
   }
 
-  deleteSubOrder(index: number) {
-    this.subOrders.splice(index, 1);
+  deleteSubOrder(user: User, index: number) {
+    user.sub_order_list!.splice(index, 1);
     this.messageService.showMessage(
       Severity.SUCCESS,
       'Successfully',
@@ -83,13 +87,21 @@ export class AddFormComponent implements OnInit {
     );
   }
 
+  deleteParticipant(index: number) {
+    this.participants.splice(index, 1);
+    this.messageService.showMessage(
+      Severity.SUCCESS,
+      'Successfully',
+      'deleted user participants'
+    );
+  }
+
   filterUsername(keyword: string) {
     this.filteredUsernames = this.users
       .filter((user) => user.username.includes(keyword))
+      .slice(0, 5)
       .map((user) => user.username);
   }
-
-  submitSubOrder() {}
 
   submitOrder() {
     this.newOrder.buyer_id = this.users.find(
@@ -106,9 +118,17 @@ export class AddFormComponent implements OnInit {
     }
 
     if (this.participants.length > 0) {
+      let isExistUserWithNoSubOrder = this.participants.every((user) => user.sub_order_list!.length === 0)
+      if(isExistUserWithNoSubOrder) {
+        this.messageService.showMessage(
+          Severity.ERROR,
+          'Input Error',
+          'Please specify order details for every user!'
+        );
+        return;
+      }
       this.participants.forEach(
-        (user) =>
-          (this.subOrders = [...this.subOrders, ...user.sub_order_list!])
+        (user) => (this.subOrders = [...this.subOrders, ...user.sub_order_list!])
       );
     }
 
@@ -151,11 +171,20 @@ export class AddFormComponent implements OnInit {
     this.router.navigateByUrl(Route.HOME_PATH);
   }
 
-  showDeleteSubOrderConfirmation(index: number): void {
+  showDeleteSubOrderConfirmation(user: User, index: number): void {
     this.confirmationService.confirm({
       message: 'Are you sure that you want to delete this sub-order?',
       accept: () => {
-        this.deleteSubOrder(index);
+        this.deleteSubOrder(user, index);
+      },
+    });
+  }
+
+  showDeleteParticipantConfirmation(username: string, index: number): void {
+    this.confirmationService.confirm({
+      message: `Are you sure that you want to delete ${username.toLocaleUpperCase()} from participant list?`,
+      accept: () => {
+        this.deleteParticipant(index);
       },
     });
   }
