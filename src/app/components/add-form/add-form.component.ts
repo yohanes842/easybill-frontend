@@ -97,6 +97,7 @@ export class AddFormComponent implements OnInit {
   }
 
   filterUsername(keyword: string) {
+    keyword = keyword.toLocaleLowerCase();
     this.filteredUsernames = this.users
       .filter((user) => user.username.includes(keyword))
       .slice(0, 5)
@@ -118,8 +119,10 @@ export class AddFormComponent implements OnInit {
     }
 
     if (this.participants.length > 0) {
-      let isExistUserWithNoSubOrder = this.participants.every((user) => user.sub_order_list!.length === 0)
-      if(isExistUserWithNoSubOrder) {
+      let isExistUserWithNoSubOrder = this.participants.every(
+        (user) => user.sub_order_list!.length === 0
+      );
+      if (isExistUserWithNoSubOrder) {
         this.messageService.showMessage(
           Severity.ERROR,
           'Input Error',
@@ -128,7 +131,8 @@ export class AddFormComponent implements OnInit {
         return;
       }
       this.participants.forEach(
-        (user) => (this.subOrders = [...this.subOrders, ...user.sub_order_list!])
+        (user) =>
+          (this.subOrders = [...this.subOrders, ...user.sub_order_list!])
       );
     }
 

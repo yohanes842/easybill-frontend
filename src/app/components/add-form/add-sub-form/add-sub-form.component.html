@@ -22,6 +22,7 @@
         [(ngModel)]="selectedSubOrder.order_menu_desc"
         name="subOrderMenuDesc"
         placeholder="Order description"
+        maxlength="50"
         required
       />
     </div>
@@ -31,17 +32,21 @@
         <div class="p-inputgroup">
           <span class="p-inputgroup-addon p-2 my-2">Rp</span>
           <p-inputNumber
-            [style]="{ width: '100%', 'max-width' : '7rem', 'margin-block': '0.5rem' }"
+            [style]="{
+              width: '100%',
+              'max-width': '7rem',
+              'margin-block': '0.5rem'
+            }"
             [inputStyle]="{
               width: '100%',
-              'max-width' : '7rem',
+              'max-width': '7rem',
               'padding-block': '0.5rem'
             }"
             [(ngModel)]="selectedSubOrder.price"
             name="subOrderPrice"
             placeholder="Price"
             mode="decimal"
-            [min]="0"
+            [min]="100"
             [required]="true"
           ></p-inputNumber>
         </div>
@@ -53,14 +58,18 @@
         <label for="subOrdermeuDesc" class="font-bold">Qty</label>
         <div>
           <p-inputNumber
-          [style]="{ width: '100%', 'max-width' : '7rem', 'margin-block': '0.5rem' }"
-          [inputStyle]="{
-            width: '100%',
-            'max-width' : '7rem',
-            'padding-block': '0.5rem',
-            'text-align' : 'center',
-            'padding-inline' : '0.1rem'
-          }"
+            [style]="{
+              width: '100%',
+              'max-width': '7rem',
+              'margin-block': '0.5rem'
+            }"
+            [inputStyle]="{
+              width: '100%',
+              'max-width': '7rem',
+              'padding-block': '0.5rem',
+              'text-align': 'center',
+              'padding-inline': '0.1rem'
+            }"
             [(ngModel)]="selectedSubOrder.qty"
             name="qty"
             class="text-center"
