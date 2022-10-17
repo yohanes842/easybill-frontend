@@ -37,9 +37,15 @@ export class AuthService {
     let user = localStorage.getItem('currentUser');
     let userObject: User;
     if (user) {
-      userObject = JSON.parse(user);
-      delete userObject!['access_token'];
-      return userObject;
+      try {
+        userObject = JSON.parse(user);
+        delete userObject!['access_token'];
+        return userObject;
+      } catch (error) {
+        localStorage.clear();
+        this.router.navigateByUrl(Route.LOGIN_PATH);
+        return null;
+      }
     } else {
       return null;
     }
