@@ -3287,7 +3287,7 @@ p-treeselect.p-treeselect-clearable .p-treeselect-clear-icon {
   border-radius: 0;
 }
 .p-dataview .p-dataview-header {
-  background: #1e1e1e;
+  background: #121212;
   color: rgba(255, 255, 255, 0.87);
   border: 1px solid rgba(255, 255, 255, 0.12);
   border-width: 0 0 1px 0;
@@ -3295,7 +3295,7 @@ p-treeselect.p-treeselect-clearable .p-treeselect-clear-icon {
   font-weight: 500;
 }
 .p-dataview .p-dataview-content {
-  background: #1e1e1e;
+  background: #121212;
   color: rgba(255, 255, 255, 0.87);
   border: 0 none;
   padding: 1rem 0;
@@ -3305,7 +3305,7 @@ p-treeselect.p-treeselect-clearable .p-treeselect-clear-icon {
   border-width: 0 0 1px 0;
 }
 .p-dataview .p-dataview-footer {
-  background: #1e1e1e;
+  background: #121212;
   color: rgba(255, 255, 255, 0.87);
   border: 1px solid #404040;
   border-width: 0 0 1px 0;
