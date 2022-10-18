@@ -10,7 +10,11 @@ import { Bill } from 'src/app/classes/bill';
 export class BillService {
   constructor(private http: HttpClient) {}
 
-  public getBills(): Observable<Bill[]> {
-    return this.http.get<any>(`${env.url}/api/users/bills`);
+  public getBillsPayable(): Observable<Bill[]> {
+    return this.http.get<any>(`${env.url}/api/bills/payable`);
+  }
+
+  public getBillsReceivable(): Observable<Bill[]> {
+    return this.http.get<any>(`${env.url}/api/bills/receivables`);
   }
 }

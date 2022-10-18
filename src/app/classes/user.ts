@@ -8,4 +8,7 @@ export class User {
   sub_order_list?: OrderDetail[];
   access_token?: string;
   user_orders?: OrderDetail[];
+  total_price?: number;
+  discount_total?: number;
+  total_after_discount?: number;
 }

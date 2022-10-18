@@ -18,4 +18,5 @@ export class OrderHeader {
   order_list!: OrderDetail[];
   order_detail_group_by_user!: User[];
   status!: Status[];
+  participating_user_count!: number;
 }

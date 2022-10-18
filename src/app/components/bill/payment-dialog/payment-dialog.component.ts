@@ -18,7 +18,7 @@ export class PaymentDialogComponent implements OnInit {
   constructor(private messageService: CustomMessageService) {}
 
   ngOnInit(): void {
-    this.amount = this.selectedBill.owe_total;
+    this.amount = this.selectedBill.owe_amount;
   }
 
   hideDialog(): void {
@@ -26,7 +26,7 @@ export class PaymentDialogComponent implements OnInit {
   }
 
   pay(): void {
-    if (this.amount <= this.selectedBill.owe_total) {
+    if (this.amount <= this.selectedBill.owe_amount) {
       this.messageService.showMessage(
         Severity.SUCCESS,
         'Successfully',

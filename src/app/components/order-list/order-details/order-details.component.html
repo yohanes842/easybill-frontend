@@ -81,7 +81,7 @@
             </div>
             <div>
               <p class="text-sm m-0 font-italic">
-                {{ subOrder.price | currency: "Rp ":"":"3.0" }}
+                {{ subOrder.qty * subOrder.price | currency: "Rp ":"":"3.0" }}
               </p>
             </div>
           </div>
@@ -95,15 +95,16 @@
         <div class="flex justify-content-between">
           <p class="m-0 text-sm">Order fee</p>
           <p class="m-0 text-sm font-italic">
-            {{
-              selectedOrder.total_order_amount | currency: "Rp ":"symbol":"3.0"
-            }}
+            {{ user.total_price | currency: "Rp ":"symbol":"3.0" }}
           </p>
         </div>
         <div class="flex justify-content-between">
           <p class="m-0 text-sm">Others fee</p>
           <p class="m-0 text-sm font-italic">
-            {{ selectedOrder.other_fee | currency: "":"":"3.0" }}
+            {{
+              selectedOrder.other_fee / selectedOrder.participating_user_count
+                | currency: "":"":"3.0"
+            }}
           </p>
         </div>
         <div class="flex justify-content-between text-green-400">
@@ -114,7 +115,7 @@
             </h6>
           </div>
           <p class="m-0 text-sm font-italic">
-            - {{ selectedOrder.discount_amount | currency: "":"":"3.0" }}
+            - {{ user.discount_total | currency: "":"":"3.0" }}
           </p>
         </div>
       </div>
@@ -155,7 +156,7 @@
               </div>
               <div>
                 <p class="text-sm m-0 font-italic">
-                  {{ subOrder.price | currency: "Rp ":"":"3.0" }}
+                  {{ subOrder.qty * subOrder.price | currency: "Rp ":"":"3.0" }}
                 </p>
               </div>
             </div>

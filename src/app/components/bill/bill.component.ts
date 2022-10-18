@@ -15,7 +15,8 @@ import { CustomMessageService } from 'src/app/services/message/custom-message.se
 })
 export class BillComponent implements OnInit {
   display!: boolean;
-  bills!: Bill[];
+  billsPayable!: Bill[];
+  billsReceivable!: Bill[];
   selectedBill!: Bill;
 
   constructor(
@@ -27,9 +28,17 @@ export class BillComponent implements OnInit {
   ngOnInit() {
     this.commonService.changePageTitle(Route.BILL_PATH);
 
-    this.billService.getBills().subscribe(
+    this.billService.getBillsPayable().subscribe(
       (res: any) => {
-        this.bills = res.output.data.user_bills;
+        this.billsPayable = res.output.data.users_bills;
+      },
+      (error: HttpErrorResponse) => {
+        this.messageService.showMessage(Severity.ERROR, 'REQUEST ERROR');
+      }
+    );
+    this.billService.getBillsReceivable().subscribe(
+      (res: any) => {
+        this.billsReceivable = res.output.data.users_bills;
       },
       (error: HttpErrorResponse) => {
         this.messageService.showMessage(Severity.ERROR, 'REQUEST ERROR');

@@ -39,7 +39,13 @@ export class OrderListComponent implements OnInit {
         this.orders = this.currentUser.order_list as OrderHeader[];
       },
       (error: HttpErrorResponse) => {
-        this.messageService.showMessage(Severity.ERROR, 'REQUEST ERROR');
+        if (error.error.status.code == 'JWT_VERIFICATION_ERROR') {
+          localStorage.clear();
+          this.router.navigateByUrl(Route.LOGIN_PATH);
+          this.messageService.showMessage(Severity.ERROR, 'VERIFICATION ERROR');
+        } else {
+          this.messageService.showMessage(Severity.ERROR, 'REQUEST ERROR');
+        }
       }
     );
   }

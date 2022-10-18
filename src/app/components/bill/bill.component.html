@@ -5,7 +5,7 @@
     style="max-width: 40rem"
   >
     <div
-      *ngFor="let bill of bills"
+      *ngFor="let bill of billsPayable"
       class="card p-0 bg-gray-500 flex justify-content-between w-full"
     >
       <div class="p-3 flex justify-content-between align-items-center w-full">
@@ -27,7 +27,51 @@
         <div class="text-right">
           <p class="m-0 font-bold text-sm">Total Bill</p>
           <p class="m-0">
-            {{ bill.owe_total | currency: "Rp. ":"symbol":"3.0" }}
+            {{ bill.owe_amount | currency: "Rp. ":"symbol":"3.0" }}
+          </p>
+        </div>
+      </div>
+      <button
+        pButton
+        class="p-button p-button-sm py-1 px-2 text-center border-noround border-round-right"
+        (click)="showDialog(bill)"
+      >
+        Pay now
+      </button>
+    </div>
+  </div>
+</div>
+
+<div class="flex flex-column align-items-center">
+  <h1>Utang Minta Laa</h1>
+  <div
+    class="flex flex-column justify-content-between w-10"
+    style="max-width: 40rem"
+  >
+    <div
+      *ngFor="let bill of billsReceivable"
+      class="card p-0 bg-gray-500 flex justify-content-between w-full"
+    >
+      <div class="p-3 flex justify-content-between align-items-center w-full">
+        <p class="m-0">
+          <span>
+            <p-avatar
+              styleClass="p-mr-2 "
+              [style]="{
+                'background-color': 'var(--pink-200)',
+                color: '#ffffff',
+                transform: 'scale(70%)'
+              }"
+              shape="circle"
+              >{{ bill.user.username | uppercase | slice: 0:1 }}</p-avatar
+            >
+          </span>
+          <span>{{ bill.user.username | uppercase }}</span>
+        </p>
+        <div class="text-right">
+          <p class="m-0 font-bold text-sm">Total Bill</p>
+          <p class="m-0">
+            {{ bill.owe_amount | currency: "Rp. ":"symbol":"3.0" }}
           </p>
         </div>
       </div>
