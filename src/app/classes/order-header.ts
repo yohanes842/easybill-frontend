@@ -1,4 +1,5 @@
 import { OrderDetail } from './order-detail';
+import { Status } from './status';
 import { User } from './user';
 
 export class OrderHeader {
@@ -8,11 +9,13 @@ export class OrderHeader {
   order_at?: string;
   order_description!: string;
   total_payment!: number;
-  user!: User;
+  buyer!: User;
   upto!: number;
   discount!: number;
   total_order_amount!: number;
   other_fee!: number;
   discount_amount!: number;
   order_list!: OrderDetail[];
+  order_detail_group_by_user!: User[];
+  status!: Status[];
 }

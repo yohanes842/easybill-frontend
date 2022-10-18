@@ -7,4 +7,5 @@ export class User {
   order_list?: OrderHeader[];
   sub_order_list?: OrderDetail[];
   access_token?: string;
+  user_orders?: OrderDetail[];
 }

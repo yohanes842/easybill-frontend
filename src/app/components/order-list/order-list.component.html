@@ -5,7 +5,7 @@
     [value]="orders"
     [paginator]="true"
     [rows]="9"
-    filterBy="order_description,user.username"
+    filterBy="order_description,buyer.username"
     layout="grid"
   >
     <ng-template pTemplate="header">
@@ -17,7 +17,7 @@
           <input
             pInputText
             type="search"
-            placeholder="Search by buyer name or description ..."
+            placeholder="Search something ..."
             (input)="dv.filter(getValue($event))"
             class="w-full py-2"
           />
@@ -49,38 +49,47 @@
       >
         <div>
           <div class="flex justify-content-between align-items-center">
-            <p class="p-0 m-0 mt-1 text-sm text-gray-400">
+            <p class="p-0 m-0 mt-1 text-sm text-secondary">
               {{ order.order_at | date: "EEEE, d/M/yy yy, h:mm a" }}
             </p>
             <p
+              *ngIf="order.order_header_status == 'PAID'"
               class="p-0 w-3rem border-round text-center text-sm font-italic text-green-600"
             >
               all paid
+            </p>
+            <p
+              *ngIf="order.order_header_status !== 'PAID'"
+              class="p-0 w-3rem border-round text-center text-sm font-italic"
+            >
+              unpaid
             </p>
           </div>
 
           <div class="flex justify-content-between">
             <div>
-              <h4 class="m-0" style="color: var(--custom-light-green)">
+              <h4 class="m-0" style="color: var(--custom-orange-300)">
                 {{ order.order_description }}
               </h4>
-              <p class="m-0 text-sm" style="color: var(--custom-light-green)">
+              <p class="m-0 text-sm text-secondary">
                 by
                 <span>
                   <p-avatar
-                    styleClass="p-mr-2"
+                    styleClass="p-mr-2 font-bold"
                     [style]="{
-                      'background-color': 'var(--pink-200)',
-                      color: '#ffffff',
+                      'background-color': 'var(--custom-orange-50)',
+                      color: 'black',
                       transform: 'scale(70%)'
                     }"
                     shape="circle"
                     >{{
-                      order.user.username | uppercase | slice: 0:1
+                      order.buyer.username | uppercase | slice: 0:1
                     }}</p-avatar
                   >
                 </span>
-                <span>{{ order.user.username | uppercase }}</span>
+                <span style="color: var(--custom-orange-100)">{{
+                  order.buyer.username | uppercase
+                }}</span>
               </p>
             </div>
           </div>
@@ -90,9 +99,10 @@
             pButton
             class="p-button-sm p-button-link p-0 mb-3"
             type="button"
-            label="Tap for details"
             (click)="onShowDetail(order)"
-          ></button>
+          >
+            see details
+          </button>
         </div>
       </div>
     </ng-template>

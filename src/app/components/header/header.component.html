@@ -4,8 +4,9 @@
 >
   <p-avatar
     [style]="{
-      'background-color': '#FFF2E2',
-      color: '#000000 '
+      background: 'var(--custom-orange-50)',
+      color: 'black',
+      'font-weight': 'bold'
     }"
     shape="circle"
     size="large"
@@ -13,7 +14,7 @@
     {{ currentUser!.username | slice: 0:1 | uppercase }}
   </p-avatar>
   <div>
-    <h5 class="m-0 text-red-400">easyBill</h5>
+    <h5 class="m-0" style="color: var(--custom-red-200)">easyBill</h5>
     <h2 class="m-0">{{ currentUser!.username }}</h2>
   </div>
 </header>

@@ -2,7 +2,8 @@
   <div class="flex align-items-center gap-3">
     <button
       pButton
-      class="p-button-sm p-button-danger p-button-raised p-button-rounded p-0"
+      class="p-button-sm p-button-raised p-button-rounded p-0 text-white"
+      style="background: var(--custom-red-300); transform: scale(0.8)"
       type="button"
       icon="pi pi-chevron-left"
       iconPos="left"
@@ -125,8 +126,7 @@
     </div>
     <div
       *ngIf="participants.length > 0"
-      class="card p-component border-round border-1 border-300"
-      style="background-color: var(--bg-custom-subOrder)"
+      class="card p-component border-1 border-300"
     >
       <div
         *ngFor="let user of participants; let participantIndex = index"

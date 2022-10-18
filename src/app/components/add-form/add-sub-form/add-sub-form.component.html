@@ -1,13 +1,15 @@
 <p-dialog
   styleClass="dialog-box"
-  [header]="headerTitle"
   [(visible)]="display"
   [modal]="true"
   (onHide)="hideDialog()"
 >
-  <h4 class="text-primary font-italic m-0">
-    {{ selectedUser.username | uppercase }} Order Detail
-  </h4>
+  <p-header>
+    <h3 class="m-0 p-0">{{ headerTitle }}</h3>
+    <h5 class="text-primary font-italic m-0">
+      {{ selectedUser.username | uppercase }} Order Detail
+    </h5>
+  </p-header>
   <form
     #addSubOrder="ngForm"
     class="flex flex-column p-2"
@@ -76,8 +78,8 @@
             [showButtons]="true"
             buttonLayout="horizontal"
             spinnerMode="vertical"
-            decrementButtonClass="p-2 w-fit"
-            incrementButtonClass="p-2 w-fit"
+            decrementButtonClass="p-2 w-fit text-white bg-bluegray-400"
+            incrementButtonClass="p-2 w-fit text-white bg-bluegray-400"
             incrementButtonIcon="pi pi-plus"
             decrementButtonIcon="pi pi-minus"
             [min]="1"

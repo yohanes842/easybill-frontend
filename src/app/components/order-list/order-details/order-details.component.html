@@ -10,70 +10,77 @@
   (onHide)="onHideDetail()"
 >
   <p-header>
-    <p class="p-0 m-0 mt-1 text-xs">
+    <p class="p-0 m-0 mt-1 text-xs text-secondary">
       {{ selectedOrder.order_at | date: "EEEE, d/M/yy h:mm a" }}
     </p>
-    <h5 class="my-1" style="color: var(--custom-light-green)">
+    <h5 class="my-1" style="color: var(--custom-orange-300)">
       {{ selectedOrder.order_description }}
     </h5>
-    <p class="text-xs m-0">
-      Order by
+    <p class="m-0 text-sm text-secondary">
+      by
       <span>
         <p-avatar
-          styleClass="p-mr-2 text-sm"
+          styleClass="p-mr-2 font-bold"
           [style]="{
-            'background-color': 'var(--pink-200)',
-            color: '#ffffff',
+            'background-color': 'var(--custom-orange-50)',
+            color: 'black',
             transform: 'scale(70%)'
           }"
           shape="circle"
-          >{{ selectedOrder.user.username | uppercase | slice: 0:1 }}</p-avatar
+          >{{ selectedOrder.buyer.username | uppercase | slice: 0:1 }}</p-avatar
         >
       </span>
-      <span class="text-pink-200 text-xs">{{
-        selectedOrder.user.username | uppercase
+      <span style="color: var(--custom-orange-100)">{{
+        selectedOrder.buyer.username | uppercase
       }}</span>
     </p>
     <button
+      *ngIf="status.status != 'PAID'"
       pButton
       class="p-button bg-primary p-button-sm absolute"
       style="right: 1rem"
       label="Pay Now"
     ></button>
+    <p
+      *ngIf="status.status == 'PAID'"
+      class="font-italic text-secondary absolute"
+      style="right: 1rem"
+    >
+      paid
+    </p>
   </p-header>
 
-  <div class="flex flex-column gap-2 mt-3">
-    <div class="text-sm">
+  <div class="flex flex-column gap-2 mt-5">
+    <div *ngIf="selectedOrder.buyer.id !== currentUser?.id" class="text-sm">
       <p class="m-0 text-gray-300">
         Your bill to
-        <span style="color: var(--custom-light-green)">{{
-          selectedOrder.user.username
+        <span style="color: var(--custom-orange-50)">{{
+          selectedOrder.buyer.username
         }}</span>
       </p>
-      <h2 class="m-2" style="color: var(--custom-orange)">Rp. 13.333</h2>
+      <h2 class="m-2 font-italic" style="color: var(--custom-orange-200)">
+        {{ status.owe_amount | currency: "Rp ":"symbol":"3.0" }}
+      </h2>
     </div>
 
-    <div class="bg-black-alpha-20 border-round p-3"></div>
-
-    <div class="flex flex-column gap-2 p-3 bg-black-alpha-20 border-round">
-      <div class="border-bottom-1 border-500 pb-2">
-        <h5 class="text-lg font-bold text-primary m-1">Order Summary</h5>
+    <div class="bg-black-alpha-20 border-round p-3">
+      <div class="border-bottom-1 border-500 pb-2 mb-2">
+        <h5 class="text-lg font-bold text-primary m-1">Your Order</h5>
         <div
-          *ngFor="let subOrder of selectedOrder.order_list"
-          class="flex align-items-center px-0"
+          *ngFor="let subOrder of user.user_orders"
+          class="flex align-items-center pl-3 pb-1"
         >
-          <p class="text-pink-300 text-sm m-0 mr-2">{{ subOrder.qty }}x</p>
+          <p class="text-sm m-0 mr-2" style="color: var(--custom-orange-100)">
+            {{ subOrder.qty }}x
+          </p>
           <div
             class="flex gap-5 justify-content-between align-items-center w-full"
           >
             <div>
               <p class="text-sm m-0">{{ subOrder.order_menu_desc }}</p>
-              <p class="text-xs m-0 text-gray-300">
-                by {{ subOrder.user.username }}
-              </p>
             </div>
             <div>
-              <p class="text-sm m-0">
+              <p class="text-sm m-0 font-italic">
                 {{ subOrder.price | currency: "Rp ":"":"3.0" }}
               </p>
             </div>
@@ -81,10 +88,13 @@
         </div>
       </div>
 
-      <div class="pb-2" style="border-bottom: 1.5px solid var(--custom-orange)">
+      <div
+        class="pb-2 mb-2"
+        style="border-bottom: 1.5px solid var(--custom-orange-300)"
+      >
         <div class="flex justify-content-between">
           <p class="m-0 text-sm">Order fee</p>
-          <p class="m-0 text-sm">
+          <p class="m-0 text-sm font-italic">
             {{
               selectedOrder.total_order_amount | currency: "Rp ":"symbol":"3.0"
             }}
@@ -92,18 +102,18 @@
         </div>
         <div class="flex justify-content-between">
           <p class="m-0 text-sm">Others fee</p>
-          <p class="m-0 text-sm">
+          <p class="m-0 text-sm font-italic">
             {{ selectedOrder.other_fee | currency: "":"":"3.0" }}
           </p>
         </div>
         <div class="flex justify-content-between text-green-400">
           <div>
             <p class="m-0 text-sm">Discount ({{ selectedOrder.discount }}%)</p>
-            <h6 class="m-0 px-1 font-normal text-white">
+            <h6 class="m-0 px-1 font-italic text-white">
               *Up to {{ selectedOrder.upto | currency: "":"":"3.0" }}
             </h6>
           </div>
-          <p class="m-0 text-sm">
+          <p class="m-0 text-sm font-italic">
             - {{ selectedOrder.discount_amount | currency: "":"":"3.0" }}
           </p>
         </div>
@@ -111,9 +121,84 @@
 
       <div
         class="flex justify-content-between"
-        style="color: var(--custom-orange)"
+        style="color: var(--custom-orange-300)"
       >
-        <p class="m-0 text-sm">Total Fee</p>
+        <p class="m-0 text-sm">Total Price</p>
+        <p class="m-0 font-italic">
+          {{ status.owe_amount | currency: "Rp ":"symbol":"3.0" }}
+        </p>
+      </div>
+    </div>
+
+    <div
+      class="flex flex-column gap-2 p-3 bg-black-alpha-20 border-round"
+      style="color: var(--custom-orange-50)"
+    >
+      <div class="border-bottom-1 border-500 pb-2">
+        <h5 class="text-lg font-bold text-primary m-1">Order Summary</h5>
+        <div *ngFor="let user of selectedOrder.order_detail_group_by_user">
+          <div>
+            <p class="my-1 p-1 text-secondary">by {{ user.username }}</p>
+          </div>
+          <div
+            *ngFor="let subOrder of user.user_orders"
+            class="flex align-items-center pl-3 pb-1"
+          >
+            <p class="text-sm m-0 mr-2" style="color: var(--custom-orange-100)">
+              {{ subOrder.qty }}x
+            </p>
+            <div
+              class="flex gap-5 justify-content-between align-items-center w-full"
+            >
+              <div>
+                <p class="text-sm m-0">{{ subOrder.order_menu_desc }}</p>
+              </div>
+              <div>
+                <p class="text-sm m-0 font-italic">
+                  {{ subOrder.price | currency: "Rp ":"":"3.0" }}
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div
+        class="pb-2"
+        style="border-bottom: 1.5px solid var(--custom-orange-300)"
+      >
+        <div class="flex justify-content-between">
+          <p class="m-0 text-sm">Order fee</p>
+          <p class="m-0 text-sm font-italic">
+            {{
+              selectedOrder.total_order_amount | currency: "Rp ":"symbol":"3.0"
+            }}
+          </p>
+        </div>
+        <div class="flex justify-content-between">
+          <p class="m-0 text-sm">Others fee</p>
+          <p class="m-0 text-sm font-italic">
+            {{ selectedOrder.other_fee | currency: "":"":"3.0" }}
+          </p>
+        </div>
+        <div class="flex justify-content-between text-green-400">
+          <div>
+            <p class="m-0 text-sm">Discount ({{ selectedOrder.discount }}%)</p>
+            <h6 class="m-0 px-1 font-italic text-white">
+              *Up to {{ selectedOrder.upto | currency: "":"":"3.0" }}
+            </h6>
+          </div>
+          <p class="m-0 text-sm font-italic">
+            - {{ selectedOrder.discount_amount | currency: "":"":"3.0" }}
+          </p>
+        </div>
+      </div>
+
+      <div
+        class="flex justify-content-between"
+        style="color: var(--custom-orange-300)"
+      >
+        <p class="m-0 text-sm">Total Price</p>
         <p class="m-0 font-italic">
           {{ selectedOrder.total_payment | currency: "Rp ":"symbol":"3.0" }}
         </p>

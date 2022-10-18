@@ -5,3 +5,16 @@
   right: 0.5rem;
   z-index: 9999;
 }
+
+::ng-deep .p-dialog .p-dialog-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+:host ::ng-deep .p-dialog-header-close-icon {
+  background-color: var(--custom-red-300);
+  padding: 0.5rem;
+  border-radius: 50%;
+  transform: scale(0.8);
+}

@@ -194,7 +194,6 @@ export class AddFormComponent implements OnInit {
   }
 
   showSaveOrderConfirmation(): void {
-    console.log('amsuk');
     this.confirmationService.confirm({
       message: 'Are you sure that you want to save this order?',
       accept: () => {
