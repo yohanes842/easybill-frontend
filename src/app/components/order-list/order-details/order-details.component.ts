@@ -11,11 +11,13 @@ import { AuthService } from 'src/app/services/auth/auth.service';
 })
 export class OrderDetailsComponent implements OnInit {
   @Input() selectedOrder!: OrderHeader;
+  @Input() isRelevantOrder!: boolean;
   @Output() close: EventEmitter<any> = new EventEmitter();
 
   currentUser!: User | null;
   user!: User; //user yang sedang login
-  status!: Status;
+  yourStatus!: Status;
+  othersStatus: Status[] = [];
 
   display: boolean = true;
 
@@ -28,9 +30,13 @@ export class OrderDetailsComponent implements OnInit {
       (user: User) => user.id === this.currentUser?.id
     )!;
 
-    this.status = this.selectedOrder.status.find(
-      (status: Status) => status.user.id === this.currentUser?.id
-    )!;
+    this.selectedOrder.status.forEach((status) => {
+      if(status.user.id === this.currentUser?.id) this.yourStatus = status;
+      else this.othersStatus.push(status);
+    });
+
+    console.log(this.yourStatus);
+    console.log(this.othersStatus);
   }
 
   onHideDetail(): void {

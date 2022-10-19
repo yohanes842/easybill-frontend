@@ -11,8 +11,12 @@ import { User } from 'src/app/classes/user';
 export class OrderService {
   constructor(private http: HttpClient) {}
 
-  public getUserOrders(userId: number): Observable<User> {
+  public getRelevantOrders(): Observable<User> {
     return this.http.get<any>(`${env.url}/api/users/relevant-orders`);
+  }
+
+  public getUsersOrders(): Observable<User> {
+    return this.http.get<any>(`${env.url}/api/users/users-orders`);
   }
 
   public addOrder(orderHeader: OrderHeader): Observable<OrderHeader> {

@@ -37,6 +37,7 @@ import { FieldsetModule } from 'primeng/fieldset';
 import { AvatarModule } from 'primeng/avatar';
 import { AvatarGroupModule } from 'primeng/avatargroup';
 import { PasswordModule } from 'primeng/password';
+import {TabMenuModule} from 'primeng/tabmenu';
 
 import { UserService } from 'src/app/services/user/user.service';
 import { OrderService } from 'src/app/services/order/order.service';
@@ -49,6 +50,8 @@ import { AuthApiInterceptor } from 'src/app/interceptor/auth-http.interceptor';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { PaymentDialogComponent } from 'src/app/components/bill/payment-dialog/payment-dialog.component';
 import { AddUserFormComponent } from 'src/app/components/add-form/add-user-form/add-user-form.component';
+import { OrderListHeaderComponent } from './components/order-list/header/header.component';
+import { OrderListContentComponent } from './components/order-list/order-list-content/order-list-content.component';
 
 @NgModule({
   declarations: [
@@ -64,6 +67,8 @@ import { AddUserFormComponent } from 'src/app/components/add-form/add-user-form/
     LoginComponent,
     PaymentDialogComponent,
     AddUserFormComponent,
+    OrderListHeaderComponent,
+    OrderListContentComponent,
   ],
   imports: [
     BrowserModule,
@@ -91,6 +96,7 @@ import { AddUserFormComponent } from 'src/app/components/add-form/add-user-form/
     AvatarModule,
     AvatarGroupModule,
     PasswordModule,
+    TabMenuModule,
   ],
   providers: [
     UserService,

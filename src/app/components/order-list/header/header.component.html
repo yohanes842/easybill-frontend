@@ -1,0 +1,45 @@
+<div
+    class="flex flex-row justify-content-between align-items-center gap-3 mb-1"
+>
+    <span class="p-input-icon-left mb-0 w-full">
+    <i class="pi pi-search"></i>
+    <input
+        pInputText
+        type="search"
+        placeholder="Search something ..."
+        (input)="dv.filter(getValue($event))"
+        class="w-full py-2"
+    />
+    </span>
+    <button
+    pButton
+    class="p-button bg-primary p-button-sm px-0"
+    icon="pi pi-plus"
+    (click)="navigateToAddOrdersForm()"
+    ></button>
+</div>
+<div class="flex align-items-center justify-content-between">
+    <h2 class="m-0 font-italic">Order History</h2>
+    <p-dropdown
+    [style]="{
+        padding: '0rem',
+        transform: 'scale(0.75)',
+        'z-index': '100'
+    }"
+    [panelStyle]="{
+        padding: '0rem',
+        background: 'var(--custom-neutral-100)',
+        'z-index': '100'
+    }"
+    [options]="sortOptions"
+    [(ngModel)]="selectedSortOptions"
+    placeholder="Sort by time"
+    ></p-dropdown>
+</div>
+<div class="w-full sm:w-fit">
+    <p-tabMenu
+    [style]="{ width: '100%' }"
+    [model]="tabMenus"
+    [activeItem]="activeMenu"
+    ></p-tabMenu>
+</div>

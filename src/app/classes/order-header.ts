@@ -19,4 +19,5 @@ export class OrderHeader {
   order_detail_group_by_user!: User[];
   status!: Status[];
   participating_user_count!: number;
+  order_header_status!: string;
 }
