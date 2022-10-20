@@ -1,0 +1,77 @@
+<div *ngIf="isPayable" class="flex flex-column align-items-center mt-3">
+  <div
+    *ngFor="let bill of bills"
+    class="card p-0 flex justify-content-between w-full"
+    style="background: var(--custom-light-black)"
+  >
+    <div class="px-3 py-2 flex justify-content-between align-items-end w-full">
+      <div>
+        <p class="m-0 text-sm">
+          <span>
+            <p-avatar
+              styleClass="p-mr-2 "
+              [style]="{
+                'background-color': 'var(--pink-200)',
+                color: '#ffffff',
+                transform: 'scale(70%)'
+              }"
+              shape="circle"
+              >{{ bill.owe.username | uppercase | slice: 0:1 }}</p-avatar
+            >
+          </span>
+          <span>{{ bill.owe.username | uppercase }}</span>
+        </p>
+        <h3
+          class="m-0 ml-5 font-italic"
+          style="color: var(--custom-orange-200)"
+        >
+          {{ bill.owe_amount | currency: "Rp. ":"symbol":"3.0" }}
+        </h3>
+      </div>
+      <h6 class="m-0 text-secondary text-right font-italic">see details</h6>
+    </div>
+    <button
+      pButton
+      class="p-button p-button-sm text-center border-noround border-round-right font-bold"
+      style="background: var(--custom-orange-300); aspect-ratio: 1"
+      (click)="showDialog(bill)"
+    >
+      Pay now
+    </button>
+  </div>
+</div>
+
+<div *ngIf="!isPayable" class="flex flex-column align-items-center mt-3">
+  <div
+    *ngFor="let bill of bills"
+    class="card p-0 w-full"
+    style="background: var(--custom-light-black)"
+  >
+    <div class="px-3 py-2 flex justify-content-between align-items-end w-full">
+      <div>
+        <p class="m-0 text-sm">
+          <span>
+            <p-avatar
+              styleClass="p-mr-2 "
+              [style]="{
+                'background-color': 'var(--pink-200)',
+                color: '#ffffff',
+                transform: 'scale(70%)'
+              }"
+              shape="circle"
+              >{{ bill.user.username | uppercase | slice: 0:1 }}</p-avatar
+            >
+          </span>
+          <span>{{ bill.user.username | uppercase }}</span>
+        </p>
+        <h3
+          class="m-0 ml-5 font-italic"
+          style="color: var(--custom-orange-200)"
+        >
+          {{ bill.owe_amount | currency: "Rp. ":"symbol":"3.0" }}
+        </h3>
+      </div>
+      <h6 class="m-0 text-secondary text-right font-italic">see details</h6>
+    </div>
+  </div>
+</div>

@@ -6,6 +6,7 @@ import { environment as env } from 'src/environments/environment';
 import { Route } from 'src/app/enums/Route';
 import { LoginForm } from 'src/app/classes/login-form';
 import { User } from 'src/app/classes/user';
+import { Response } from 'src/app/interfaces/response';
 
 @Injectable({
   providedIn: 'root',
@@ -13,8 +14,8 @@ import { User } from 'src/app/classes/user';
 export class AuthService {
   constructor(private http: HttpClient, private router: Router) {}
 
-  login(user: LoginForm): Observable<any> {
-    return this.http.post<any>(`${env.url}/api/auth`, user).pipe(
+  login(user: LoginForm): Observable<Response<User>> {
+    return this.http.post<Response<User>>(`${env.url}/api/auth`, user).pipe(
       tap({
         next: (res) => {
           let user = res.output.data;

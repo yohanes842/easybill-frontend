@@ -2,10 +2,11 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { Route } from 'src/app/enums/Route';
 import { Severity } from 'src/app/enums/Severity';
-import { Bill } from 'src/app/classes/bill';
+import { Status } from 'src/app/classes/status';
 import { BillService } from 'src/app/services/bill/bill.service';
 import { CommonService } from 'src/app/services/common/common.service';
 import { CustomMessageService } from 'src/app/services/message/custom-message.service';
+import { MenuItem } from 'primeng/api';
 
 @Component({
   selector: 'app-bill',
@@ -15,27 +16,47 @@ import { CustomMessageService } from 'src/app/services/message/custom-message.se
 })
 export class BillComponent implements OnInit {
   display!: boolean;
-  billsPayable!: Bill[];
-  billsReceivable!: Bill[];
-  selectedBill!: Bill;
+  bills!: Status[];
+  billsPayable!: Status[];
+  billsReceivable!: Status[];
+  selectedBill!: Status;
 
   constructor(
     private billService: BillService,
-    private commonService: CommonService,
     private messageService: CustomMessageService
   ) {}
 
   ngOnInit() {
-    this.commonService.changePageTitle(Route.BILL_PATH);
+    this.getBillsPayable();
+    this.getBillsReceivable();
+  }
 
+  getValue(event: Event): string {
+    return (event.target as HTMLInputElement).value;
+  }
+
+  showDialog(bill: Status) {
+    this.selectedBill = bill;
+    this.display = true;
+  }
+
+  hideDialog() {
+    this.display = false;
+  }
+
+  getBillsPayable(): void {
     this.billService.getBillsPayable().subscribe(
       (res: any) => {
         this.billsPayable = res.output.data.users_bills;
+        this.bills = this.billsPayable;
       },
       (error: HttpErrorResponse) => {
         this.messageService.showMessage(Severity.ERROR, 'REQUEST ERROR');
       }
     );
+  }
+
+  getBillsReceivable(): void {
     this.billService.getBillsReceivable().subscribe(
       (res: any) => {
         this.billsReceivable = res.output.data.users_bills;
@@ -46,16 +67,14 @@ export class BillComponent implements OnInit {
     );
   }
 
-  getValue(event: Event): string {
-    return (event.target as HTMLInputElement).value;
+  changeDataViewContent(isBillsPayable: boolean): void {
+    this.bills = isBillsPayable ? this.billsPayable : this.billsReceivable;
   }
 
-  showDialog(bill: Bill) {
-    console.log(bill);
-    this.selectedBill = bill;
-    this.display = true;
-  }
-  hideDialog() {
-    this.display = false;
+  payBill(bill: Status): void {
+    let billsPayableList = this.billsPayable;
+    let index = billsPayableList.indexOf(bill);
+    billsPayableList.splice(index, 1);
+    this.hideDialog();
   }
 }

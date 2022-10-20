@@ -4983,7 +4983,7 @@ p-treeselect.p-treeselect-clearable .p-treeselect-clear-icon {
   margin-right: 0;
 }
 .p-dialog .p-dialog-content {
-  background: #262626;
+  background: var(--custom-neutral-100);
   color: rgba(255, 255, 255, 0.87);
   padding: 0 1.5rem 1.5rem 1.5rem;
 }

@@ -1,7 +1,9 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Severity } from 'src/app/enums/Severity';
-import { Bill } from 'src/app/classes/bill';
+import { Status } from 'src/app/classes/status';
 import { CustomMessageService } from 'src/app/services/message/custom-message.service';
+import { BillService } from 'src/app/services/bill/bill.service';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-payment-dialog',
@@ -9,13 +11,17 @@ import { CustomMessageService } from 'src/app/services/message/custom-message.se
   styleUrls: ['./payment-dialog.component.css'],
 })
 export class PaymentDialogComponent implements OnInit {
-  @Input() selectedBill!: Bill;
+  @Input() selectedBill!: Status;
+  @Output() onPay: EventEmitter<any> = new EventEmitter();
   @Output() onClose: EventEmitter<any> = new EventEmitter();
 
   display: boolean = true;
   amount!: number;
 
-  constructor(private messageService: CustomMessageService) {}
+  constructor(
+    private billService: BillService,
+    private messageService: CustomMessageService
+  ) {}
 
   ngOnInit(): void {
     this.amount = this.selectedBill.owe_amount;
@@ -26,12 +32,27 @@ export class PaymentDialogComponent implements OnInit {
   }
 
   pay(): void {
+    console.log(this.selectedBill);
     if (this.amount <= this.selectedBill.owe_amount) {
-      this.messageService.showMessage(
-        Severity.SUCCESS,
-        'Successfully',
-        'done payment!'
-      );
+      this.billService
+        .payBill(this.amount, this.selectedBill.owe.id!)
+        .subscribe(
+          (res: any) => {
+            this.messageService.showMessage(
+              Severity.SUCCESS,
+              'Successfully',
+              'done payment!'
+            );
+          },
+          (error: HttpErrorResponse) => {
+            this.messageService.showMessage(
+              Severity.ERROR,
+              'REQUEST ERROR Payment failed!'
+            );
+          }
+        );
+      this.onPay.emit(this.selectedBill);
+      this.hideDialog();
     } else {
       this.messageService.showMessage(
         Severity.ERROR,

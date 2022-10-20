@@ -52,6 +52,8 @@ import { PaymentDialogComponent } from 'src/app/components/bill/payment-dialog/p
 import { AddUserFormComponent } from 'src/app/components/add-form/add-user-form/add-user-form.component';
 import { OrderListHeaderComponent } from './components/order-list/header/header.component';
 import { OrderListContentComponent } from './components/order-list/order-list-content/order-list-content.component';
+import { BillHeaderComponent } from './components/bill/bill-header/bill-header.component';
+import { BillContentComponent } from './components/bill/bill-content/bill-content.component';
 
 @NgModule({
   declarations: [
@@ -69,6 +71,8 @@ import { OrderListContentComponent } from './components/order-list/order-list-co
     AddUserFormComponent,
     OrderListHeaderComponent,
     OrderListContentComponent,
+    BillHeaderComponent,
+    BillContentComponent,
   ],
   imports: [
     BrowserModule,

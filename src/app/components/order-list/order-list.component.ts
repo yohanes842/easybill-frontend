@@ -87,7 +87,6 @@ export class OrderListComponent implements OnInit {
   }
 
   changeDataViewContent(isRelevantOrder: boolean): void{
-    if(isRelevantOrder) this.orders = this.relevantOrders;
-    else this.orders = this.usersOrders;
+    this.orders = (isRelevantOrder) ? this.relevantOrders : this.usersOrders;
   }
 }
