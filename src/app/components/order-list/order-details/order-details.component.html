@@ -43,13 +43,13 @@
     >
       <div>
         <p class="m-0 text-gray-300">
-          Your bill to
+          Your remaining bill to
           <span style="color: var(--custom-orange-50)">{{
             selectedOrder.buyer.username
           }}</span>
         </p>
         <h2 class="m-2 font-italic" style="color: var(--custom-orange-200)">
-          {{ yourStatus.owe_amount | currency: "Rp ":"symbol":"1.0-0" }}
+          {{ yourStatus.remaining_amount | currency: "Rp ":"symbol":"1.0-0" }}
         </h2>
       </div>
       <div>
