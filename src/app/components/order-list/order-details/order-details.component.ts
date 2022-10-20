@@ -31,12 +31,9 @@ export class OrderDetailsComponent implements OnInit {
     )!;
 
     this.selectedOrder.status.forEach((status) => {
-      if(status.user.id === this.currentUser?.id) this.yourStatus = status;
+      if (status.user.id === this.currentUser?.id) this.yourStatus = status;
       else this.othersStatus.push(status);
     });
-
-    console.log(this.yourStatus);
-    console.log(this.othersStatus);
   }
 
   onHideDetail(): void {

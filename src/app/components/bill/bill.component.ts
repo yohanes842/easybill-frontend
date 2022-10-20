@@ -1,12 +1,9 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { Route } from 'src/app/enums/Route';
-import { Severity } from 'src/app/enums/Severity';
 import { Status } from 'src/app/classes/status';
+import { Severity } from 'src/app/enums/Severity';
 import { BillService } from 'src/app/services/bill/bill.service';
-import { CommonService } from 'src/app/services/common/common.service';
 import { CustomMessageService } from 'src/app/services/message/custom-message.service';
-import { MenuItem } from 'primeng/api';
 
 @Component({
   selector: 'app-bill',
@@ -71,10 +68,15 @@ export class BillComponent implements OnInit {
     this.bills = isBillsPayable ? this.billsPayable : this.billsReceivable;
   }
 
-  payBill(bill: Status): void {
+  payBill({ bill, amount }: { bill: Status; amount: number }): void {
     let billsPayableList = this.billsPayable;
-    let index = billsPayableList.indexOf(bill);
-    billsPayableList.splice(index, 1);
+
+    if (amount < bill.owe_amount) {
+      bill.owe_amount -= amount;
+    } else if (amount == bill.owe_amount) {
+      let index = billsPayableList.indexOf(bill);
+      billsPayableList.splice(index, 1);
+    }
     this.hideDialog();
   }
 }

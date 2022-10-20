@@ -27,8 +27,6 @@ export class AddSubFormComponent implements OnInit {
   ngOnInit(): void {
     this.headerTitle =
       this.modalType === 'add' ? 'Add Sub-Order' : 'Edit Sub-Order';
-
-      console.log(this.selectedSubOrder);
   }
 
   search(keyword: string): void {

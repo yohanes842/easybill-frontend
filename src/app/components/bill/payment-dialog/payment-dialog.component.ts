@@ -32,7 +32,6 @@ export class PaymentDialogComponent implements OnInit {
   }
 
   pay(): void {
-    console.log(this.selectedBill);
     if (this.amount <= this.selectedBill.owe_amount) {
       this.billService
         .payBill(this.amount, this.selectedBill.owe.id!)
@@ -51,7 +50,11 @@ export class PaymentDialogComponent implements OnInit {
             );
           }
         );
-      this.onPay.emit(this.selectedBill);
+      let params: { bill: Status; amount: number } = {
+        bill: this.selectedBill,
+        amount: this.amount,
+      };
+      this.onPay.emit(params);
       this.hideDialog();
     } else {
       this.messageService.showMessage(

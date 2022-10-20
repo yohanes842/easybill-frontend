@@ -1,7 +1,7 @@
-<div *ngIf="isPayable" class="flex flex-column align-items-center mt-3">
+<div *ngIf="isPayable" class="flex flex-column align-items-center gap-2 mt-3">
   <div
     *ngFor="let bill of bills"
-    class="card p-0 flex justify-content-between w-full"
+    class="card p-0 flex justify-content-between w-full border-round-left"
     style="background: var(--custom-light-black)"
   >
     <div class="px-3 py-2 flex justify-content-between align-items-end w-full">
@@ -25,7 +25,7 @@
           class="m-0 ml-5 font-italic"
           style="color: var(--custom-orange-200)"
         >
-          {{ bill.owe_amount | currency: "Rp. ":"symbol":"3.0" }}
+          {{ bill.owe_amount | currency: "Rp. ":"symbol":"1.0-0" }}
         </h3>
       </div>
       <h6 class="m-0 text-secondary text-right font-italic">see details</h6>
@@ -68,7 +68,7 @@
           class="m-0 ml-5 font-italic"
           style="color: var(--custom-orange-200)"
         >
-          {{ bill.owe_amount | currency: "Rp. ":"symbol":"3.0" }}
+          {{ bill.owe_amount | currency: "Rp. ":"symbol":"1.0-0" }}
         </h3>
       </div>
       <h6 class="m-0 text-secondary text-right font-italic">see details</h6>
