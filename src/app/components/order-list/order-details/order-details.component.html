@@ -43,13 +43,13 @@
     >
       <div>
         <p class="m-0 text-gray-300">
-          Your remaining bill to
+          Your bill to
           <span style="color: var(--custom-orange-50)">{{
             selectedOrder.buyer.username
           }}</span>
         </p>
         <h2 class="m-2 font-italic" style="color: var(--custom-orange-200)">
-          {{ yourStatus.remaining_amount | currency: "Rp ":"symbol":"1.0-0" }}
+          {{ yourStatus.owe_amount | currency: "Rp ":"symbol":"1.0-0" }}
         </h2>
       </div>
       <div>
@@ -131,12 +131,40 @@
       </div>
 
       <div
-        class="flex justify-content-between"
-        style="color: var(--custom-orange-300)"
+        class="pb-2 mb-2"
+        style="border-bottom: 1.5px solid var(--custom-orange-300)"
       >
-        <p class="m-0 text-sm">Total Price</p>
+        <div
+          class="flex justify-content-between"
+          style="color: var(--custom-orange-300)"
+        >
+          <p class="m-0 text-sm">Total Price</p>
+          <p class="m-0 font-italic">
+            {{ yourStatus.owe_amount | currency: "Rp ":"symbol":"1.0-0" }}
+          </p>
+        </div>
+        <div
+          *ngIf="yourStatus.total_paid > 0"
+          class="flex justify-content-between"
+          style="color: var(--custom-orange-300)"
+        >
+          <p class="m-0 text-sm">Total Paid</p>
+          <p class="m-0 font-italic">
+            {{ yourStatus.total_paid | currency: "":"":"1.0-0" }}
+          </p>
+        </div>
+      </div>
+
+      <div
+        *ngIf="yourStatus.total_paid > 0"
+        class="flex justify-content-between"
+      >
+        <p class="m-0">Remaining bill</p>
         <p class="m-0 font-italic">
-          {{ yourStatus.owe_amount | currency: "Rp ":"symbol":"1.0-0" }}
+          {{
+            yourStatus.owe_amount - yourStatus.total_paid
+              | currency: "Rp ":"symbol":"1.0-0"
+          }}
         </p>
       </div>
     </div>
