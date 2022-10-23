@@ -1,0 +1,38 @@
+<div class="text-sm flex justify-content-between">
+  <div>
+    <p class="m-0 text-gray-300">Your total amount in this order</p>
+    <h2 class="m-2 font-italic" style="color: var(--custom-orange-200)">
+      {{ yourStatus.owe_amount | currency: "Rp ":"symbol":"1.0-0" }}
+    </h2>
+  </div>
+</div>
+
+<div class="bg-black-alpha-20 border-round p-3">
+  <div class="pb-2 mb-2">
+    <h5 class="text-lg font-bold text-primary m-1">Bill Summary</h5>
+    <div
+      *ngFor="let status of othersStatus"
+      class="flex justify-content-between align-items-end w-full border-bottom-1 p-2"
+    >
+      <div>
+        <p class="text-sm m-0" style="color: var(--custom-green-100)">
+          {{ status.user.username }}
+        </p>
+        <h3
+          class="mx-2 my-1 font-italic"
+          style="color: var(--custom-green-200)"
+        >
+          {{ status.owe_amount | currency: "Rp ":"":"1.0-0" }}
+        </h3>
+      </div>
+      <div>
+        <p
+          class="text-sm m-0 font-italic"
+          [ngClass]="status.status == 'PAID' ? 'text-white' : 'text-secondary'"
+        >
+          {{ status.status }}
+        </p>
+      </div>
+    </div>
+  </div>
+</div>

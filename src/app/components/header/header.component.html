@@ -1,21 +1,20 @@
-<header class="sticky top-0 z-4 w-full">
-  <div class="bg-primary px-5 flex justify-content-between align-items-center">
-    <h3 class="p-component">{{ title }}</h3>
-    <div style="width: 30%; max-width: 10rem">
-      <img
-        class="w-full h-full"
-        style="object-fit: cover; aspect-ratio: 19/5"
-        src="/assets/full.png"
-        alt=""
-      />
-    </div>
-  </div>
-  <div class="bg-white px-5 py-1 flex justify-content-end align-items-center">
-    <h3 class="p-component text-gray-300 text-xs m-0">
-      You now sign in as
-      <span class="text-primary text-sm">
-        {{ currentUser!.username | uppercase }}
-      </span>
-    </h3>
+<header
+  class="sticky top-0 z-4 w-full flex align-items-center gap-3 p-3"
+  style="background-color: var(--custom-black)"
+>
+  <p-avatar
+    [style]="{
+      background: 'var(--custom-orange-50)',
+      color: 'black',
+      'font-weight': 'bold'
+    }"
+    shape="circle"
+    size="large"
+  >
+    {{ currentUser!.username | slice: 0:1 | uppercase }}
+  </p-avatar>
+  <div>
+    <h5 class="m-0" style="color: var(--custom-red-200)">easyBill</h5>
+    <h2 class="m-0">{{ currentUser!.username }}</h2>
   </div>
 </header>

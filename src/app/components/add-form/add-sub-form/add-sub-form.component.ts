@@ -1,6 +1,8 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { OrderDetail } from 'src/app/classes/order-detail';
 import { User } from 'src/app/classes/user';
+import { Severity } from 'src/app/enums/Severity';
+import { CustomMessageService } from 'src/app/services/message/custom-message.service';
 
 @Component({
   selector: 'dialog-add-sub-form',
@@ -9,8 +11,10 @@ import { User } from 'src/app/classes/user';
 })
 export class AddSubFormComponent implements OnInit {
   @Input() filteredUsernames!: string[];
-  @Input() subOrder!: OrderDetail;
+  @Input() users!: User[];
   @Input() modalType!: string;
+  @Input() selectedUser!: User;
+  @Input() selectedSubOrder!: OrderDetail;
   @Output() onSubmit: EventEmitter<any> = new EventEmitter();
   @Output() onSearchKeyChange: EventEmitter<any> = new EventEmitter();
   @Output() onClose: EventEmitter<any> = new EventEmitter();
@@ -18,11 +22,11 @@ export class AddSubFormComponent implements OnInit {
   display: boolean = true;
   headerTitle!: string;
 
-  constructor() {}
+  constructor(private messageService: CustomMessageService) {}
 
   ngOnInit(): void {
     this.headerTitle =
-      this.modalType === 'add' ? 'Add New Sub-Order' : 'Edit Sub-Order';
+      this.modalType === 'add' ? 'Add Sub-Order' : 'Edit Sub-Order';
   }
 
   search(keyword: string): void {
@@ -30,10 +34,21 @@ export class AddSubFormComponent implements OnInit {
   }
 
   submitSubOrder(): void {
-    this.onSubmit.emit();
+    this.selectedSubOrder.user_id = this.selectedUser.id;
+
+    if (this.modalType === 'add') {
+      this.selectedUser!.sub_order_list!.push(this.selectedSubOrder);
+    }
+
+    this.messageService.showMessage(
+      Severity.SUCCESS,
+      'Successfully',
+      this.modalType === 'add' ? 'added new sub-order' : 'edit sub-order'
+    );
+    this.onClose.emit();
   }
 
   hideDialog(): void {
-    this.onClose.emit(null);
+    this.onClose.emit();
   }
 }

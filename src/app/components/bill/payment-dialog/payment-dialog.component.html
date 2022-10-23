@@ -5,27 +5,59 @@
     'max-width': '30rem',
     'overflow-x': 'hidden'
   }"
-  header="Payment Form"
   [modal]="true"
   [(visible)]="display"
   (onHide)="hideDialog()"
 >
+  <p-header>
+    <p class="m-0 text-xs">Pay Now</p>
+    <p class="m-0 text-xs">
+      <span>to</span>
+      <span>
+        <p-avatar
+          styleClass="p-mr-2 "
+          [style]="{
+            'background-color': 'var(--pink-200)',
+            color: '#ffffff',
+            transform: 'scale(70%)'
+          }"
+          shape="circle"
+          >{{ selectedBill.user.username | uppercase | slice: 0:1 }}</p-avatar
+        >
+      </span>
+      <span>{{ selectedBill.user.username | uppercase }}</span>
+    </p>
+    <h3 class="m-0 font-italic" style="color: var(--custom-orange-200)">
+      {{ selectedBill.owe_amount | currency: "Rp. ":"symbol":"1.0-0" }}
+    </h3>
+  </p-header>
   <form
     #paymentForm="ngForm"
-    class="flex flex-column gap-2 w-full"
+    class="flex flex-column gap-2 w-full mt-3 p-5"
     (ngSubmit)="pay()"
   >
-    <div class="flex gap-2 justify-content-center">
+    <div class="p-inputgroup">
+      <span class="p-inputgroup-addon p-2 my-2">Rp</span>
       <p-inputNumber
+        [style]="{ width: '100%', 'margin-block': '0.5rem' }"
+        [inputStyle]="{ width: '100%', 'padding-block': '0.5rem' }"
+        name="totalPayment"
         [(ngModel)]="amount"
-        name="subOrderPrice"
-        placeholder="Enter amount"
-        mode="currency"
-        currency="IDR"
-        locale="in-IN"
-        [ariaRequired]="true"
+        mode="decimal"
+        [min]="0"
+        [required]="true"
+        placeholder="Total payment"
       ></p-inputNumber>
-      <button pButton class="p-button text-center">Pay</button>
+    </div>
+    <div class="text-center w-full">
+      <button
+        pButton
+        class="py-2 px-4 w-fit text-white font-italic font-bold"
+        style="background-color: var(--custom-red-300)"
+        [disabled]="paymentForm.invalid"
+      >
+        Pay now
+      </button>
     </div>
   </form>
 </p-dialog>

@@ -1,108 +1,28 @@
-<div class="card">
+<div>
   <p-dataView
     #dv
-    [ngStyle]="{ color: 'var(--blue-500)' }"
+    [style]="{ 'background-color': 'white !important' }"
     [value]="orders"
     [paginator]="true"
     [rows]="9"
-    filterBy="order_description,user.username"
-    layout="list"
+    filterBy="order_description,buyer.username"
+    layout="grid"
   >
     <ng-template pTemplate="header">
-      <div
-        class="flex flex-row justify-content-between align-items-center gap-3"
-      >
-        <span class="p-input-icon-left mb-0 w-full">
-          <i class="pi pi-search"></i>
-          <input
-            class="py-1"
-            type="search"
-            pInputText
-            placeholder="Search by buyer name or description ..."
-            (input)="dv.filter(getValue($event))"
-            class="w-full"
-          />
-        </span>
-        <button
-          pButton
-          class="p-button"
-          icon="pi pi-plus"
-          routerLink="add"
-        ></button>
-      </div>
+      <order-list-header
+        [dv]="dv"
+        headerTitle="Order Header"
+        [withTabMenu]="true"
+        (onTapMenu)="changeDataViewContent($event)"
+      ></order-list-header>
     </ng-template>
-    <ng-template let-order pTemplate="listItem" class="flex flex-column gap-2">
-      <div class="p-col-12 w-full px-5">
-        <div>
-          <div class="flex justify-content-between align-items-center">
-            <div class="text-gray-300">
-              <h5 class="p-0 m-0 mt-1">
-                {{ order.order_at | date: "fullDate" }}
-              </h5>
-              <h5 class="p-0 m-0 mb-2">
-                {{ order.order_at | date: "shortTime" }}
-              </h5>
-            </div>
-            <p class="bg-primary p-1 w-3rem border-round text-center text-sm">
-              Paid
-            </p>
-          </div>
 
-          <div class="flex justify-content-between">
-            <div>
-              <p class="m-0">{{ order.order_description }}</p>
-              <p class="m-0 text-sm">
-                by
-                <span>
-                  <p-avatar
-                    styleClass="p-mr-2 "
-                    [style]="{
-                      'background-color': 'var(--pink-200)',
-                      color: '#ffffff',
-                      transform: 'scale(70%)'
-                    }"
-                    shape="circle"
-                    >{{
-                      order.user.username | uppercase | slice: 0:1
-                    }}</p-avatar
-                  >
-                </span>
-                <span>{{ order.user.username | uppercase }}</span>
-              </p>
-            </div>
-            <div class="text-right">
-              <p class="m-0 text-sm text-gray-300">Total price</p>
-              <p class="m-0">
-                {{ order.total_payment | currency: "Rp. ":"symbol":"3.0" }}
-              </p>
-            </div>
-          </div>
-        </div>
-        <div class="flex justify-content-between w-full">
-          <!-- <p-avatarGroup>
-            <div class="flex gap-1">
-              <p-avatar
-                *ngFor="let subOrder of order.order_list; index as i"
-                styleClass="p-mr-2"
-                [style]="{
-                  'background-color': 'var(--pink-200)',
-                  color: '#ffffff'
-                }"
-                label="lala"
-                shape="circle"
-              ></p-avatar>
-            </div>
-          </p-avatarGroup> -->
-        </div>
-        <div class="text-right relative bottom-0 right-0">
-          <button
-            pButton
-            class="p-button-sm p-button-link p-0 my-3"
-            type="button"
-            label="Tap for details"
-            (click)="onShowDetail(order)"
-          ></button>
-        </div>
+    <ng-template let-order pTemplate="gridItem" class="flex flex-column gap-3">
+      <div class="w-full px-5">
+        <order-list-content
+          [order]="order"
+          (onShowDetail)="showDetail($event)"
+        ></order-list-content>
       </div>
     </ng-template>
   </p-dataView>
@@ -111,5 +31,6 @@
 <dialog-order-details
   *ngIf="display"
   [selectedOrder]="selectedOrder"
-  (close)="onHideDetail()"
+  [isRelevantOrder]="orders == relevantOrders"
+  (close)="hideDetail()"
 ></dialog-order-details>

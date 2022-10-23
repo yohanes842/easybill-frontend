@@ -1,0 +1,65 @@
+<div>
+  <div class="flex justify-content-between">
+    <div>
+      <ng-container
+        *ngIf="transaction.receiver.id === currentUser!.id; else to"
+      >
+        <p class="m-0 text-sm text-secondary">
+          <span>from</span>
+          <span>
+            <p-avatar
+              styleClass="p-mr-2 font-bold bg-primary"
+              [style]="{
+                color: 'black',
+                transform: 'scale(70%)'
+              }"
+              shape="circle"
+              >{{
+                transaction.payer.username | uppercase | slice: 0:1
+              }}</p-avatar
+            >
+          </span>
+          <span class="text-primary">{{
+            transaction.payer.username | uppercase
+          }}</span>
+        </p>
+        <h2 class="ml-3 mb-0 mt-2" style="color: var(--custom-green-200)">
+          {{ transaction.paid_amount | currency: "Rp ":"symbol":"1.0-0" }}
+        </h2>
+      </ng-container>
+
+      <ng-template #to>
+        <div>
+          <p class="m-0 text-sm text-secondary">
+            <span>to</span>
+            <span>
+              <p-avatar
+                styleClass="p-mr-2 font-bold bg-primary"
+                [style]="{
+                  color: 'black',
+                  transform: 'scale(70%)'
+                }"
+                shape="circle"
+                >{{
+                  transaction.receiver.username | uppercase | slice: 0:1
+                }}</p-avatar
+              >
+            </span>
+            <span class="text-primary">{{
+              transaction.receiver.username | uppercase
+            }}</span>
+          </p>
+          <h2 class="ml-3 mb-0 mt-2" style="color: var(--custom-orange-100)">
+            {{ transaction.paid_amount | currency: "Rp ":"symbol":"1.0-0" }}
+          </h2>
+        </div>
+      </ng-template>
+    </div>
+
+    <h6 *ngIf="transaction.origin == 'GENERATED'">Automatic Generated</h6>
+  </div>
+
+  <p class="p-0 m-0 mt-1 text-sm text-secondary text-right">
+    {{ transaction.created_at | date: "EEEE, d/M/yy, h:mm a" }}
+  </p>
+</div>

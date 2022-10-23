@@ -1,9 +1,54 @@
+@font-face {
+  font-family: "Poppins";
+  src: local("Poppins"),
+    url(./assets/fonts/poppins/Poppins-Regular.ttf) format("truetype");
+}
+
 :root {
-  --bg-custom-subOrder: #1e1e1e;
+  --bg-custom-subOrder: red;
+  --custom-light-blue: red;
+  --custom-light-green: red;
+  --custom-cyan: red;
+  --custom-cream: red;
+  --custom-red: red;
+  --custom-orange-50: #fff2e2;
+  --custom-orange-100: #ffdcb7;
+  --custom-orange-200: #ffc68a;
+  --custom-orange-300: #ffaf5f;
+  --custom-green-50: #e1f7f1;
+  --custom-green-100: #b5eadb;
+  --custom-green-200: #83dec4;
+  --custom-green-300: #4acfac;
+  --custom-blue-50: #e9ebfa;
+  --custom-blue-100: #c8cdf2;
+  --custom-blue-200: #a4ade9;
+  --custom-cyan-50: #e0f7f8;
+  --custom-cyan-100: #b3eced;
+  --custom-cyan-200: #84dfe2;
+  --custom-red-50: #fbe8e6;
+  --custom-red-100: #ffc8ba;
+  --custom-red-200: #ffa48e;
+  --custom-red-300: #fe8062;
+  --custom-red-400: #fd6341;
+  --custom-neutral-50: #4b5162;
+  --custom-neutral-100: #383c4a;
+  --custom-neutral-200: #404552;
+  --custom-black: #121212;
+  --custom-light-black: #2c2f37;
+  --custom-gray: #7c818c;
+  font-family: "Poppins", sans-serif;
 }
 
 body {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+}
+
+input {
+  background: var(--custom-neutral-50) !important;
+}
+
+.text-secondary {
+  color: var(--custom-gray);
 }

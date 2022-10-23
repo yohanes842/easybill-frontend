@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { environment as env } from 'src/environments/environment';
 import { OrderHeader } from 'src/app/classes/order-header';
 import { User } from 'src/app/classes/user';
+import { Response } from 'src/app/interfaces/response';
 
 @Injectable({
   providedIn: 'root',
@@ -11,15 +12,19 @@ import { User } from 'src/app/classes/user';
 export class OrderService {
   constructor(private http: HttpClient) {}
 
-  public getUserOrders(userId: number): Observable<User> {
-    return this.http.get<any>(`${env.url}/api/users/relevant-orders`);
+  public getRelevantOrders(): Observable<Response<User>> {
+    return this.http.get<Response<User>>(`${env.url}/api/users/relevant-orders`);
   }
 
-  public addOrder(orderHeader: OrderHeader): Observable<OrderHeader> {
-    return this.http.post<any>(`${env.url}/api/orders`, orderHeader);
+  public getUsersOrders(): Observable<Response<User>> {
+    return this.http.get<Response<User>>(`${env.url}/api/users/users-orders`);
   }
 
-  public getOrder(orderId: number): Observable<OrderHeader> {
-    return this.http.get<any>(`${env.url}/api/orders/${orderId}`);
+  public addOrder(orderHeader: OrderHeader): Observable<Response<OrderHeader>> {
+    return this.http.post<Response<OrderHeader>>(`${env.url}/api/orders`, orderHeader);
+  }
+
+  public getOrder(orderId: number): Observable<Response<OrderHeader>> {
+    return this.http.get<Response<OrderHeader>>(`${env.url}/api/orders/${orderId}`);
   }
 }

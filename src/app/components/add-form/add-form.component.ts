@@ -20,7 +20,8 @@ import { ConfirmationService } from 'primeng/api';
   styles: ['span { width: 3rem !important; }'],
 })
 export class AddFormComponent implements OnInit {
-  display: boolean = false;
+  addUserDisplay: boolean = false;
+  addSubOrderDisplay: boolean = false;
   modalType!: string;
 
   users!: User[];
@@ -28,8 +29,10 @@ export class AddFormComponent implements OnInit {
 
   newOrder: OrderHeader = new OrderHeader();
   subOrders: OrderDetail[] = [];
-  newSubOrder: OrderDetail = new OrderDetail();
   currentTime!: Date;
+  participants: User[] = [];
+  selectedUser!: User;
+  selectedSubOrder!: OrderDetail;
 
   constructor(
     private userService: UserService,
@@ -56,20 +59,27 @@ export class AddFormComponent implements OnInit {
     );
   }
 
-  showAddModal() {
+  showAddUserDialog() {
+    this.addUserDisplay = true;
+  }
+
+  showAddSubOrderDialog(user: User) {
+    this.hideDialog();
     this.modalType = 'add';
-    this.newSubOrder = new OrderDetail();
-    this.display = true;
+    this.selectedUser = user;
+    this.selectedSubOrder = new OrderDetail();
+    this.addSubOrderDisplay = true;
   }
 
-  showEditModal(index: number) {
+  showEditSubOrderDialog(user: User, subOrder: OrderDetail) {
     this.modalType = 'edit';
-    this.newSubOrder = this.subOrders[index];
-    this.display = true;
+    this.selectedUser = user;
+    this.selectedSubOrder = subOrder;
+    this.addSubOrderDisplay = true;
   }
 
-  deleteSubOrder(index: number) {
-    this.subOrders.splice(index, 1);
+  deleteSubOrder(user: User, index: number) {
+    user.sub_order_list!.splice(index, 1);
     this.messageService.showMessage(
       Severity.SUCCESS,
       'Successfully',
@@ -77,36 +87,21 @@ export class AddFormComponent implements OnInit {
     );
   }
 
-  onSearch(keyword: string) {
-    this.filteredUsernames = this.users
-      .filter((user) => user.username.includes(keyword))
-      .map((user) => user.username);
-  }
-
-  submitSubOrder() {
-    this.newSubOrder.user_id =
-      this.users.find((u: User) => u.username === this.newSubOrder.username)
-        ?.id ?? 0;
-    //validate if user not exist in the list
-    if (this.newSubOrder.user_id === 0) {
-      this.messageService.showMessage(
-        Severity.ERROR,
-        'Input Error',
-        'User not found!'
-      );
-      return;
-    }
-
-    if (this.modalType === 'add') this.subOrders.push(this.newSubOrder);
-    this.newSubOrder = new OrderDetail();
-
-    this.display = false;
-
+  deleteParticipant(index: number) {
+    this.participants.splice(index, 1);
     this.messageService.showMessage(
       Severity.SUCCESS,
       'Successfully',
-      this.modalType === 'add' ? 'added new sub-order' : 'edit sub-order'
+      'deleted user participants'
     );
+  }
+
+  filterUsername(keyword: string) {
+    keyword = keyword.toLocaleLowerCase();
+    this.filteredUsernames = this.users
+      .filter((user) => user.username.includes(keyword))
+      .slice(0, 5)
+      .map((user) => user.username);
   }
 
   submitOrder() {
@@ -123,11 +118,29 @@ export class AddFormComponent implements OnInit {
       return;
     }
 
+    if (this.participants.length > 0) {
+      let isExistUserWithNoSubOrder = this.participants.every(
+        (user) => user.sub_order_list!.length === 0
+      );
+      if (isExistUserWithNoSubOrder) {
+        this.messageService.showMessage(
+          Severity.ERROR,
+          'Input Error',
+          'Please specify order details for every user!'
+        );
+        return;
+      }
+      this.participants.forEach(
+        (user) =>
+          (this.subOrders = [...this.subOrders, ...user.sub_order_list!])
+      );
+    }
+
     if (this.subOrders.length < 1) {
       this.messageService.showMessage(
         Severity.ERROR,
         'Input Error',
-        'Sub-order can not be empty'
+        'Order detail can not be empty'
       );
     } else {
       //prepare object to be passed
@@ -135,7 +148,7 @@ export class AddFormComponent implements OnInit {
       this.newOrder.discount /= 100;
       this.newOrder.order_at = this.datePipe.transform(
         this.currentTime,
-        'yyyy-MM-dd hh:mm:ss'
+        'yyyy-MM-dd HH:mm:ss'
       )!;
 
       // Hit add order service
@@ -153,23 +166,29 @@ export class AddFormComponent implements OnInit {
     }
   }
 
-  onSubmitSubOrder(event: Event): void {
-    this.submitSubOrder();
-  }
-
-  onHideDetail(): void {
-    this.display = false;
+  hideDialog(): void {
+    this.addUserDisplay = false;
+    this.addSubOrderDisplay = false;
   }
 
   backToHome(): void {
     this.router.navigateByUrl(Route.HOME_PATH);
   }
 
-  showDeleteConfirmation(index: number): void {
+  showDeleteSubOrderConfirmation(user: User, index: number): void {
     this.confirmationService.confirm({
       message: 'Are you sure that you want to delete this sub-order?',
       accept: () => {
-        this.deleteSubOrder(index);
+        this.deleteSubOrder(user, index);
+      },
+    });
+  }
+
+  showDeleteParticipantConfirmation(username: string, index: number): void {
+    this.confirmationService.confirm({
+      message: `Are you sure that you want to delete ${username.toLocaleUpperCase()} from participant list?`,
+      accept: () => {
+        this.deleteParticipant(index);
       },
     });
   }

@@ -1,14 +1,23 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { OrderHeader } from 'src/app/classes/order-header';
+import { Status } from 'src/app/classes/status';
+import { User } from 'src/app/classes/user';
+import { AuthService } from 'src/app/services/auth/auth.service';
 
 @Component({
   selector: 'dialog-order-details',
-  templateUrl: './order-details.component.html',
-  styleUrls: ['./order-details.component.css'],
+  templateUrl: './order-detail-dialog.component.html',
+  styleUrls: ['./order-detail-dialog.component.css'],
 })
 export class OrderDetailsComponent implements OnInit {
   @Input() selectedOrder!: OrderHeader;
+  @Input() isRelevantOrder!: boolean;
   @Output() close: EventEmitter<any> = new EventEmitter();
+
+  currentUser!: User | null;
+  user!: User; //user yang sedang login
+  yourStatus!: Status;
+  othersStatus: Status[] = [];
 
   display: boolean = true;
 

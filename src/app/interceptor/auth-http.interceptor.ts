@@ -21,7 +21,6 @@ export class AuthApiInterceptor implements HttpInterceptor {
           .set('Content-Type', 'application/json')
           .set('Authorization', 'Bearer ' + token),
       });
-      // console.log('Intercepted HTTP call', authRequest);
       return next.handle(authRequest);
     } else {
       return next.handle(req);

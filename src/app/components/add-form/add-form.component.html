@@ -1,32 +1,55 @@
-<div class="w-full">
-  <button
-    pButton
-    class="p-button-text p-button-sm my-3"
-    type="button"
-    label="Back to Home"
-    icon="pi pi-chevron-left"
-    iconPos="left"
-    (click)="backToHome()"
-  ></button>
+<div class="w-full px-3 mt-3">
+  <div class="flex align-items-center gap-3">
+    <button
+      pButton
+      class="p-button-sm p-button-raised p-button-rounded p-0 text-white"
+      style="background: var(--custom-red-300); transform: scale(0.8)"
+      type="button"
+      icon="pi pi-chevron-left"
+      iconPos="left"
+      (click)="backToHome()"
+    ></button>
+    <h2 class="font-italic">Add New Order</h2>
+  </div>
+
   <form
     #addOrder="ngForm"
-    class="mx-auto w-full px-5 py-2 md:w-5"
+    class="mx-auto w-full px-3 py-2 lg:w-6"
     (ngSubmit)="showSaveOrderConfirmation()"
   >
     <div class="mb-3 w-full">
+      <label for="orderBy" class="font-bold">Order by</label>
       <p-autoComplete
-        [style]="{ width: '100%' }"
-        [inputStyle]="{ width: '100%' }"
+        [style]="{ width: '100%', 'margin-block': '0.5rem' }"
+        [inputStyle]="{ width: '100%', 'padding-block': '0.5rem' }"
         name="orderBy"
         [(ngModel)]="newOrder.username"
         [suggestions]="filteredUsernames"
-        (completeMethod)="onSearch($event.query)"
+        (completeMethod)="filterUsername($event.query)"
         [required]="true"
         placeholder="Order by"
       ></p-autoComplete>
     </div>
-    <div class="p-inputgroup mb-3 w-full">
+
+    <div class="mb-3 w-full">
+      <label for="orderDescription" class="font-bold">Description</label>
+      <input
+        pInputText
+        [style]="{ 'margin-block': '0.5rem' }"
+        class="w-full py-2"
+        type="text"
+        name="orderDescription"
+        [(ngModel)]="newOrder.order_description"
+        placeholder="Order description"
+        required
+      />
+    </div>
+
+    <div class="mb-3 w-full">
+      <label for="orderAt" class="font-bold">Order time</label>
       <p-calendar
+        [style]="{ width: '100%', 'margin-block': '0.5rem' }"
+        [inputStyle]="{ width: '100%', 'padding-block': '0.5rem' }"
         name="orderAt"
         [(ngModel)]="currentTime"
         [showTime]="true"
@@ -35,92 +58,141 @@
         [required]="true"
       ></p-calendar>
     </div>
-    <div class="mb-3 w-full">
-      <input
-        pInputText
-        class="w-full"
-        type="text"
-        name="orderDescription"
-        [(ngModel)]="newOrder.order_description"
-        placeholder="Order description"
-        required
-      />
-    </div>
-    <div class="mb-3 flex gap-2">
-      <div class="p-inputgroup w-full">
+
+    <div class="mb-3 w-full flex flex-column">
+      <label for="totalPayment" class="font-bold">Total Payment</label>
+      <div class="p-inputgroup">
+        <span class="p-inputgroup-addon p-2 my-2">Rp</span>
         <p-inputNumber
-          name="discount"
-          [(ngModel)]="newOrder.discount"
+          [style]="{ width: '100%', 'margin-block': '0.5rem' }"
+          [inputStyle]="{ width: '100%', 'padding-block': '0.5rem' }"
+          name="totalPayment"
+          [(ngModel)]="newOrder.total_payment"
           mode="decimal"
           [min]="0"
-          [max]="100"
           [required]="true"
-          placeholder="Discount"
-        ></p-inputNumber>
-        <span class="p-inputgroup-addon">%</span>
-      </div>
-      <div class="p-inputgroup w-full">
-        <p-inputNumber
-          name="upto"
-          [(ngModel)]="newOrder.upto"
-          mode="decimal"
-          mode="currency"
-          currency="IDR"
-          locale="in-IN"
-          [min]="0"
-          [required]="true"
-          placeholder="Up to amount"
+          placeholder="Total payment"
         ></p-inputNumber>
       </div>
-    </div>
-    <div class="p-inputgroup mb-3 w-full">
-      <p-inputNumber
-        name="totalPayment"
-        [(ngModel)]="newOrder.total_payment"
-        mode="decimal"
-        mode="currency"
-        currency="IDR"
-        locale="in-IN"
-        [min]="0"
-        [ariaRequired]="true"
-        placeholder="Total payment"
-      ></p-inputNumber>
     </div>
 
-    <div
-      class="card p-component border-round border-1 border-300 px-3 py-2"
-      style="background-color: var(--bg-custom-subOrder)"
-    >
-      <div class="flex justify-content-between py-2">
-        <h1 class="p-component text-lg text-pink-200 font-bold">
-          Sub-Order List
-        </h1>
+    <div class="mb-3">
+      <label for="discount" class="font-bold">Discount</label>
+      <div
+        class="flex flex-column gap-0 align-items-center sm:flex-row sm:gap-2"
+      >
+        <div class="p-inputgroup">
+          <p-inputNumber
+            [style]="{ 'margin-block': '0.5rem' }"
+            [inputStyle]="{ 'padding-block': '0.5rem' }"
+            name="discount"
+            [(ngModel)]="newOrder.discount"
+            mode="decimal"
+            [min]="0"
+            [max]="100"
+            [required]="true"
+            placeholder="Discount"
+          ></p-inputNumber>
+          <span class="p-inputgroup-addon p-2 my-2">%</span>
+        </div>
+        <p class="m-0 w-7rem text-center text-sm">up to</p>
+        <div class="p-inputgroup">
+          <span class="p-inputgroup-addon p-2 my-2">Rp</span>
+          <p-inputNumber
+            [style]="{ 'margin-block': '0.5rem' }"
+            [inputStyle]="{ 'padding-block': '0.5rem' }"
+            name="upto"
+            [(ngModel)]="newOrder.upto"
+            mode="decimal"
+            [min]="0"
+            [required]="true"
+            placeholder="Max discount"
+          ></p-inputNumber>
+        </div>
+      </div>
+    </div>
+
+    <div class="mb-3">
+      <label for="discount" class="font-bold">Order Details</label>
+      <div class="w-full text-center">
         <button
           pButton
           type="button"
-          class="p-button"
+          class="p-button-sm p-button-secondary text-white"
           icon="pi pi-plus"
-          (click)="showAddModal()"
+          (click)="showAddUserDialog()"
         ></button>
       </div>
+    </div>
+    <div
+      *ngIf="participants.length > 0"
+      class="card p-component border-1 border-300"
+    >
       <div
-        *ngFor="let subOrder of subOrders; let i = index"
-        [attr.data-index]="i"
-        class="order-list-item flex align-items-center border-top-1 border-300"
+        *ngFor="let user of participants; let participantIndex = index"
+        [attr.data-index]="participantIndex"
+        class="pb-1"
       >
-        <div class="p-3 text-pink-300 font-bold">{{ subOrder.qty }}x</div>
         <div
-          class="flex gap-5 justify-content-between align-items-center w-full"
+          class="flex align-items-center justify-content-between py-2 px-2 bg-gray-700 border-round"
         >
           <div>
-            <div class="order-description">{{ subOrder.order_menu_desc }}</div>
-            <div class="text-xs">By {{ subOrder.username }}</div>
+            <span>
+              <p-avatar
+                styleClass="p-mr-2 "
+                [style]="{
+                  'background-color': 'var(--pink-200)',
+                  color: '#ffffff',
+                  transform: 'scale(70%)'
+                }"
+                shape="circle"
+                >{{ user.username | uppercase | slice: 0:1 }}</p-avatar
+              >
+            </span>
+            <span>{{ user.username | uppercase }}</span>
           </div>
-          <div class="flex align-items-center gap-3">
+          <div class="flex">
+            <button
+              pButton
+              type="button"
+              class="p-button-sm bg-primary w-fit px-3 border-noround-right"
+              icon="pi pi-plus"
+              (click)="showAddSubOrderDialog(user)"
+            ></button>
+            <button
+              pButton
+              type="button"
+              class="p-button-sm p-button-danger text-white w-fit px-3 border-noround-left"
+              icon="pi pi-trash"
+              (click)="
+                showDeleteParticipantConfirmation(
+                  user.username,
+                  participantIndex
+                )
+              "
+            ></button>
+          </div>
+        </div>
+        <div
+          *ngFor="
+            let subOrder of user.sub_order_list;
+            let subOrderIndex = index
+          "
+          class="flex gap-1 align-items-center border-top-1 border-300 py-1 pl-2"
+        >
+          <div class="p-2 text-pink-300 font-bold w-3rem text-center text-sm">
+            {{ subOrder.qty }}x
+          </div>
+          <div class="flex align-items-center justify-content-between w-full">
             <div>
-              {{ subOrder.price * subOrder.qty | currency: "Rp " }}
+              <p class="m-0 text-sm" style="overflow-wrap: break-word">
+                {{ subOrder.order_menu_desc }}
+              </p>
+              <p class="m-0 text-sm" style="color: var(--custom-orange)">
+                {{ subOrder.price * subOrder.qty | currency: "Rp " }}
+              </p>
             </div>
-            <div class="border-left-1">
+            <div class="flex">
               <button
                 pButton
                 class="p-button-sm p-button-link"
@@ -131,7 +203,7 @@
                 }"
                 type="button"
                 icon="pi pi-pencil"
-                (click)="showEditModal(i)"
+                (click)="showEditSubOrderDialog(user, subOrder)"
               ></button>
               <button
                 pButton
@@ -143,7 +215,7 @@
                 }"
                 type="button"
                 icon="pi pi-trash"
-                (click)="showDeleteConfirmation(i)"
+                (click)="showDeleteSubOrderConfirmation(user, subOrderIndex)"
               ></button>
             </div>
           </div>
@@ -153,8 +225,8 @@
 
     <div class="text-center mt-5">
       <button
-        class="border-none border-round-sm bg-primary p-3 w-5"
-        [ngClass]="{ 'disabled-btn': addOrder.invalid }"
+        pButton
+        class="p-button-primary py-3 px-8 w-fit"
         [disabled]="addOrder.invalid"
       >
         Add New Order
@@ -163,12 +235,24 @@
   </form>
 </div>
 
-<dialog-add-sub-form
-  *ngIf="display"
+<dialog-add-user-form
+  *ngIf="addUserDisplay"
   [filteredUsernames]="filteredUsernames"
-  [subOrder]="newSubOrder"
+  [users]="users"
+  [participants]="participants"
+  (onSearchKeyChange)="filterUsername($event)"
+  (onSubmit)="showAddSubOrderDialog($event)"
+  (onClose)="hideDialog()"
+></dialog-add-user-form>
+
+<dialog-add-sub-form
+  *ngIf="addSubOrderDisplay"
+  [filteredUsernames]="filteredUsernames"
+  [users]="users"
   [modalType]="modalType"
-  (onSearchKeyChange)="onSearch($event)"
-  (onSubmit)="onSubmitSubOrder($event)"
-  (onClose)="onHideDetail()"
+  [selectedUser]="selectedUser"
+  [selectedSubOrder]="selectedSubOrder"
+  (onSearchKeyChange)="filterUsername($event)"
+  (onSubmit)="hideDialog()"
+  (onClose)="hideDialog()"
 ></dialog-add-sub-form>

@@ -11,7 +11,7 @@ import { AddFormComponent } from 'src/app/components/add-form/add-form.component
 import { HeaderComponent } from 'src/app/components/header/header.component';
 import { BillComponent } from 'src/app/components/bill/bill.component';
 import { ContainerComponent } from 'src/app/components/container/container.component';
-import { OrderDetailsComponent } from 'src/app/components/order-list/order-details/order-details.component';
+import { OrderDetailsComponent } from 'src/app/components/order-list/order-detail-dialog/order-detail-dialog.component';
 import { AddSubFormComponent } from 'src/app/components/add-form/add-sub-form/add-sub-form.component';
 import { LoginComponent } from 'src/app/components/login/login.component';
 
@@ -37,6 +37,7 @@ import { FieldsetModule } from 'primeng/fieldset';
 import { AvatarModule } from 'primeng/avatar';
 import { AvatarGroupModule } from 'primeng/avatargroup';
 import { PasswordModule } from 'primeng/password';
+import { TabMenuModule } from 'primeng/tabmenu';
 
 import { UserService } from 'src/app/services/user/user.service';
 import { OrderService } from 'src/app/services/order/order.service';
@@ -48,6 +49,18 @@ import { DatePipe } from '@angular/common';
 import { AuthApiInterceptor } from 'src/app/interceptor/auth-http.interceptor';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { PaymentDialogComponent } from 'src/app/components/bill/payment-dialog/payment-dialog.component';
+import { AddUserFormComponent } from 'src/app/components/add-form/add-user-form/add-user-form.component';
+import { OrderListHeaderComponent } from './components/order-list/header/header.component';
+import { OrderListContentComponent } from './components/order-list/order-list-content/order-list-content.component';
+import { BillHeaderComponent } from './components/bill/bill-header/bill-header.component';
+import { BillContentComponent } from './components/bill/bill-content/bill-content.component';
+import { RelatedOrdersDialogComponent } from './components/bill/related-orders-dialog/related-orders-dialog.component';
+import { RelatedOrderContentComponent } from './components/bill/related-orders-dialog/related-order-content/related-order-content.component';
+import { RelevantOrderDetailContentComponent } from './components/order-list/order-detail-dialog/relevant-order-detail-content/relevant-order-detail-content.component';
+import { YourRelevantOrderDetailContentComponent } from './components/order-list/order-detail-dialog/your-order-detail-content/your-order-detail-content.component';
+import { OrderDetailSummaryContentComponent } from './components/order-list/order-detail-dialog/order-detail-summary-content/order-detail-summary-content.component';
+import { TransactionHistoryComponent } from './components/transaction-history/transaction-history.component';
+import { TransactionHistoryDetailComponent } from './components/transaction-history/transaction-history-detail/transaction-history-detail.component';
 
 @NgModule({
   declarations: [
@@ -62,6 +75,18 @@ import { PaymentDialogComponent } from 'src/app/components/bill/payment-dialog/p
     AddSubFormComponent,
     LoginComponent,
     PaymentDialogComponent,
+    AddUserFormComponent,
+    OrderListHeaderComponent,
+    OrderListContentComponent,
+    BillHeaderComponent,
+    BillContentComponent,
+    RelatedOrdersDialogComponent,
+    RelatedOrderContentComponent,
+    RelevantOrderDetailContentComponent,
+    YourRelevantOrderDetailContentComponent,
+    OrderDetailSummaryContentComponent,
+    TransactionHistoryComponent,
+    TransactionHistoryDetailComponent,
   ],
   imports: [
     BrowserModule,
@@ -89,6 +114,7 @@ import { PaymentDialogComponent } from 'src/app/components/bill/payment-dialog/p
     AvatarModule,
     AvatarGroupModule,
     PasswordModule,
+    TabMenuModule,
   ],
   providers: [
     UserService,
