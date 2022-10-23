@@ -11,22 +11,20 @@
   (onHide)="hideDialog()"
 >
   <p-header>
-    <p class="m-0 text-xs">Pay Now</p>
     <p class="m-0 text-xs">
-      <span>to</span>
       <span>
         <p-avatar
-          styleClass="p-mr-2 "
+          styleClass="p-mr-2 font-bold"
           [style]="{
-            'background-color': 'var(--pink-200)',
-            color: '#ffffff',
+            'background-color': 'var(--custom-green-100)',
+            color: 'black',
             transform: 'scale(70%)'
           }"
           shape="circle"
           >{{ selectedBill.user.username | uppercase | slice: 0:1 }}</p-avatar
         >
       </span>
-      <span>{{ selectedBill.user.username | uppercase }}</span>
+      <span>{{ selectedBill.user.username | uppercase }} bill to you</span>
     </p>
     <h3 class="m-0 font-italic" style="color: var(--custom-green-300)">
       {{ selectedBill.owe_amount | currency: "Rp. ":"symbol":"1.0-0" }}

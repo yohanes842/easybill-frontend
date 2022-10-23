@@ -14,6 +14,7 @@ import { OrderService } from 'src/app/services/order/order.service';
 })
 export class RelatedOrdersDialogComponent implements OnInit {
   @Input() selectedBill!: Status;
+  @Input() isPayable!: boolean;
   @Output() onClose: EventEmitter<any> = new EventEmitter();
 
   display: boolean = true;

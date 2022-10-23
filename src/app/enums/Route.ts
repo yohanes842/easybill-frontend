@@ -3,4 +3,5 @@ export enum Route {
   HOME_PATH = '/home',
   ADD_ORDER_PATH = '/add-orders',
   BILL_PATH = '/user',
+  TRANSACTION_HISTORY_PATH = '/transaction-history',
 }

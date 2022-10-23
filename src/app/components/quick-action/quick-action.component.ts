@@ -42,11 +42,7 @@ export class QuickActionComponent implements OnInit, AfterViewInit {
       {
         icon: 'pi pi-check-square',
         command: () => {
-          this.messageService.showMessage(
-            Severity.INFO,
-            'COMING SOON',
-            'by Daniel !!!'
-          );
+          this.router.navigateByUrl(Route.TRANSACTION_HISTORY_PATH);
         },
       },
       {

@@ -1,5 +1,6 @@
 import { OrderDetail } from './order-detail';
 import { OrderHeader } from './order-header';
+import { Transaction } from './transaction';
 
 export class User {
   id?: number;
@@ -11,4 +12,5 @@ export class User {
   total_price?: number;
   discount_total?: number;
   total_after_discount?: number;
+  bill_transaction_list?: Transaction[];
 }

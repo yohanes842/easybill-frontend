@@ -7,6 +7,7 @@ import { AddFormComponent } from './components/add-form/add-form.component';
 import { LoginComponent } from './components/login/login.component';
 import { AuthGuard } from 'src/app/guards/auth/auth.guard';
 import { LoginGuard } from 'src/app/guards/login/login.guard';
+import { TransactionHistoryComponent } from './components/transaction-history/transaction-history.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent, canActivate: [LoginGuard] },
@@ -27,6 +28,10 @@ const routes: Routes = [
       {
         path: 'user',
         component: BillComponent,
+      },
+      {
+        path: 'transaction-history',
+        component: TransactionHistoryComponent,
       },
     ],
   },

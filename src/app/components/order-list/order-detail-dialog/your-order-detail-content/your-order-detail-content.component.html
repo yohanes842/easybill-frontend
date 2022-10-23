@@ -5,23 +5,6 @@
       {{ yourStatus.owe_amount | currency: "Rp ":"symbol":"1.0-0" }}
     </h2>
   </div>
-
-  <div>
-    <button
-      *ngIf="yourStatus.status != 'PAID'"
-      pButton
-      class="p-button bg-primary p-button-sm"
-      style="right: 1rem"
-      label="Pay Now"
-    ></button>
-    <p
-      *ngIf="yourStatus.status == 'PAID'"
-      class="font-italic text-secondary"
-      style="right: 1rem"
-    >
-      paid
-    </p>
-  </div>
 </div>
 
 <div class="bg-black-alpha-20 border-round p-3">

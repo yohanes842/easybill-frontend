@@ -5,7 +5,7 @@
   <div>
     <div class="flex justify-content-between align-items-center">
       <p class="p-0 m-0 mt-1 text-sm text-secondary">
-        {{ order.order_at | date: "EEEE, d/M/yy yy, h:mm a" }}
+        {{ order.order_at | date: "EEEE, d/M/yy, h:mm a" }}
       </p>
       <p
         *ngIf="order.order_header_status == 'PAID'"

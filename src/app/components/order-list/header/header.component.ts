@@ -7,12 +7,13 @@ import { Route } from 'src/app/enums/Route';
 @Component({
   selector: 'order-list-header',
   templateUrl: './header.component.html',
-  styleUrls: ['./header.component.css']
+  styleUrls: ['./header.component.css'],
 })
 export class OrderListHeaderComponent implements OnInit {
   @Input() dv!: DataView;
+  @Input() headerTitle!: string;
+  @Input() withTabMenu!: boolean;
   @Output() onTapMenu: EventEmitter<any> = new EventEmitter();
-
 
   tabMenus!: MenuItem[];
   activeMenu!: MenuItem;
@@ -39,9 +40,7 @@ export class OrderListHeaderComponent implements OnInit {
     ];
     this.activeMenu = this.tabMenus[0];
 
-    this.sortOptions = [
-      "ASC", "DSC"
-    ]
+    this.sortOptions = ['ASC', 'DSC'];
     this.selectedSortOptions = this.sortOptions[0];
   }
 
@@ -54,5 +53,4 @@ export class OrderListHeaderComponent implements OnInit {
   navigateToAddOrdersForm(): void {
     this.router.navigateByUrl(Route.ADD_ORDER_PATH);
   }
-
 }

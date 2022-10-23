@@ -59,7 +59,8 @@ import { RelatedOrderContentComponent } from './components/bill/related-orders-d
 import { RelevantOrderDetailContentComponent } from './components/order-list/order-detail-dialog/relevant-order-detail-content/relevant-order-detail-content.component';
 import { YourRelevantOrderDetailContentComponent } from './components/order-list/order-detail-dialog/your-order-detail-content/your-order-detail-content.component';
 import { OrderDetailSummaryContentComponent } from './components/order-list/order-detail-dialog/order-detail-summary-content/order-detail-summary-content.component';
-import { RelatedOrderDetailContentComponent } from './components/bill/related-orders-dialog/related-order-detail-content/related-order-detail-content.component';
+import { TransactionHistoryComponent } from './components/transaction-history/transaction-history.component';
+import { TransactionHistoryDetailComponent } from './components/transaction-history/transaction-history-detail/transaction-history-detail.component';
 
 @NgModule({
   declarations: [
@@ -84,7 +85,8 @@ import { RelatedOrderDetailContentComponent } from './components/bill/related-or
     RelevantOrderDetailContentComponent,
     YourRelevantOrderDetailContentComponent,
     OrderDetailSummaryContentComponent,
-    RelatedOrderDetailContentComponent,
+    TransactionHistoryComponent,
+    TransactionHistoryDetailComponent,
   ],
   imports: [
     BrowserModule,
