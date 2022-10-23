@@ -1,0 +1,125 @@
+<div
+  *ngIf="selectedOrder.buyer.id == currentUser!.id"
+  class="text-sm flex justify-content-between"
+>
+  <div>
+    <p class="m-0 text-gray-300">
+      Your bill to
+      <span style="color: var(--custom-orange-50)">{{
+        selectedOrder.buyer.username
+      }}</span>
+    </p>
+    <h2 class="m-2 font-italic" style="color: var(--custom-orange-200)">
+      {{ yourStatus.owe_amount | currency: "Rp ":"symbol":"1.0-0" }}
+    </h2>
+  </div>
+
+  <div>
+    <button
+      *ngIf="yourStatus.status != 'PAID'"
+      pButton
+      class="p-button bg-primary p-button-sm"
+      style="right: 1rem"
+      label="Pay Now"
+      (click)="navigateToBillPage()"
+    ></button>
+    <p
+      *ngIf="yourStatus.status == 'PAID'"
+      class="font-italic text-secondary"
+      style="right: 1rem"
+    >
+      paid
+    </p>
+  </div>
+</div>
+
+<div class="bg-black-alpha-20 border-round p-3">
+  <div class="border-bottom-1 border-500 pb-2 mb-2">
+    <h5 class="text-lg font-bold text-primary m-1">Your Order</h5>
+    <div
+      *ngFor="let subOrder of user.user_orders"
+      class="flex align-items-center pl-3 pb-1"
+    >
+      <p
+        class="text-sm m-0 mr-2 text-right"
+        style="color: var(--custom-orange-100); min-width: 1.5rem"
+      >
+        {{ subOrder.qty }}x
+      </p>
+      <div class="flex gap-5 justify-content-between align-items-center w-full">
+        <div>
+          <p class="text-sm m-0">{{ subOrder.order_menu_desc }}</p>
+        </div>
+        <div>
+          <p class="text-sm m-0 font-italic">
+            {{ subOrder.qty * subOrder.price | currency: "Rp ":"":"1.0-0" }}
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div
+    class="pb-2 mb-2"
+    style="border-bottom: 1.5px solid var(--custom-orange-300)"
+  >
+    <div class="flex justify-content-between">
+      <p class="m-0 text-sm">Order fee</p>
+      <p class="m-0 text-sm font-italic">
+        {{ user.total_price | currency: "Rp ":"symbol":"1.0-0" }}
+      </p>
+    </div>
+    <div class="flex justify-content-between">
+      <p class="m-0 text-sm">Others fee</p>
+      <p class="m-0 text-sm font-italic">
+        {{ selectedOrder.user_other_fee | currency: "":"":"1.0-0" }}
+      </p>
+    </div>
+    <div class="flex justify-content-between text-green-400">
+      <div>
+        <p class="m-0 text-sm">Discount ({{ selectedOrder.discount }}%)</p>
+        <h6 class="m-0 px-1 font-italic text-white">
+          *Up to {{ selectedOrder.upto | currency: "":"":"1.0-0" }}
+        </h6>
+      </div>
+      <p class="m-0 text-sm font-italic">
+        - {{ user.discount_total | currency: "":"":"1.0-0" }}
+      </p>
+    </div>
+  </div>
+
+  <div
+    class="pb-2 mb-2"
+    style="border-bottom: 1.5px solid var(--custom-orange-300)"
+  >
+    <div
+      class="flex justify-content-between"
+      style="color: var(--custom-orange-300)"
+    >
+      <p class="m-0 text-sm">Total Price</p>
+      <p class="m-0 font-italic">
+        {{ yourStatus.owe_amount | currency: "Rp ":"symbol":"1.0-0" }}
+      </p>
+    </div>
+    <div
+      *ngIf="yourStatus.total_paid > 0"
+      class="flex justify-content-between"
+      style="color: var(--custom-orange-300)"
+    >
+      <p class="m-0 text-sm">Total Paid</p>
+      <p class="m-0 font-italic">
+        {{ yourStatus.total_paid | currency: "":"":"1.0-0" }}
+      </p>
+    </div>
+  </div>
+
+  <div *ngIf="yourStatus.total_paid > 0" class="flex justify-content-between">
+    <p class="m-0">Remaining bill</p>
+    <p class="m-0 font-italic">
+      {{
+        yourStatus.owe_amount - yourStatus.total_paid
+          | currency: "Rp ":"symbol":"1.0-0"
+      }}
+    </p>
+  </div>
+</div>

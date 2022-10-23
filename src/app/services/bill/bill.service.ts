@@ -21,11 +21,17 @@ export class BillService {
     return this.http.get<Response<User>>(`${env.url}/api/bills/receivables`);
   }
 
-  public payBill(amount: number, userId: number): Observable<Response<Transaction>> {
+  public payBill(
+    amount: number,
+    userId: number
+  ): Observable<Response<Transaction>> {
     let params = {
       amount: amount,
       user_id: userId,
     };
-    return this.http.post<Response<Transaction>>(`${env.url}/api/bills`, params);
+    return this.http.post<Response<Transaction>>(
+      `${env.url}/api/bill-transactions`,
+      params
+    );
   }
 }

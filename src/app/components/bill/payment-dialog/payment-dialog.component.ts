@@ -6,7 +6,7 @@ import { BillService } from 'src/app/services/bill/bill.service';
 import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
-  selector: 'app-payment-dialog',
+  selector: 'payment-dialog',
   templateUrl: './payment-dialog.component.html',
   styleUrls: ['./payment-dialog.component.css'],
 })
@@ -34,7 +34,7 @@ export class PaymentDialogComponent implements OnInit {
   pay(): void {
     if (this.amount <= this.selectedBill.owe_amount) {
       this.billService
-        .payBill(this.amount, this.selectedBill.owe.id!)
+        .payBill(this.amount, this.selectedBill.user.id!)
         .subscribe(
           (res: any) => {
             this.messageService.showMessage(

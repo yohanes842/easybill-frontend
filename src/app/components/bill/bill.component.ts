@@ -24,6 +24,7 @@ export class BillComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    this.bills = [];
     this.getBillsPayable();
     this.getBillsReceivable();
   }
@@ -66,17 +67,5 @@ export class BillComponent implements OnInit {
 
   changeDataViewContent(isBillsPayable: boolean): void {
     this.bills = isBillsPayable ? this.billsPayable : this.billsReceivable;
-  }
-
-  payBill({ bill, amount }: { bill: Status; amount: number }): void {
-    let billsPayableList = this.billsPayable;
-
-    if (amount < bill.owe_amount) {
-      bill.owe_amount -= amount;
-    } else if (amount == bill.owe_amount) {
-      let index = billsPayableList.indexOf(bill);
-      billsPayableList.splice(index, 1);
-    }
-    this.hideDialog();
   }
 }

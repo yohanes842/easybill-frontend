@@ -1,0 +1,56 @@
+<p-dialog
+  class="flex flex-column p-0 bg-red-300"
+  [style]="{
+    width: 'calc(100vw - 2rem)',
+    'max-width': '30rem',
+    overflow: 'visible'
+  }"
+  [modal]="true"
+  [(visible)]="display"
+  (onHide)="onHideDetail()"
+>
+  <p-header>
+    <p class="p-0 m-0 mt-1 text-xs text-secondary">
+      {{ selectedOrder.order_at | date: "EEEE, d/M/yy h:mm a" }}
+    </p>
+    <h5 class="my-1" style="color: var(--custom-orange-300)">
+      {{ selectedOrder.order_description }}
+    </h5>
+    <p class="m-0 text-sm text-secondary">
+      by
+      <span>
+        <p-avatar
+          styleClass="p-mr-2 font-bold"
+          [style]="{
+            'background-color': 'var(--custom-orange-50)',
+            color: 'black',
+            transform: 'scale(70%)'
+          }"
+          shape="circle"
+          >{{ selectedOrder.buyer.username | uppercase | slice: 0:1 }}</p-avatar
+        >
+      </span>
+      <span style="color: var(--custom-orange-100)">{{
+        selectedOrder.buyer.username | uppercase
+      }}</span>
+    </p>
+  </p-header>
+
+  <div class="flex flex-column gap-3 mt-3 p-3">
+    <ng-container *ngIf="isRelevantOrder; else yourOrderDetailContent">
+      <relevant-order-detail-content
+        [selectedOrder]="selectedOrder"
+      ></relevant-order-detail-content>
+    </ng-container>
+
+    <ng-template #yourOrderDetailContent>
+      <your-order-detail-content
+        [selectedOrder]="selectedOrder"
+      ></your-order-detail-content>
+    </ng-template>
+
+    <order-detail-summary-content
+      [selectedOrder]="selectedOrder"
+    ></order-detail-summary-content>
+  </div>
+</p-dialog>

@@ -6,8 +6,8 @@ import { AuthService } from 'src/app/services/auth/auth.service';
 
 @Component({
   selector: 'dialog-order-details',
-  templateUrl: './order-details.component.html',
-  styleUrls: ['./order-details.component.css'],
+  templateUrl: './order-detail-dialog.component.html',
+  styleUrls: ['./order-detail-dialog.component.css'],
 })
 export class OrderDetailsComponent implements OnInit {
   @Input() selectedOrder!: OrderHeader;
@@ -21,20 +21,9 @@ export class OrderDetailsComponent implements OnInit {
 
   display: boolean = true;
 
-  constructor(private authService: AuthService) {
-    this.currentUser = authService.getCurrentUser();
-  }
+  constructor() {}
 
-  ngOnInit(): void {
-    this.user = this.selectedOrder.order_detail_group_by_user.find(
-      (user: User) => user.id === this.currentUser?.id
-    )!;
-
-    this.selectedOrder.status.forEach((status) => {
-      if (status.user.id === this.currentUser?.id) this.yourStatus = status;
-      else this.othersStatus.push(status);
-    });
-  }
+  ngOnInit(): void {}
 
   onHideDetail(): void {
     this.close.emit(null);

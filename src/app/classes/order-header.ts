@@ -17,7 +17,9 @@ export class OrderHeader {
   discount_amount!: number;
   order_list!: OrderDetail[];
   order_detail_group_by_user!: User[];
-  status!: Status[];
+  bills!: Status[];
   participating_user_count!: number;
   order_header_status!: string;
+  user_other_fee!: number;
+  total_bill!: number;
 }

@@ -11,7 +11,7 @@ import { AddFormComponent } from 'src/app/components/add-form/add-form.component
 import { HeaderComponent } from 'src/app/components/header/header.component';
 import { BillComponent } from 'src/app/components/bill/bill.component';
 import { ContainerComponent } from 'src/app/components/container/container.component';
-import { OrderDetailsComponent } from 'src/app/components/order-list/order-details/order-details.component';
+import { OrderDetailsComponent } from 'src/app/components/order-list/order-detail-dialog/order-detail-dialog.component';
 import { AddSubFormComponent } from 'src/app/components/add-form/add-sub-form/add-sub-form.component';
 import { LoginComponent } from 'src/app/components/login/login.component';
 
@@ -37,7 +37,7 @@ import { FieldsetModule } from 'primeng/fieldset';
 import { AvatarModule } from 'primeng/avatar';
 import { AvatarGroupModule } from 'primeng/avatargroup';
 import { PasswordModule } from 'primeng/password';
-import {TabMenuModule} from 'primeng/tabmenu';
+import { TabMenuModule } from 'primeng/tabmenu';
 
 import { UserService } from 'src/app/services/user/user.service';
 import { OrderService } from 'src/app/services/order/order.service';
@@ -54,6 +54,12 @@ import { OrderListHeaderComponent } from './components/order-list/header/header.
 import { OrderListContentComponent } from './components/order-list/order-list-content/order-list-content.component';
 import { BillHeaderComponent } from './components/bill/bill-header/bill-header.component';
 import { BillContentComponent } from './components/bill/bill-content/bill-content.component';
+import { RelatedOrdersDialogComponent } from './components/bill/related-orders-dialog/related-orders-dialog.component';
+import { RelatedOrderContentComponent } from './components/bill/related-orders-dialog/related-order-content/related-order-content.component';
+import { RelevantOrderDetailContentComponent } from './components/order-list/order-detail-dialog/relevant-order-detail-content/relevant-order-detail-content.component';
+import { YourRelevantOrderDetailContentComponent } from './components/order-list/order-detail-dialog/your-order-detail-content/your-order-detail-content.component';
+import { OrderDetailSummaryContentComponent } from './components/order-list/order-detail-dialog/order-detail-summary-content/order-detail-summary-content.component';
+import { RelatedOrderDetailContentComponent } from './components/bill/related-orders-dialog/related-order-detail-content/related-order-detail-content.component';
 
 @NgModule({
   declarations: [
@@ -73,6 +79,12 @@ import { BillContentComponent } from './components/bill/bill-content/bill-conten
     OrderListContentComponent,
     BillHeaderComponent,
     BillContentComponent,
+    RelatedOrdersDialogComponent,
+    RelatedOrderContentComponent,
+    RelevantOrderDetailContentComponent,
+    YourRelevantOrderDetailContentComponent,
+    OrderDetailSummaryContentComponent,
+    RelatedOrderDetailContentComponent,
   ],
   imports: [
     BrowserModule,

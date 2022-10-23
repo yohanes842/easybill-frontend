@@ -18,3 +18,7 @@
   border-radius: 50%;
   transform: scale(0.8);
 }
+
+:host ::ng-deep .p-confirm-dalog .p-dialog-content {
+  padding: 0.5rem 1.5rem Im !important;
+}

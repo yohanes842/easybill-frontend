@@ -22,10 +22,10 @@
             transform: 'scale(70%)'
           }"
           shape="circle"
-          >{{ selectedBill.owe.username | uppercase | slice: 0:1 }}</p-avatar
+          >{{ selectedBill.user.username | uppercase | slice: 0:1 }}</p-avatar
         >
       </span>
-      <span>{{ selectedBill.owe.username | uppercase }}</span>
+      <span>{{ selectedBill.user.username | uppercase }}</span>
     </p>
     <h3 class="m-0 font-italic" style="color: var(--custom-orange-200)">
       {{ selectedBill.owe_amount | currency: "Rp. ":"symbol":"1.0-0" }}
@@ -33,7 +33,7 @@
   </p-header>
   <form
     #paymentForm="ngForm"
-    class="flex flex-column gap-2 w-full mt-3"
+    class="flex flex-column gap-2 w-full mt-3 p-5"
     (ngSubmit)="pay()"
   >
     <div class="p-inputgroup">

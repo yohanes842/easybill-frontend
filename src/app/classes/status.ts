@@ -1,3 +1,4 @@
+import { OrderHeader } from './order-header';
 import { User } from './user';
 
 export class Status {
@@ -5,6 +6,6 @@ export class Status {
   status!: string;
   owe_amount!: number;
   total_paid!: number;
-  owe!: User;
   user!: User;
+  related_order_header!: OrderHeader[];
 }

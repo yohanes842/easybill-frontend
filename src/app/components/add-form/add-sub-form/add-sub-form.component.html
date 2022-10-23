@@ -12,7 +12,7 @@
   </p-header>
   <form
     #addSubOrder="ngForm"
-    class="flex flex-column p-2"
+    class="flex flex-column p-5"
     (ngSubmit)="submitSubOrder()"
   >
     <div class="mb-2 w-full">
@@ -91,9 +91,6 @@
       </div>
     </div>
     <div class="text-center w-full mt-3">
-      <div>{{ selectedSubOrder.order_menu_desc }}</div>
-      <div>{{ selectedSubOrder.price }}</div>
-      <div>{{ selectedSubOrder.qty }}</div>
       <button
         pButton
         class="p-button-primary py-2 px-7 w-fit"

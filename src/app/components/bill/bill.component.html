@@ -6,10 +6,3 @@
     (onShowDialog)="showDialog($event)"
   ></bill-content>
 </div>
-
-<app-payment-dialog
-  *ngIf="display"
-  [selectedBill]="selectedBill"
-  (onPay)="payBill($event)"
-  (onClose)="hideDialog()"
-></app-payment-dialog>
