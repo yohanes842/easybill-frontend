@@ -8,6 +8,7 @@ import { LoginComponent } from './components/login/login.component';
 import { AuthGuard } from 'src/app/guards/auth/auth.guard';
 import { LoginGuard } from 'src/app/guards/login/login.guard';
 import { TransactionHistoryComponent } from './components/transaction-history/transaction-history.component';
+import { Route } from './enums/Route';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent, canActivate: [LoginGuard] },
@@ -22,21 +23,21 @@ const routes: Routes = [
     canActivate: [AuthGuard],
     children: [
       {
-        path: 'home',
+        path: Route.HOME_PATH.slice(1),
         component: OrderListComponent,
       },
       {
-        path: 'user',
+        path: Route.BILL_PATH.slice(1),
         component: BillComponent,
       },
       {
-        path: 'transaction-history',
+        path: Route.TRANSACTION_HISTORY_PATH.slice(1),
         component: TransactionHistoryComponent,
       },
     ],
   },
   {
-    path: 'add-orders',
+    path: Route.ADD_ORDER_PATH.slice(1),
     component: AddFormComponent,
     canActivate: [AuthGuard],
   },

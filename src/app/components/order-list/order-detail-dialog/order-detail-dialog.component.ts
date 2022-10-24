@@ -14,14 +14,15 @@ export class OrderDetailsComponent implements OnInit {
   @Input() isRelevantOrder!: boolean;
   @Output() close: EventEmitter<any> = new EventEmitter();
 
-  currentUser!: User | null;
-  user!: User; //user yang sedang login
+  currentUser!: User;
   yourStatus!: Status;
   othersStatus: Status[] = [];
 
   display: boolean = true;
 
-  constructor() {}
+  constructor(private authService: AuthService) {
+    this.currentUser = this.authService.getCurrentUser() as User;
+  }
 
   ngOnInit(): void {}
 

@@ -12,6 +12,7 @@
 >
   <p-header>
     <p class="m-0 text-xs">
+      <span *ngIf="isPayable">Your bill to</span>
       <span>
         <p-avatar
           styleClass="p-mr-2 font-bold"
@@ -24,7 +25,10 @@
           >{{ selectedBill.user.username | uppercase | slice: 0:1 }}</p-avatar
         >
       </span>
-      <span>{{ selectedBill.user.username | uppercase }} bill to you</span>
+      <span
+        >{{ selectedBill.user.username | uppercase }}
+        <span *ngIf="!isPayable">bill to you</span>
+      </span>
     </p>
     <h3 class="m-0 font-italic" style="color: var(--custom-green-300)">
       {{ selectedBill.owe_amount | currency: "Rp. ":"symbol":"1.0-0" }}
@@ -56,6 +60,7 @@
       </div>
       <relevant-order-detail-content
         [selectedOrder]="selectedOrder"
+        [selectedUser]="isPayable ? currentUser : selectedBill.user"
       ></relevant-order-detail-content>
 
       <order-detail-summary-content

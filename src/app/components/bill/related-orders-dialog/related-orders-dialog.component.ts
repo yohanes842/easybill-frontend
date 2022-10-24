@@ -4,6 +4,7 @@ import { OrderHeader } from 'src/app/classes/order-header';
 import { Status } from 'src/app/classes/status';
 import { User } from 'src/app/classes/user';
 import { Severity } from 'src/app/enums/Severity';
+import { AuthService } from 'src/app/services/auth/auth.service';
 import { CustomMessageService } from 'src/app/services/message/custom-message.service';
 import { OrderService } from 'src/app/services/order/order.service';
 
@@ -14,9 +15,10 @@ import { OrderService } from 'src/app/services/order/order.service';
 })
 export class RelatedOrdersDialogComponent implements OnInit {
   @Input() selectedBill!: Status;
-  @Input() isPayable!: boolean;
+  @Input() isPayable!: Boolean;
   @Output() onClose: EventEmitter<any> = new EventEmitter();
 
+  currentUser!: User;
   display: boolean = true;
   displayDetail!: boolean;
   selectedOrder!: OrderHeader;
@@ -24,8 +26,11 @@ export class RelatedOrdersDialogComponent implements OnInit {
 
   constructor(
     private orderService: OrderService,
-    private messageService: CustomMessageService
-  ) {}
+    private messageService: CustomMessageService,
+    private authService: AuthService
+  ) {
+    this.currentUser = this.authService.getCurrentUser() as User;
+  }
 
   ngOnInit(): void {}
 
