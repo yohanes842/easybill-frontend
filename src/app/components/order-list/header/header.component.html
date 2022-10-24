@@ -31,8 +31,9 @@
       background: 'var(--custom-neutral-100)',
       'z-index': '100'
     }"
-    [options]="sortOptions"
-    [(ngModel)]="selectedSortOptions"
+    [options]="statusOptions"
+    [(ngModel)]="selectedStatusOptions"
+    (onChange)="changeStatusFilter()"
     placeholder="Sort by time"
   ></p-dropdown>
 </div>

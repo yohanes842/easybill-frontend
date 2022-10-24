@@ -9,6 +9,7 @@ import { AuthGuard } from 'src/app/guards/auth/auth.guard';
 import { LoginGuard } from 'src/app/guards/login/login.guard';
 import { TransactionHistoryComponent } from './components/transaction-history/transaction-history.component';
 import { Route } from './enums/Route';
+import { NotFoundPageComponent } from './components/not-found-page/not-found-page.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent, canActivate: [LoginGuard] },
@@ -41,6 +42,11 @@ const routes: Routes = [
     component: AddFormComponent,
     canActivate: [AuthGuard],
   },
+  {
+    path: '**',
+    component: NotFoundPageComponent,
+  },
+
   // { path: '**',    component: NotFoundComponent}
 ];
 

@@ -1,12 +1,8 @@
-import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { MenuItem } from 'primeng/api';
 import { OrderHeader } from 'src/app/classes/order-header';
 import { User } from 'src/app/classes/user';
 import { Route } from 'src/app/enums/Route';
-import { Severity } from 'src/app/enums/Severity';
-import { CommonService } from 'src/app/services/common/common.service';
 import { CustomMessageService } from 'src/app/services/message/custom-message.service';
 import { OrderService } from 'src/app/services/order/order.service';
 
@@ -23,24 +19,20 @@ export class OrderListComponent implements OnInit {
   orders!: OrderHeader[];
   relevantOrders!: OrderHeader[];
   usersOrders!: OrderHeader[];
+  relevantOrdersFiltered!: OrderHeader[];
+  usersOrdersFiltered!: OrderHeader[];
+  isRelevantOrder: boolean = true;
 
   selectedOrder!: OrderHeader;
 
-  constructor(
-    private orderService: OrderService,
-    private commonService: CommonService,
-    private messageService: CustomMessageService,
-    private router: Router
-  ) {
-    this.commonService.changePageTitle(Route.HOME_PATH);
-  }
+  constructor(private orderService: OrderService) {}
 
   ngOnInit() {
     this.getRelevantOrders();
     this.getUsersOrders();
   }
 
-  showDetail(selectedOrder: OrderHeader): void{
+  showDetail(selectedOrder: OrderHeader): void {
     this.selectedOrder = selectedOrder;
     this.display = true;
   }
@@ -49,44 +41,43 @@ export class OrderListComponent implements OnInit {
     this.display = false;
   }
 
-  getRelevantOrders(): void{
-    this.orderService.getRelevantOrders().subscribe(
-      (res: any) => {
-        this.currentUser = res.output.data;
-        this.relevantOrders = this.currentUser.order_list as OrderHeader[];
-        this.orders = this.relevantOrders;
-      },
-      (error: HttpErrorResponse) => {
-        if (error.error.status.code == 'JWT_VERIFICATION_ERROR') {
-          localStorage.clear();
-          this.router.navigateByUrl(Route.LOGIN_PATH);
-          this.messageService.showMessage(Severity.ERROR, 'VERIFICATION ERROR');
-        } else {
-          this.messageService.showMessage(Severity.ERROR, 'REQUEST ERROR');
-        }
-      }
-    );
+  getRelevantOrders(): void {
+    this.orderService.getRelevantOrders().subscribe((res: any) => {
+      this.currentUser = res.output.data;
+      this.relevantOrders = this.currentUser.order_list as OrderHeader[];
+      this.orders = this.relevantOrders;
+    });
   }
 
-  getUsersOrders(): void{
-    this.orderService.getUsersOrders().subscribe(
-      (res: any) => {
-        this.currentUser = res.output.data;
-        this.usersOrders = this.currentUser.order_list as OrderHeader[];
-      },
-      (error: HttpErrorResponse) => {
-        if (error.error.status.code == 'JWT_VERIFICATION_ERROR') {
-          localStorage.clear();
-          this.router.navigateByUrl(Route.LOGIN_PATH);
-          this.messageService.showMessage(Severity.ERROR, 'VERIFICATION ERROR');
-        } else {
-          this.messageService.showMessage(Severity.ERROR, 'REQUEST ERROR');
-        }
-      }
-    );
+  getUsersOrders(): void {
+    this.orderService.getUsersOrders().subscribe((res: any) => {
+      this.currentUser = res.output.data;
+      this.usersOrders = this.currentUser.order_list as OrderHeader[];
+    });
   }
 
-  changeDataViewContent(isRelevantOrder: boolean): void{
-    this.orders = (isRelevantOrder) ? this.relevantOrders : this.usersOrders;
+  changeDataViewContent(isRelevantOrder: boolean): void {
+    this.isRelevantOrder = isRelevantOrder;
+    this.orders = isRelevantOrder
+      ? this.relevantOrdersFiltered
+      : this.usersOrdersFiltered;
+  }
+
+  changeStatusFilter(selectedStatusOptions: string): void {
+    if (selectedStatusOptions == 'ALL') {
+      this.relevantOrdersFiltered = this.relevantOrders;
+      this.usersOrdersFiltered = this.usersOrders;
+      this.changeDataViewContent(this.isRelevantOrder);
+      return;
+    }
+
+    this.relevantOrdersFiltered = this.relevantOrders.filter(
+      (order) => order.order_header_status == selectedStatusOptions
+    );
+    this.usersOrdersFiltered = this.usersOrders.filter(
+      (order) => order.order_header_status == selectedStatusOptions
+    );
+
+    this.changeDataViewContent(this.isRelevantOrder);
   }
 }

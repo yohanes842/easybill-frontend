@@ -46,7 +46,7 @@ body {
 }
 
 input {
-  background: var(--custom-neutral-50) !important;
+  background: var(--custom-neutral-100) !important;
 }
 
 .text-secondary {

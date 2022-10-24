@@ -41,7 +41,6 @@ import { TabMenuModule } from 'primeng/tabmenu';
 
 import { UserService } from 'src/app/services/user/user.service';
 import { OrderService } from 'src/app/services/order/order.service';
-import { CommonService } from 'src/app/services/common/common.service';
 import { MessageService } from 'primeng/api';
 import { ConfirmationService } from 'primeng/api';
 import { CustomMessageService } from 'src/app/services/message/custom-message.service';
@@ -61,6 +60,8 @@ import { YourRelevantOrderDetailContentComponent } from './components/order-list
 import { OrderDetailSummaryContentComponent } from './components/order-list/order-detail-dialog/order-detail-summary-content/order-detail-summary-content.component';
 import { TransactionHistoryComponent } from './components/transaction-history/transaction-history.component';
 import { TransactionHistoryDetailComponent } from './components/transaction-history/transaction-history-detail/transaction-history-detail.component';
+import { ErrorResponseInterceptor } from './interceptor/error-response.interceptor';
+import { NotFoundPageComponent } from './components/not-found-page/not-found-page.component';
 
 @NgModule({
   declarations: [
@@ -87,6 +88,7 @@ import { TransactionHistoryDetailComponent } from './components/transaction-hist
     OrderDetailSummaryContentComponent,
     TransactionHistoryComponent,
     TransactionHistoryDetailComponent,
+    NotFoundPageComponent,
   ],
   imports: [
     BrowserModule,
@@ -120,7 +122,6 @@ import { TransactionHistoryDetailComponent } from './components/transaction-hist
     UserService,
     OrderService,
     AuthService,
-    CommonService,
     MessageService,
     DatePipe,
     CustomMessageService,
@@ -128,6 +129,11 @@ import { TransactionHistoryDetailComponent } from './components/transaction-hist
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthApiInterceptor,
+      multi: true,
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: ErrorResponseInterceptor,
       multi: true,
     },
   ],

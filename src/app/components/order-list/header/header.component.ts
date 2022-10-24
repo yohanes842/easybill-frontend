@@ -14,11 +14,12 @@ export class OrderListHeaderComponent implements OnInit {
   @Input() headerTitle!: string;
   @Input() withTabMenu!: boolean;
   @Output() onTapMenu: EventEmitter<any> = new EventEmitter();
+  @Output() onChangeStatusFilter: EventEmitter<any> = new EventEmitter();
 
   tabMenus!: MenuItem[];
   activeMenu!: MenuItem;
-  sortOptions!: string[];
-  selectedSortOptions!: string;
+  statusOptions!: string[];
+  selectedStatusOptions!: string;
   isRelevantOrder: boolean = true;
 
   constructor(private router: Router) {
@@ -40,8 +41,8 @@ export class OrderListHeaderComponent implements OnInit {
     ];
     this.activeMenu = this.tabMenus[0];
 
-    this.sortOptions = ['ASC', 'DSC'];
-    this.selectedSortOptions = this.sortOptions[0];
+    this.statusOptions = ['ALL', 'PAID', 'UNPAID'];
+    this.selectedStatusOptions = this.statusOptions[0];
   }
 
   ngOnInit(): void {}
@@ -52,5 +53,9 @@ export class OrderListHeaderComponent implements OnInit {
 
   navigateToAddOrdersForm(): void {
     this.router.navigateByUrl(Route.ADD_ORDER_PATH);
+  }
+
+  changeStatusFilter(): void {
+    this.onChangeStatusFilter.emit(this.selectedStatusOptions);
   }
 }

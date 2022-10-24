@@ -1,12 +1,5 @@
-import {
-  ChangeDetectorRef,
-  Component,
-  OnChanges,
-  OnInit,
-  SimpleChanges,
-} from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { CommonService } from 'src/app/services/common/common.service';
 
 @Component({
   selector: 'app-container',
@@ -16,17 +9,7 @@ import { CommonService } from 'src/app/services/common/common.service';
 export class ContainerComponent implements OnInit {
   pageTitle!: string;
 
-  constructor(
-    private router: Router,
-    private commonService: CommonService,
-    private cd: ChangeDetectorRef
-  ) {}
+  constructor(private router: Router, private cd: ChangeDetectorRef) {}
 
-  ngOnInit() {
-    this.commonService.changePageTitle(this.router.url);
-    this.commonService.title$.subscribe((res) => {
-      this.pageTitle = res;
-      this.cd.detectChanges();
-    });
-  }
+  ngOnInit() {}
 }

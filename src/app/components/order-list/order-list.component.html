@@ -14,6 +14,7 @@
         headerTitle="Order Header"
         [withTabMenu]="true"
         (onTapMenu)="changeDataViewContent($event)"
+        (onChangeStatusFilter)="changeStatusFilter($event)"
       ></order-list-header>
     </ng-template>
 

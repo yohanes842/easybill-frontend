@@ -37,15 +37,9 @@ export class LoginComponent implements OnInit {
           this.messageService.showMessage(Severity.SUCCESS, 'LOGIN SUCCESS');
         },
         (error: HttpErrorResponse) => {
-          this.messageService.showMessage(
-            Severity.ERROR,
-            'REQUEST ERROR',
-            'Login failed'
-          );
+          console.log(error);
         }
       );
     }
   }
-
-
 }

@@ -7,6 +7,7 @@ export const environment = {
   // url: 'https://easybill.arville.net',
   // url: 'http://p090whp547094.intra.bca.co.id:9090',
   url: 'http://192.168.100.93:9090',
+  showVersion: true,
 };
 
 /*

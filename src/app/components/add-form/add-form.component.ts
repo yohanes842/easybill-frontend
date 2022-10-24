@@ -1,17 +1,16 @@
+import { DatePipe } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { OrderHeader } from 'src/app/classes/order-header';
-import { OrderDetail } from 'src/app/classes/order-detail';
-import { User } from 'src/app/classes/user';
-import { UserService } from 'src/app/services/user/user.service';
-import { OrderService } from 'src/app/services/order/order.service';
-import { DatePipe } from '@angular/common';
 import { Router } from '@angular/router';
-import { Route } from 'src/app/enums/Route';
-import { CommonService } from 'src/app/services/common/common.service';
-import { CustomMessageService } from 'src/app/services/message/custom-message.service';
-import { Severity } from 'src/app/enums/Severity';
 import { ConfirmationService } from 'primeng/api';
+import { OrderDetail } from 'src/app/classes/order-detail';
+import { OrderHeader } from 'src/app/classes/order-header';
+import { User } from 'src/app/classes/user';
+import { Route } from 'src/app/enums/Route';
+import { Severity } from 'src/app/enums/Severity';
+import { CustomMessageService } from 'src/app/services/message/custom-message.service';
+import { OrderService } from 'src/app/services/order/order.service';
+import { UserService } from 'src/app/services/user/user.service';
 
 @Component({
   selector: 'app-add-form',
@@ -39,14 +38,11 @@ export class AddFormComponent implements OnInit {
     private orderService: OrderService,
     private datePipe: DatePipe,
     private router: Router,
-    private commonService: CommonService,
     private messageService: CustomMessageService,
     private confirmationService: ConfirmationService
   ) {}
 
   ngOnInit(): void {
-    this.commonService.changePageTitle(Route.ADD_ORDER_PATH);
-
     this.currentTime = new Date();
 
     this.userService.getUsers().subscribe(
