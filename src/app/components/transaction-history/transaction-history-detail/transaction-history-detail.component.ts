@@ -10,10 +10,10 @@ import { AuthService } from 'src/app/services/auth/auth.service';
 })
 export class TransactionHistoryDetailComponent implements OnInit {
   @Input() transaction!: Transaction;
-  currentUser!: User | null;
+  currentUser!: User;
 
   constructor(private authService: AuthService) {
-    this.currentUser = authService.getCurrentUser();
+    this.currentUser = this.authService.getCurrentUser() as User;
   }
 
   ngOnInit(): void {}

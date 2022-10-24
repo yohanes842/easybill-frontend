@@ -13,9 +13,7 @@ export class RelatedOrderContentComponent implements OnInit {
 
   constructor() {}
 
-  ngOnInit(): void {
-    console.log(this.index);
-  }
+  ngOnInit(): void {}
 
   showDetail(order: OrderHeader): void {
     this.onShowDetail.emit(order);

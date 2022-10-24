@@ -65,5 +65,6 @@
 <related-orders-dialog
   *ngIf="displayRelatedOrdersDialog"
   [selectedBill]="selectedBill"
+  [isPayable]="isPayable"
   (onClose)="hideDialog()"
 ></related-orders-dialog>

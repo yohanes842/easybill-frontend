@@ -1,5 +1,5 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Navigation, Router } from '@angular/router';
 import { OrderHeader } from 'src/app/classes/order-header';
 import { Status } from 'src/app/classes/status';
 import { User } from 'src/app/classes/user';
@@ -13,24 +13,28 @@ import { AuthService } from 'src/app/services/auth/auth.service';
 })
 export class RelevantOrderDetailContentComponent implements OnInit {
   @Input() selectedOrder!: OrderHeader;
+  @Input() selectedUser!: User; // User yang ordernya akan ditampilkan
 
-  currentUser!: User | null;
-  user!: User; //user yang sedang login
-  yourStatus!: Status;
+  currentUser!: User;
+  currentRoute!: string;
+  billRoute!: string;
+
+  userStatus!: Status;
   othersStatus: Status[] = [];
 
   constructor(private router: Router, private authService: AuthService) {
-    this.currentUser = authService.getCurrentUser();
+    this.currentUser = this.authService.getCurrentUser() as User;
+    this.currentRoute = this.router.url;
+    this.billRoute = Route.BILL_PATH;
   }
 
   ngOnInit(): void {
-    console.log(this.selectedOrder);
-    this.user = this.selectedOrder.order_detail_group_by_user.find(
-      (user: User) => user.id === this.currentUser?.id
+    this.selectedUser = this.selectedOrder.order_detail_group_by_user.find(
+      (user: User) => user.id === this.selectedUser?.id
     )!;
 
     this.selectedOrder.bills.forEach((bill) => {
-      if (bill.user.id === this.currentUser?.id) this.yourStatus = bill;
+      if (bill.user.id === this.selectedUser?.id) this.userStatus = bill;
       else this.othersStatus.push(bill);
     });
   }

@@ -12,12 +12,12 @@ import { AuthService } from 'src/app/services/auth/auth.service';
 export class YourRelevantOrderDetailContentComponent implements OnInit {
   @Input() selectedOrder!: OrderHeader;
 
-  currentUser!: User | null;
+  currentUser!: User;
   yourStatus!: Status;
   othersStatus: Status[] = [];
 
   constructor(private authService: AuthService) {
-    this.currentUser = authService.getCurrentUser();
+    this.currentUser = this.authService.getCurrentUser() as User;
   }
 
   ngOnInit(): void {

@@ -34,21 +34,23 @@ export class AuthService {
     return localStorage.getItem('currentUser') != null ? true : false;
   }
 
-  getCurrentUser(): User | null {
+  getCurrentUser(): User | undefined {
     let user = localStorage.getItem('currentUser');
     let userObject: User;
-    if (user) {
-      try {
-        userObject = JSON.parse(user);
-        delete userObject!['access_token'];
-        return userObject;
-      } catch (error) {
-        localStorage.clear();
-        this.router.navigateByUrl(Route.LOGIN_PATH);
-        return null;
-      }
-    } else {
-      return null;
+
+    if (!user) {
+      this.router.navigateByUrl(Route.LOGIN_PATH);
+      return;
     }
+
+    try {
+      userObject = JSON.parse(user!);
+      delete userObject!['access_token'];
+      return userObject;
+    } catch (error) {
+      localStorage.clear();
+      this.router.navigateByUrl(Route.LOGIN_PATH);
+    }
+    return;
   }
 }

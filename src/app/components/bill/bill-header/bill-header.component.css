@@ -1,26 +1,17 @@
-:host ::ng-deep .p-tabmenu-nav{
-    width: fit-content;
-    margin-inline: auto;
+:host ::ng-deep .p-tabmenu-nav {
+  width: fit-content;
+  margin-inline: auto;
 }
 
-:host ::ng-deep .p-menuitem-link{
-    padding-block: 0.5rem !important;
-    justify-content: center !important;
-}
-
-:host ::ng-deep .p-tabmenu .p-tabmenu-nav .p-tabmenuitem.p-highlight .p-menuitem-link {
-    color: black;
-    background: var(--custom-orange-300);
-}
-
-:host ::ng-deep .p-tabmenu .p-tabmenu-nav .p-tabmenuitem.p-highlight {
-    border-color: var(--custom-orange-300);
+:host ::ng-deep .p-menuitem-link {
+  padding-block: 0.5rem !important;
+  justify-content: center !important;
 }
 
 :host ::ng-deep .p-tabmenu .p-tabmenu-nav {
-    width: 100%;
+  width: 100%;
 }
 
 :host ::ng-deep .p-tabmenu .p-tabmenu-nav .p-tabmenuitem {
-    width: 100%;
+  width: 100%;
 }

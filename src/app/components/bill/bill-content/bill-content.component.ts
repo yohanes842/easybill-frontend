@@ -9,7 +9,7 @@ import { Status } from 'src/app/classes/status';
 })
 export class BillContentComponent implements OnInit {
   @Input() bills!: Status[];
-  @Input() isPayable!: boolean;
+  @Input() isPayable!: Boolean;
   @Output() onShowDialog: EventEmitter<any> = new EventEmitter();
 
   displayPaymentDialog: boolean = false;
