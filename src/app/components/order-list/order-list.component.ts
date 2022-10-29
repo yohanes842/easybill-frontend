@@ -28,8 +28,9 @@ export class OrderListComponent implements OnInit {
   constructor(private orderService: OrderService) {}
 
   ngOnInit() {
-    this.getRelevantOrders();
-    this.getUsersOrders();
+    Promise.all([this.getRelevantOrders(), this.getUsersOrders()]).then(() =>
+      this.changeStatusFilter('ALL')
+    );
   }
 
   showDetail(selectedOrder: OrderHeader): void {
@@ -41,18 +42,24 @@ export class OrderListComponent implements OnInit {
     this.display = false;
   }
 
-  getRelevantOrders(): void {
-    this.orderService.getRelevantOrders().subscribe((res: any) => {
-      this.currentUser = res.output.data;
-      this.relevantOrders = this.currentUser.order_list as OrderHeader[];
-      this.orders = this.relevantOrders;
+  async getRelevantOrders(): Promise<void> {
+    return new Promise((resolve) => {
+      this.orderService.getRelevantOrders().subscribe((res: any) => {
+        this.currentUser = res.output.data;
+        this.relevantOrders = this.currentUser.order_list as OrderHeader[];
+        this.orders = this.relevantOrders;
+        resolve(undefined);
+      });
     });
   }
 
-  getUsersOrders(): void {
-    this.orderService.getUsersOrders().subscribe((res: any) => {
-      this.currentUser = res.output.data;
-      this.usersOrders = this.currentUser.order_list as OrderHeader[];
+  async getUsersOrders(): Promise<void> {
+    return new Promise((resolve) => {
+      this.orderService.getUsersOrders().subscribe((res: any) => {
+        this.currentUser = res.output.data;
+        this.usersOrders = this.currentUser.order_list as OrderHeader[];
+        resolve(undefined);
+      });
     });
   }
 
