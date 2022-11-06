@@ -20,5 +20,9 @@
 }
 
 :host ::ng-deep .p-confirm-dalog .p-dialog-content {
-  padding: 0.5rem 1.5rem Im !important;
+  padding: 0.5rem 1.5rem !important;
+}
+
+:host ::ng-deep .p-dataview-emptymessage {
+  text-align: center;
 }

@@ -1,11 +1,12 @@
-import { User } from "./user";
+import { User } from './user';
 
 export class OrderDetail {
   id?: number;
   username?: string;
   user_id?: number;
-  user!: User;
+  users!: User[];
   order_menu_desc!: string;
   qty: number = 1;
   price!: number;
+  order_type!: string;
 }

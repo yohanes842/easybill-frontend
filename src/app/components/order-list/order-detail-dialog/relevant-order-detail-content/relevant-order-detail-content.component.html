@@ -59,11 +59,23 @@
       </p>
       <div class="flex gap-5 justify-content-between align-items-center w-full">
         <div>
-          <p class="text-sm m-0">{{ subOrder.order_menu_desc }}</p>
+          <p class="text-sm m-0">
+            {{ subOrder.order_menu_desc }}
+            <span
+              *ngIf="subOrder.order_type != 'SINGLE_USER'"
+              class="font-italic text-xs text-secondary"
+              >(Partial)</span
+            >
+          </p>
         </div>
         <div>
           <p class="text-sm m-0 font-italic">
-            {{ subOrder.qty * subOrder.price | currency: "Rp ":"":"1.0-0" }}
+            {{
+              (subOrder.order_type == "SINGLE_USER"
+                ? subOrder.qty * subOrder.price
+                : subOrder.price
+              ) | currency: "Rp ":"":"1.0-0"
+            }}
           </p>
         </div>
       </div>

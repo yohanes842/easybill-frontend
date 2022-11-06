@@ -11,7 +11,7 @@ import { AuthService } from 'src/app/services/auth/auth.service';
 })
 export class OrderDetailsComponent implements OnInit {
   @Input() selectedOrder!: OrderHeader;
-  @Input() isRelevantOrder!: boolean;
+  @Input() isRelevantOrder!: Boolean;
   @Output() close: EventEmitter<any> = new EventEmitter();
 
   currentUser!: User;
@@ -24,7 +24,9 @@ export class OrderDetailsComponent implements OnInit {
     this.currentUser = this.authService.getCurrentUser() as User;
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    console.log(this.isRelevantOrder);
+  }
 
   onHideDetail(): void {
     this.close.emit(null);

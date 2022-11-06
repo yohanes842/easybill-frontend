@@ -1,6 +1,7 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { OrderDetail } from 'src/app/classes/order-detail';
 import { OrderHeader } from 'src/app/classes/order-header';
 import { User } from 'src/app/classes/user';
 import { Response } from 'src/app/interfaces/response';
@@ -12,14 +13,31 @@ import { environment as env } from 'src/environments/environment';
 export class OrderService {
   constructor(private http: HttpClient) {}
 
-  public getRelevantOrders(): Observable<Response<User>> {
+  currentOrder!: OrderHeader | null;
+
+  public setCurrentOrder(orderHeader: OrderHeader | null): void {
+    this.currentOrder = orderHeader;
+    return;
+  }
+
+  public getCurrentOrder(): OrderHeader | null {
+    return this.currentOrder;
+  }
+
+  public getRelevantOrders(page: number): Observable<Response<User>> {
+    let params = new URLSearchParams({ page: page.toString() });
+
     return this.http.get<Response<User>>(
-      `${env.url}/api/users/relevant-orders`
+      `${env.url}/api/users/relevant-orders?${params.toString()}`
     );
   }
 
-  public getUsersOrders(): Observable<Response<User>> {
-    return this.http.get<Response<User>>(`${env.url}/api/users/users-orders`);
+  public getUsersOrders(page: number): Observable<Response<User>> {
+    let params = new URLSearchParams({ page: page.toString() });
+
+    return this.http.get<Response<User>>(
+      `${env.url}/api/users/users-orders?${params.toString()}`
+    );
   }
 
   public addOrder(orderHeader: OrderHeader): Observable<Response<OrderHeader>> {

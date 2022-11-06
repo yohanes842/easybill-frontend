@@ -1,0 +1,217 @@
+<div class="w-full px-3 mt-3">
+  <div class="flex align-items-center gap-3">
+    <button
+      pButton
+      class="p-button-sm p-button-raised p-button-rounded p-0 text-white"
+      style="background: var(--custom-red-300); transform: scale(0.8)"
+      type="button"
+      icon="pi pi-chevron-left"
+      iconPos="left"
+      (click)="back()"
+    ></button>
+    <h2 class="font-italic">Select Users</h2>
+  </div>
+
+  <div class="mb-1 w-full">
+    <label for="subOrderBy" class="font-bold">Friends</label>
+    <div class="flex justify-content-between align-items-center gap-2">
+      <div class="w-full">
+        <p-autoComplete
+          [style]="{
+            width: '100%',
+            'margin-block': '0.5rem'
+          }"
+          [inputStyle]="{ width: '100%', 'padding-block': '0.5rem' }"
+          name="subOrderBy"
+          [(ngModel)]="username"
+          [suggestions]="filteredUsernames"
+          (completeMethod)="filterUsername($event.query)"
+          placeholder="Username"
+        ></p-autoComplete>
+      </div>
+      <button
+        pButton
+        class="p-button-sm py-2 text-white bg-primary h-fit"
+        type="button"
+        label="Add"
+        (click)="addParticipant()"
+      ></button>
+      <button
+        pButton
+        class="p-button-sm py-2 h-fit p-button-success"
+        type="button"
+        label="Save"
+        (click)="showSaveOrderConfirmation()"
+      ></button>
+    </div>
+  </div>
+
+  <div class="flex gap-3 overflow-x-scroll py-2">
+    <div
+      *ngFor="let user of participants; let i = index"
+      class="text-center relative"
+    >
+      <button
+        type="button"
+        class="border-circle absolute border-none"
+        style="top: -10%; right: -10%; background: var(--custom-red-300)"
+        (click)="removeParticipant(i)"
+      >
+        x
+      </button>
+      <button
+        class="border-none p-0"
+        style="background: none"
+        (click)="selectParticipant(user)"
+      >
+        <p-avatar
+          styleClass="p-mr-2 font-bold p-avatar-lg border-primary {{
+            selectedParticipant?.id == user.id ? 'border-3' : 'border-none'
+          }}"
+          [style]="{
+            'background-color': 'var(--custom-orange-50)',
+            color: 'black'
+          }"
+          shape="circle"
+          size="large"
+          >{{ user.username | uppercase | slice: 0:1 }}</p-avatar
+        >
+      </button>
+
+      <h6 class="m-0" style="color: var(--custom-orange-100)">
+        {{
+          user.username.length > 10
+            ? (user.username | slice: 0:10) + "..."
+            : user.username
+        }}
+      </h6>
+    </div>
+  </div>
+
+  <div
+    *ngIf="currentOrder.order_list.length > 0"
+    class="mt-2 flex flex-column gap-2"
+  >
+    <div *ngFor="let subOrder of currentOrder.order_list; let i = index">
+      <button
+        [attr.data-index]="i"
+        class="flex gap-1 align-items-center border-1 border-300 py-2 pl-2 w-full text-white"
+        style="background: none"
+        [class.border-top-1]="i > 0"
+        [class.bg-gray-800]="
+          selectedParticipant && isSelectedUserHasOrder(subOrder)
+        "
+        (click)="chooseSubOrder(subOrder)"
+      >
+        <div class="flex justify-content-between w-full">
+          <div class="text-sm text-left">
+            <h3 class="my-1" style="overflow-wrap: break-word">
+              {{ subOrder.order_menu_desc }}
+            </h3>
+            <p class="m-0 pl-1" style="color: var(--custom-orange)">
+              {{ subOrder.price * subOrder.qty | currency: "Rp " }}
+            </p>
+            <div (click)="stopPropagation($event)">
+              <p-inputNumber
+                [style]="{
+                  width: '100%',
+                  'max-width': '7rem',
+                  'margin-block': '0.5rem'
+                }"
+                [inputStyle]="{
+                  width: '100%',
+                  'max-width': '7rem',
+                  'padding-block': '0.5rem',
+                  'text-align': 'center',
+                  'padding-inline': '0.1rem',
+                  'font-size': '11px'
+                }"
+                [(ngModel)]="subOrder.qty"
+                name="qty"
+                class="text-center pl-1"
+                [showButtons]="true"
+                buttonLayout="horizontal"
+                spinnerMode="vertical"
+                decrementButtonClass="p-2 w-fit text-white bg-bluegray-500 text-lg"
+                incrementButtonClass="p-2 w-fit text-white bg-bluegray-500 text-lg"
+                incrementButtonIcon="pi pi-plus"
+                decrementButtonIcon="pi pi-minus"
+                [min]="1"
+                [max]="999"
+                [size]="1"
+                [required]="true"
+              ></p-inputNumber>
+            </div>
+          </div>
+          <div
+            class="flex flex-column justify-content-between align-items-end px-2"
+          >
+            <div>
+              <button
+                type="button"
+                class="p-0 text-right px-2"
+                style="background: none; border: none"
+                (click)="duplicateSubOrderToList($event, subOrder)"
+              >
+                <span class="text-secondary text-xs font-italic"
+                  >duplicate</span
+                >
+              </button>
+              <button
+                type="button"
+                class="p-0 text-right px-2"
+                style="background: none; border: none"
+                (click)="deleteSubOrder($event, i)"
+              >
+                <span class="text-secondary text-xs font-italic text-red-300"
+                  >delete</span
+                >
+              </button>
+            </div>
+            <button
+              *ngIf="subOrder.users.length > 0"
+              class="p-0"
+              style="background: none; border: none"
+              (click)="showUserListDialog($event, subOrder)"
+            >
+              <p-avatarGroup>
+                <p-avatar
+                  *ngFor="let user of subOrder.users | slice: 0:3"
+                  label="{{ user.username | uppercase | slice: 0:1 }}"
+                  shape="circle"
+                  styleClass="p-mr-2 border-primary flex-grow-1"
+                  [style]="{
+                    'background-color': 'var(--custom-orange-50)',
+                    color: 'black',
+                    border: 'solid 2px'
+                  }"
+                ></p-avatar>
+                <p-avatar
+                  *ngIf="subOrder.users.length > 3"
+                  label="+{{ subOrder.users.length - 3 }}"
+                  shape="circle"
+                  styleClass="p-mr-2"
+                  [style]="{
+                    'background-color': 'var(--custom-orange-200)',
+                    color: 'white',
+                    border: 'solid 2px var(--custom-orange-100)'
+                  }"
+                ></p-avatar>
+              </p-avatarGroup>
+            </button>
+          </div>
+        </div>
+      </button>
+    </div>
+  </div>
+</div>
+
+<participant-list-dialog
+  *ngIf="participantListDialogDisplay"
+  [subOrder]="selectedSubOrder"
+  (onDeleteParticipant)="
+    removeParticipantFromSubOrderList(selectedSubOrder, $event)
+  "
+  (onCloseDialog)="hideParticipantListDialog()"
+>
+</participant-list-dialog>

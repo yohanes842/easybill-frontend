@@ -8,6 +8,7 @@ import { OrderHeader } from 'src/app/classes/order-header';
 import { User } from 'src/app/classes/user';
 import { Route } from 'src/app/enums/Route';
 import { Severity } from 'src/app/enums/Severity';
+import { AuthService } from 'src/app/services/auth/auth.service';
 import { CustomMessageService } from 'src/app/services/message/custom-message.service';
 import { OrderService } from 'src/app/services/order/order.service';
 import { UserService } from 'src/app/services/user/user.service';
@@ -20,20 +21,20 @@ import { UserService } from 'src/app/services/user/user.service';
 })
 export class AddFormComponent implements OnInit {
   addUserDisplay: boolean = false;
-  addSubOrderDisplay: boolean = false;
+  dialogDisplay: boolean = false;
   modalType!: string;
 
   users!: User[];
   filteredUsernames!: string[];
 
-  newOrder: OrderHeader = new OrderHeader();
-  subOrders: OrderDetail[] = [];
+  currentOrder!: OrderHeader;
   currentTime!: Date;
   participants: User[] = [];
   selectedUser!: User;
   selectedSubOrder!: OrderDetail;
 
   constructor(
+    private authService: AuthService,
     private userService: UserService,
     private orderService: OrderService,
     private datePipe: DatePipe,
@@ -42,7 +43,27 @@ export class AddFormComponent implements OnInit {
     private confirmationService: ConfirmationService
   ) {}
 
+  ngOnDestroy(): void {
+    console.log('lala');
+  }
+
   ngOnInit(): void {
+    const stringOfCurrentOrder = localStorage.getItem('currentOrder');
+    let retrievedCurrentOrder: OrderHeader | null;
+
+    //Set currentOrder Retrieving Process
+    if (stringOfCurrentOrder) {
+      retrievedCurrentOrder = JSON.parse(stringOfCurrentOrder);
+    } else retrievedCurrentOrder = this.orderService.getCurrentOrder();
+
+    if (!retrievedCurrentOrder) {
+      this.currentOrder = new OrderHeader();
+      this.currentOrder.order_list = [];
+
+      const currentUser = this.authService.getCurrentUser();
+      this.currentOrder.username = currentUser?.username;
+    } else this.currentOrder = retrievedCurrentOrder;
+
     this.currentTime = new Date();
 
     this.userService.getUsers().subscribe(
@@ -55,40 +76,25 @@ export class AddFormComponent implements OnInit {
     );
   }
 
-  showAddUserDialog() {
-    this.addUserDisplay = true;
-  }
-
-  showAddSubOrderDialog(user: User) {
+  showAddSubOrderDialog() {
     this.hideDialog();
     this.modalType = 'add';
-    this.selectedUser = user;
     this.selectedSubOrder = new OrderDetail();
-    this.addSubOrderDisplay = true;
+    this.dialogDisplay = true;
   }
 
-  showEditSubOrderDialog(user: User, subOrder: OrderDetail) {
+  showEditSubOrderDialog(subOrder: OrderDetail) {
     this.modalType = 'edit';
-    this.selectedUser = user;
     this.selectedSubOrder = subOrder;
-    this.addSubOrderDisplay = true;
+    this.dialogDisplay = true;
   }
 
-  deleteSubOrder(user: User, index: number) {
-    user.sub_order_list!.splice(index, 1);
+  deleteSubOrder(index: number) {
+    this.currentOrder.order_list.splice(index, 1);
     this.messageService.showMessage(
       Severity.SUCCESS,
       'Successfully',
       'deleted sub-order'
-    );
-  }
-
-  deleteParticipant(index: number) {
-    this.participants.splice(index, 1);
-    this.messageService.showMessage(
-      Severity.SUCCESS,
-      'Successfully',
-      'deleted user participants'
     );
   }
 
@@ -100,12 +106,12 @@ export class AddFormComponent implements OnInit {
       .map((user) => user.username);
   }
 
-  submitOrder() {
-    this.newOrder.buyer_id = this.users.find(
-      (u: User) => u.username === this.newOrder.username
+  navigateToSelectUsers() {
+    this.currentOrder.buyer_id = this.users.find(
+      (u: User) => u.username === this.currentOrder.username
     )?.id;
     //validate if user not exist in the list
-    if (this.newOrder.buyer_id === 0) {
+    if (this.currentOrder.buyer_id === 0) {
       this.messageService.showMessage(
         Severity.ERROR,
         'Input Error',
@@ -114,86 +120,39 @@ export class AddFormComponent implements OnInit {
       return;
     }
 
-    if (this.participants.length > 0) {
-      let isExistUserWithNoSubOrder = this.participants.every(
-        (user) => user.sub_order_list!.length === 0
-      );
-      if (isExistUserWithNoSubOrder) {
-        this.messageService.showMessage(
-          Severity.ERROR,
-          'Input Error',
-          'Please specify order details for every user!'
-        );
-        return;
-      }
-      this.participants.forEach(
-        (user) =>
-          (this.subOrders = [...this.subOrders, ...user.sub_order_list!])
-      );
-    }
-
-    if (this.subOrders.length < 1) {
+    if (this.currentOrder.order_list.length < 1) {
       this.messageService.showMessage(
         Severity.ERROR,
         'Input Error',
         'Order detail can not be empty'
       );
     } else {
-      //prepare object to be passed
-      this.newOrder.order_list = this.subOrders;
-      this.newOrder.discount /= 100;
-      this.newOrder.order_at = this.datePipe.transform(
+      //set order_at attribute
+      this.currentOrder.order_at = this.datePipe.transform(
         this.currentTime,
         'yyyy-MM-dd HH:mm:ss'
       )!;
 
-      // Hit add order service
-      this.orderService.addOrder(this.newOrder).subscribe((res: any) => {
-        console.log(res);
-      });
+      this.orderService.setCurrentOrder(this.currentOrder);
+      localStorage.setItem('currentOrder', JSON.stringify(this.currentOrder));
 
-      // Redirect to home page
-      this.messageService.showMessage(
-        Severity.SUCCESS,
-        'Successfully',
-        'Added new order'
-      );
-      this.router.navigateByUrl(Route.HOME_PATH);
+      this.router.navigateByUrl(Route.ADD_ORDER_USER_PATH);
     }
   }
 
   hideDialog(): void {
-    this.addUserDisplay = false;
-    this.addSubOrderDisplay = false;
+    this.dialogDisplay = false;
   }
 
   backToHome(): void {
     this.router.navigateByUrl(Route.HOME_PATH);
   }
 
-  showDeleteSubOrderConfirmation(user: User, index: number): void {
+  showDeleteSubOrderConfirmation(index: number): void {
     this.confirmationService.confirm({
       message: 'Are you sure that you want to delete this sub-order?',
       accept: () => {
-        this.deleteSubOrder(user, index);
-      },
-    });
-  }
-
-  showDeleteParticipantConfirmation(username: string, index: number): void {
-    this.confirmationService.confirm({
-      message: `Are you sure that you want to delete ${username.toLocaleUpperCase()} from participant list?`,
-      accept: () => {
-        this.deleteParticipant(index);
-      },
-    });
-  }
-
-  showSaveOrderConfirmation(): void {
-    this.confirmationService.confirm({
-      message: 'Are you sure that you want to save this order?',
-      accept: () => {
-        this.submitOrder();
+        this.deleteSubOrder(index);
       },
     });
   }

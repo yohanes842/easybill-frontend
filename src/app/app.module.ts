@@ -48,7 +48,7 @@ import { DatePipe } from '@angular/common';
 import { AuthApiInterceptor } from 'src/app/interceptor/auth-http.interceptor';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { PaymentDialogComponent } from 'src/app/components/bill/payment-dialog/payment-dialog.component';
-import { AddUserFormComponent } from 'src/app/components/add-form/add-user-form/add-user-form.component';
+import { SelectusersFormComponent } from 'src/app/components/select-users-form/select-users-form.component';
 import { OrderListHeaderComponent } from './components/order-list/header/header.component';
 import { OrderListContentComponent } from './components/order-list/order-list-content/order-list-content.component';
 import { BillHeaderComponent } from './components/bill/bill-header/bill-header.component';
@@ -62,6 +62,10 @@ import { TransactionHistoryComponent } from './components/transaction-history/tr
 import { TransactionHistoryDetailComponent } from './components/transaction-history/transaction-history-detail/transaction-history-detail.component';
 import { ErrorResponseInterceptor } from './interceptor/error-response.interceptor';
 import { NotFoundPageComponent } from './components/not-found-page/not-found-page.component';
+import { ParticipantListDialogComponent } from './components/select-users-form/participant-list-dialog/participant-list-dialog.component';
+import { JumpButtonComponent } from './components/jump-button/jump-button.component';
+import { TransactionRelatedOrdersDialogComponent } from './components/transaction-history/transaction-related-orders-dialog/transaction-related-orders-dialog.component';
+import { TransactionRelatedOrderContentComponent } from './components/transaction-history/transaction-related-orders-dialog/transaction-related-order-content/transaction-related-order-content.component';
 
 @NgModule({
   declarations: [
@@ -76,7 +80,7 @@ import { NotFoundPageComponent } from './components/not-found-page/not-found-pag
     AddSubFormComponent,
     LoginComponent,
     PaymentDialogComponent,
-    AddUserFormComponent,
+    SelectusersFormComponent,
     OrderListHeaderComponent,
     OrderListContentComponent,
     BillHeaderComponent,
@@ -89,6 +93,10 @@ import { NotFoundPageComponent } from './components/not-found-page/not-found-pag
     TransactionHistoryComponent,
     TransactionHistoryDetailComponent,
     NotFoundPageComponent,
+    ParticipantListDialogComponent,
+    JumpButtonComponent,
+    TransactionRelatedOrdersDialogComponent,
+    TransactionRelatedOrderContentComponent,
   ],
   imports: [
     BrowserModule,

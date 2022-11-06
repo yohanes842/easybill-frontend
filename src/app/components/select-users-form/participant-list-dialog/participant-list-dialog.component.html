@@ -1,0 +1,57 @@
+<p-dialog
+  styleClass="dialog-box"
+  [style]="{
+    width: 'calc(100vw - 2rem)',
+    'max-width': '30rem',
+    overflow: 'visible'
+  }"
+  [(visible)]="display"
+  [modal]="true"
+  (onHide)="hideDialog()"
+>
+  <p-header>
+    <h3 class="m-0 p-0">Participants</h3>
+  </p-header>
+  <div class="flex flex-column gap-1 align-items-center text-white p-2">
+    <ng-container *ngIf="subOrder.users.length > 0; else emptyListMessage">
+      <div
+        *ngFor="let user of subOrder.users"
+        class="flex gap-1 align-items-center justify-content-between border-1 border-300 border-round p-2 text-white w-full"
+      >
+        <div>
+          <span>
+            <p-avatar
+              styleClass="p-mr-2 font-bold"
+              [style]="{
+                'background-color': 'var(--custom-orange-50)',
+                color: 'black',
+                transform: 'scale(70%)'
+              }"
+              shape="circle"
+              >{{ user.username | uppercase | slice: 0:1 }}</p-avatar
+            >
+          </span>
+          <span style="color: var(--custom-orange-100)">{{
+            user.username | uppercase
+          }}</span>
+        </div>
+        <button
+          pButton
+          class="p-button-sm p-button-link p-button-danger text-red-300"
+          [style]="{
+            'padding-block': '0.5rem',
+            'padding-inline': '1rem',
+            width: 'fit-content'
+          }"
+          type="button"
+          icon="pi pi-trash"
+          (click)="deleteParticipant(user)"
+        ></button>
+      </div>
+    </ng-container>
+
+    <ng-template #emptyListMessage>
+      <p>No Participants!</p>
+    </ng-template>
+  </div>
+</p-dialog>

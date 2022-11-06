@@ -1,0 +1,49 @@
+<p-dialog
+  class="flex flex-column p-0 w-fit"
+  [style]="{
+    width: 'calc(100vw - 2rem)',
+    'max-width': '30rem',
+    'overflow-x': 'hidden'
+  }"
+  header="Related Order(s)"
+  [modal]="true"
+  [(visible)]="display"
+  (onHide)="hideDialog()"
+>
+  <div class="flex flex-column gap-3 p-3">
+    <ng-container *ngIf="!isDetailSection; else detailOrder">
+      <div
+        *ngFor="
+          let relatedOrder of selectedTransaction.bill_transaction_header_list;
+          let i = index
+        "
+      >
+        <transaction-related-order-content
+          [relatedOrder]="relatedOrder"
+          [index]="i"
+          (onShowDetail)="showDetail($event)"
+        ></transaction-related-order-content>
+      </div>
+    </ng-container>
+
+    <ng-template #detailOrder>
+      <div>
+        <button
+          pButton
+          class="p-button-link p-button-sm w-fit p-0"
+          (click)="backToRelatedOrders()"
+        >
+          back
+        </button>
+      </div>
+      <relevant-order-detail-content
+        [selectedOrder]="selectedOrder"
+        [selectedUser]="selectedTransaction.payer"
+      ></relevant-order-detail-content>
+
+      <order-detail-summary-content
+        [selectedOrder]="selectedOrder"
+      ></order-detail-summary-content>
+    </ng-template>
+  </div>
+</p-dialog>

@@ -1,0 +1,9 @@
+<button
+  pButton
+  class="bg-primary fixed p-button-sm z-4 transition-all transition-duration-500 opacity-0"
+  [class.opacity-100]="display"
+  [class.hidden]="!isVisible"
+  style="bottom: 2.4rem; left: 1rem"
+  icon="pi pi-arrow-up"
+  (click)="toPageTop()"
+></button>
