@@ -12,6 +12,17 @@ import { environment as env } from 'src/environments/environment';
 export class OrderService {
   constructor(private http: HttpClient) {}
 
+  currentOrder!: OrderHeader;
+
+  public setCurrentOrder(orderHeader: OrderHeader): void {
+    this.currentOrder = orderHeader;
+    return;
+  }
+
+  public getCurrentOrder(): OrderHeader {
+    return this.currentOrder;
+  }
+
   public getRelevantOrders(): Observable<Response<User>> {
     return this.http.get<Response<User>>(
       `${env.url}/api/users/relevant-orders`

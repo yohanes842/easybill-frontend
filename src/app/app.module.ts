@@ -48,7 +48,7 @@ import { DatePipe } from '@angular/common';
 import { AuthApiInterceptor } from 'src/app/interceptor/auth-http.interceptor';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { PaymentDialogComponent } from 'src/app/components/bill/payment-dialog/payment-dialog.component';
-import { AddUserFormComponent } from 'src/app/components/add-form/add-user-form/add-user-form.component';
+import { SelectusersFormComponent } from 'src/app/components/select-users-form/select-users-form.component';
 import { OrderListHeaderComponent } from './components/order-list/header/header.component';
 import { OrderListContentComponent } from './components/order-list/order-list-content/order-list-content.component';
 import { BillHeaderComponent } from './components/bill/bill-header/bill-header.component';
@@ -76,7 +76,7 @@ import { NotFoundPageComponent } from './components/not-found-page/not-found-pag
     AddSubFormComponent,
     LoginComponent,
     PaymentDialogComponent,
-    AddUserFormComponent,
+    SelectusersFormComponent,
     OrderListHeaderComponent,
     OrderListContentComponent,
     BillHeaderComponent,

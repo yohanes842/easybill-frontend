@@ -13,7 +13,7 @@ export class AddSubFormComponent implements OnInit {
   @Input() filteredUsernames!: string[];
   @Input() users!: User[];
   @Input() modalType!: string;
-  @Input() selectedUser!: User;
+  @Input() subOrders!: OrderDetail[];
   @Input() selectedSubOrder!: OrderDetail;
   @Output() onSubmit: EventEmitter<any> = new EventEmitter();
   @Output() onSearchKeyChange: EventEmitter<any> = new EventEmitter();
@@ -34,17 +34,15 @@ export class AddSubFormComponent implements OnInit {
   }
 
   submitSubOrder(): void {
-    this.selectedSubOrder.user_id = this.selectedUser.id;
-
-    if (this.modalType === 'add') {
-      this.selectedUser!.sub_order_list!.push(this.selectedSubOrder);
-    }
+    this.selectedSubOrder.users = [];
+    if (this.modalType === 'add') this.subOrders.push(this.selectedSubOrder);
 
     this.messageService.showMessage(
       Severity.SUCCESS,
       'Successfully',
       this.modalType === 'add' ? 'added new sub-order' : 'edit sub-order'
     );
+
     this.onClose.emit();
   }
 
