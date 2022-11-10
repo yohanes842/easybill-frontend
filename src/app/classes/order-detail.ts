@@ -8,4 +8,5 @@ export class OrderDetail {
   order_menu_desc!: string;
   qty: number = 1;
   price!: number;
+  order_type!: string;
 }
