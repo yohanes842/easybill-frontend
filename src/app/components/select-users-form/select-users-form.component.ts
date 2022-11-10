@@ -113,6 +113,12 @@ export class SelectusersFormComponent implements OnInit {
 
   removeParticipant(index: number) {
     if (index < this.participants.length) {
+      this.currentOrder.order_list.forEach((subOrder) => {
+          const removalIndex = subOrder.users.indexOf(this.participants[index]);
+          if(removalIndex > -1) subOrder.users.splice(removalIndex, 1);
+        }
+      );
+
       this.participants.splice(index, 1);
 
       let participant = this.participants.find(
