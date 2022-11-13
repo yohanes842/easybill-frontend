@@ -21,7 +21,7 @@ export class OrderListComponent implements OnInit {
   usersOrders!: OrderHeader[];
   relevantOrdersFiltered!: OrderHeader[];
   usersOrdersFiltered!: OrderHeader[];
-  isRelevantOrder: boolean = true;
+  isRelevantOrder: Boolean = true;
 
   selectedOrder!: OrderHeader;
 
@@ -63,7 +63,7 @@ export class OrderListComponent implements OnInit {
     });
   }
 
-  changeDataViewContent(isRelevantOrder: boolean): void {
+  changeDataViewContent(isRelevantOrder: Boolean): void {
     this.isRelevantOrder = isRelevantOrder;
     this.orders = isRelevantOrder
       ? this.relevantOrdersFiltered
@@ -74,17 +74,23 @@ export class OrderListComponent implements OnInit {
     if (selectedStatusOptions == 'ALL') {
       this.relevantOrdersFiltered = this.relevantOrders;
       this.usersOrdersFiltered = this.usersOrders;
-      this.changeDataViewContent(this.isRelevantOrder);
-      return;
+    } else {
+      if (this.relevantOrders)
+        this.relevantOrdersFiltered = this.relevantOrders.filter(
+          (order) => order.order_header_status == selectedStatusOptions
+        );
+      if (this.usersOrders)
+        this.usersOrdersFiltered = this.usersOrders.filter(
+          (order) => order.order_header_status == selectedStatusOptions
+        );
     }
-
-    this.relevantOrdersFiltered = this.relevantOrders.filter(
-      (order) => order.order_header_status == selectedStatusOptions
-    );
-    this.usersOrdersFiltered = this.usersOrders.filter(
-      (order) => order.order_header_status == selectedStatusOptions
-    );
-
     this.changeDataViewContent(this.isRelevantOrder);
+  }
+
+  checkIsRelevantOrder(): Boolean {
+    return (
+      this.orders == this.relevantOrders ||
+      this.orders == this.relevantOrdersFiltered
+    );
   }
 }

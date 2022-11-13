@@ -13,7 +13,7 @@
   </div>
 
   <div class="mb-1 w-full">
-    <label for="subOrderBy" class="font-bold">Person</label>
+    <label for="subOrderBy" class="font-bold">Friends</label>
     <div class="flex justify-content-between align-items-center gap-2">
       <div class="w-full">
         <p-autoComplete
@@ -62,7 +62,7 @@
       <button
         class="border-none p-0"
         style="background: none"
-        (click)="selectParticipant(i)"
+        (click)="selectParticipant(user)"
       >
         <p-avatar
           styleClass="p-mr-2 font-bold p-avatar-lg border-primary {{
@@ -92,40 +92,77 @@
     *ngIf="currentOrder.order_list.length > 0"
     class="mt-2 flex flex-column gap-2"
   >
-    <button
-      pButton
+    <div
       *ngFor="let subOrder of currentOrder.order_list; let i = index"
-      [attr.data-index]="i"
-      class="flex gap-1 align-items-center border-1 border-300 py-2 pl-2 w-full text-white"
-      style="background: none"
-      [class.border-top-1]="i > 0"
-      [class.bg-gray-500]="
-        selectedParticipant && isSelectedUserHasOrder(subOrder)
-      "
-      (click)="chooseSubOrder(i)"
+      class="relative"
     >
-      <div class="p-2 text-pink-300 font-bold w-3rem text-center text-sm">
-        {{ subOrder.qty }}x
-      </div>
-      <div class="flex align-items-center justify-content-between w-full">
-        <div class="text-sm text-left">
-          <p class="m-0" style="overflow-wrap: break-word">
-            {{ subOrder.order_menu_desc }}
-          </p>
-          <p class="m-0" style="color: var(--custom-orange)">
-            {{ subOrder.price * subOrder.qty | currency: "Rp " }}
-          </p>
+      <button
+        pButton
+        [attr.data-index]="i"
+        class="flex gap-1 align-items-center border-1 border-300 py-2 pl-2 w-full text-white"
+        style="background: none"
+        [class.border-top-1]="i > 0"
+        [class.bg-gray-500]="
+          selectedParticipant && isSelectedUserHasOrder(subOrder)
+        "
+        (click)="chooseSubOrder(subOrder)"
+      >
+        <div class="flex align-items-center justify-content-between w-full">
+          <div class="text-sm text-left">
+            <h3 class="my-1" style="overflow-wrap: break-word">
+              {{ subOrder.order_menu_desc }}
+            </h3>
+            <p class="m-0 pl-1" style="color: var(--custom-orange)">
+              {{ subOrder.price * subOrder.qty | currency: "Rp " }}
+            </p>
+            <p-inputNumber
+              [style]="{
+                width: '100%',
+                'max-width': '7rem',
+                'margin-block': '0.5rem'
+              }"
+              [inputStyle]="{
+                width: '100%',
+                'max-width': '7rem',
+                'padding-block': '0.5rem',
+                'text-align': 'center',
+                'padding-inline': '0.1rem',
+                'font-size': '11px'
+              }"
+              [(ngModel)]="subOrder.qty"
+              name="qty"
+              class="text-center pl-1"
+              [showButtons]="true"
+              buttonLayout="horizontal"
+              spinnerMode="vertical"
+              decrementButtonClass="p-2 w-fit text-white bg-bluegray-500 text-lg"
+              incrementButtonClass="p-2 w-fit text-white bg-bluegray-500 text-lg"
+              incrementButtonIcon="pi pi-plus"
+              decrementButtonIcon="pi pi-minus"
+              [min]="1"
+              [max]="999"
+              [size]="1"
+              [required]="true"
+            ></p-inputNumber>
+          </div>
         </div>
+      </button>
+      <button
+        pButton
+        class="absolute p-2 right-0 bottom-0"
+        style="background: none; z-index: 10"
+        (click)="showUserListDialog(subOrder)"
+      >
         <p-avatarGroup>
           <p-avatar
-            *ngFor="let user of subOrder.users"
+            *ngFor="let user of subOrder.users | slice: 0:3"
             label="{{ user.username | uppercase | slice: 0:1 }}"
             shape="circle"
-            styleClass="p-mr-2"
+            styleClass="p-mr-2 border-primary"
             [style]="{
-              'background-color': 'var(--custom-cyan-100)',
+              'background-color': 'var(--custom-orange-50)',
               color: 'black',
-              border: 'solid 2px var(--custom-orange-200)'
+              border: 'solid 2px'
             }"
           ></p-avatar>
           <p-avatar
@@ -140,7 +177,17 @@
             }"
           ></p-avatar>
         </p-avatarGroup>
-      </div>
-    </button>
+      </button>
+    </div>
   </div>
 </div>
+
+<participant-list-dialog
+  *ngIf="participantListDialogDisplay"
+  [subOrder]="selectedSubOrder"
+  (onDeleteParticipant)="
+    removeParticipantFromSubOrderList(selectedSubOrder, $event.query)
+  "
+  (onCloseDialog)="hideParticipantListDialog()"
+>
+</participant-list-dialog>

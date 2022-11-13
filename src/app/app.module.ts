@@ -62,6 +62,7 @@ import { TransactionHistoryComponent } from './components/transaction-history/tr
 import { TransactionHistoryDetailComponent } from './components/transaction-history/transaction-history-detail/transaction-history-detail.component';
 import { ErrorResponseInterceptor } from './interceptor/error-response.interceptor';
 import { NotFoundPageComponent } from './components/not-found-page/not-found-page.component';
+import { ParticipantListDialogComponent } from './components/select-users-form/participant-list-dialog/participant-list-dialog.component';
 
 @NgModule({
   declarations: [
@@ -89,6 +90,7 @@ import { NotFoundPageComponent } from './components/not-found-page/not-found-pag
     TransactionHistoryComponent,
     TransactionHistoryDetailComponent,
     NotFoundPageComponent,
+    ParticipantListDialogComponent,
   ],
   imports: [
     BrowserModule,

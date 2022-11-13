@@ -32,6 +32,6 @@
 <dialog-order-details
   *ngIf="display"
   [selectedOrder]="selectedOrder"
-  [isRelevantOrder]="orders == relevantOrders"
+  [isRelevantOrder]="checkIsRelevantOrder()"
   (close)="hideDetail()"
 ></dialog-order-details>

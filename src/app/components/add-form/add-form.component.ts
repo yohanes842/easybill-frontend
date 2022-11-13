@@ -8,6 +8,7 @@ import { OrderHeader } from 'src/app/classes/order-header';
 import { User } from 'src/app/classes/user';
 import { Route } from 'src/app/enums/Route';
 import { Severity } from 'src/app/enums/Severity';
+import { AuthService } from 'src/app/services/auth/auth.service';
 import { CustomMessageService } from 'src/app/services/message/custom-message.service';
 import { OrderService } from 'src/app/services/order/order.service';
 import { UserService } from 'src/app/services/user/user.service';
@@ -33,6 +34,7 @@ export class AddFormComponent implements OnInit {
   selectedSubOrder!: OrderDetail;
 
   constructor(
+    private authService: AuthService,
     private userService: UserService,
     private orderService: OrderService,
     private datePipe: DatePipe,
@@ -41,17 +43,26 @@ export class AddFormComponent implements OnInit {
     private confirmationService: ConfirmationService
   ) {}
 
+  ngOnDestroy(): void {
+    console.log('lala');
+  }
+
   ngOnInit(): void {
     const stringOfCurrentOrder = localStorage.getItem('currentOrder');
+    let retrievedCurrentOrder: OrderHeader | null;
 
-    if (stringOfCurrentOrder)
-      this.currentOrder = JSON.parse(stringOfCurrentOrder);
-    else this.currentOrder = this.orderService.getCurrentOrder();
+    //Set currentOrder Retrieving Process
+    if (stringOfCurrentOrder) {
+      retrievedCurrentOrder = JSON.parse(stringOfCurrentOrder);
+    } else retrievedCurrentOrder = this.orderService.getCurrentOrder();
 
-    if (!this.currentOrder) {
+    if (!retrievedCurrentOrder) {
       this.currentOrder = new OrderHeader();
       this.currentOrder.order_list = [];
-    }
+
+      const currentUser = this.authService.getCurrentUser();
+      this.currentOrder.username = currentUser?.username;
+    } else this.currentOrder = retrievedCurrentOrder;
 
     this.currentTime = new Date();
 
@@ -116,8 +127,7 @@ export class AddFormComponent implements OnInit {
         'Order detail can not be empty'
       );
     } else {
-      //prepare object to be passed
-      this.currentOrder.discount /= 100;
+      //set order_at attribute
       this.currentOrder.order_at = this.datePipe.transform(
         this.currentTime,
         'yyyy-MM-dd HH:mm:ss'

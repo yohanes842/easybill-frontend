@@ -12,14 +12,14 @@ import { environment as env } from 'src/environments/environment';
 export class OrderService {
   constructor(private http: HttpClient) {}
 
-  currentOrder!: OrderHeader;
+  currentOrder!: OrderHeader | null;
 
-  public setCurrentOrder(orderHeader: OrderHeader): void {
+  public setCurrentOrder(orderHeader: OrderHeader | null): void {
     this.currentOrder = orderHeader;
     return;
   }
 
-  public getCurrentOrder(): OrderHeader {
+  public getCurrentOrder(): OrderHeader | null {
     return this.currentOrder;
   }
 
