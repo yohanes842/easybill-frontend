@@ -24,15 +24,6 @@ export class ParticipantListDialogComponent implements OnInit {
     this.onCloseDialog.emit();
   }
 
-  showDeleteParticipantConfirmation(user: User): void {
-    this.confirmationService.confirm({
-      message: 'Are you sure that you want to delete this sub-order?',
-      accept: () => {
-        this.deleteParticipant(user);
-      },
-    });
-  }
-
   deleteParticipant(user: User): void {
     this.onDeleteParticipant.emit(user);
   }
