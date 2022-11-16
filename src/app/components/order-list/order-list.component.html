@@ -3,8 +3,7 @@
     #dv
     [style]="{ 'background-color': 'white !important' }"
     [value]="orders"
-    [paginator]="true"
-    [rows]="9"
+    [paginator]="false"
     filterBy="order_description,buyer.username"
     layout="grid"
   >
@@ -32,6 +31,6 @@
 <dialog-order-details
   *ngIf="display"
   [selectedOrder]="selectedOrder"
-  [isRelevantOrder]="checkIsRelevantOrder()"
+  [isRelevantOrder]="isRelevantOrder"
   (close)="hideDetail()"
 ></dialog-order-details>

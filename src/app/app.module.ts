@@ -63,6 +63,7 @@ import { TransactionHistoryDetailComponent } from './components/transaction-hist
 import { ErrorResponseInterceptor } from './interceptor/error-response.interceptor';
 import { NotFoundPageComponent } from './components/not-found-page/not-found-page.component';
 import { ParticipantListDialogComponent } from './components/select-users-form/participant-list-dialog/participant-list-dialog.component';
+import { JumpButtonComponent } from './components/jump-button/jump-button.component';
 
 @NgModule({
   declarations: [
@@ -91,6 +92,7 @@ import { ParticipantListDialogComponent } from './components/select-users-form/p
     TransactionHistoryDetailComponent,
     NotFoundPageComponent,
     ParticipantListDialogComponent,
+    JumpButtonComponent,
   ],
   imports: [
     BrowserModule,

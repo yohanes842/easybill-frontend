@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { OrderHeader } from 'src/app/classes/order-header';
@@ -23,14 +23,20 @@ export class OrderService {
     return this.currentOrder;
   }
 
-  public getRelevantOrders(): Observable<Response<User>> {
+  public getRelevantOrders(page: number): Observable<Response<User>> {
+    let params = new URLSearchParams({ page: page.toString() });
+
     return this.http.get<Response<User>>(
-      `${env.url}/api/users/relevant-orders`
+      `${env.url}/api/users/relevant-orders?${params.toString()}`
     );
   }
 
-  public getUsersOrders(): Observable<Response<User>> {
-    return this.http.get<Response<User>>(`${env.url}/api/users/users-orders`);
+  public getUsersOrders(page: number): Observable<Response<User>> {
+    let params = new URLSearchParams({ page: page.toString() });
+
+    return this.http.get<Response<User>>(
+      `${env.url}/api/users/users-orders?${params.toString()}`
+    );
   }
 
   public addOrder(orderHeader: OrderHeader): Observable<Response<OrderHeader>> {

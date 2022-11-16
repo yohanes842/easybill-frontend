@@ -34,8 +34,10 @@ export class AddSubFormComponent implements OnInit {
   }
 
   submitSubOrder(): void {
-    this.selectedSubOrder.users = [];
-    if (this.modalType === 'add') this.subOrders.push(this.selectedSubOrder);
+    if (this.modalType === 'add') {
+      this.subOrders.push(this.selectedSubOrder);
+      this.selectedSubOrder.users = [];
+    }
 
     this.messageService.showMessage(
       Severity.SUCCESS,

@@ -11,7 +11,7 @@ import { User } from 'src/app/classes/user';
 export class ParticipantListDialogComponent implements OnInit {
   @Input() subOrder!: OrderDetail;
   @Output() onDeleteParticipant: EventEmitter<any> = new EventEmitter();
-  @Output() onCloseDialog: EventEmitter<void> = new EventEmitter();
+  @Output() onCloseDialog: EventEmitter<User> = new EventEmitter();
 
   display: Boolean = true;
 
@@ -25,6 +25,7 @@ export class ParticipantListDialogComponent implements OnInit {
   }
 
   deleteParticipant(user: User): void {
+    console.log(user);
     this.onDeleteParticipant.emit(user);
   }
 }
