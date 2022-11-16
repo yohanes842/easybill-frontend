@@ -39,6 +39,9 @@ export class SelectusersFormComponent implements OnInit {
 
   ngOnInit(): void {
     const stringOfCurrentOrder = localStorage.getItem('currentOrder');
+    const stringOfCurrentParticipantsInForm = localStorage.getItem(
+      'currentParticipantsInForm'
+    );
     let retrievedCurrentOrder: OrderHeader | null;
 
     //Set currentOrder retrieving process
@@ -49,21 +52,11 @@ export class SelectusersFormComponent implements OnInit {
     if (!retrievedCurrentOrder) {
       this.router.navigateByUrl(Route.ADD_ORDER_PATH);
       return;
-    } else {
-      this.currentOrder = retrievedCurrentOrder;
+    } else this.currentOrder = retrievedCurrentOrder;
 
-      const listUsers = new Set();
-
-      this.participants = this.currentOrder.order_list
-        .flatMap((order) => order.users)
-        .filter((u) => {
-          const alreadyInList = !listUsers.has(u.id);
-          listUsers.add(u.id);
-          return alreadyInList;
-        });
-
-      console.log(listUsers);
-    }
+    this.participants = stringOfCurrentParticipantsInForm
+      ? JSON.parse(stringOfCurrentParticipantsInForm)
+      : [];
 
     //Set users
     this.userService.getUsers().subscribe(
@@ -87,6 +80,7 @@ export class SelectusersFormComponent implements OnInit {
   filterUsername(keyword: string) {
     keyword = keyword.toLocaleLowerCase();
     this.filteredUsernames = this.users
+      .filter((user) => !this.participants.includes(user))
       .filter((user) => user.username.includes(keyword))
       .slice(0, 5)
       .map((user) => user.username);
@@ -131,6 +125,10 @@ export class SelectusersFormComponent implements OnInit {
     }
 
     localStorage.setItem('currentOrder', JSON.stringify(this.currentOrder));
+    localStorage.setItem(
+      'currentParticipantsInForm',
+      JSON.stringify(this.participants)
+    );
   }
 
   removeParticipant(index: number) {
@@ -151,6 +149,10 @@ export class SelectusersFormComponent implements OnInit {
       if (!participant) this.selectedParticipant = null;
 
       localStorage.setItem('currentOrder', JSON.stringify(this.currentOrder));
+      localStorage.setItem(
+        'currentParticipantsInForm',
+        JSON.stringify(this.participants)
+      );
     }
   }
 
@@ -261,6 +263,13 @@ export class SelectusersFormComponent implements OnInit {
     );
 
     localStorage.setItem('currentOrder', JSON.stringify(this.currentOrder));
+  }
+
+  deleteSubOrder(event: Event, index: number): void {
+    event.stopPropagation();
+    if (index < this.currentOrder.order_list.length) {
+      this.currentOrder.order_list.splice(index, 1);
+    }
   }
 
   stopPropagtion(event: Event): void {

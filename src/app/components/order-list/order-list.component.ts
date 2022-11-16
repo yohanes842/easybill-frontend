@@ -1,7 +1,5 @@
 import { Component, DoCheck, OnDestroy, OnInit } from '@angular/core';
-import { LazyLoadOrder } from 'src/app/classes/lazy-load-order';
 import { LazyLoadPaging } from 'src/app/classes/lazy-load-paging';
-import { LazyLoadStatus } from 'src/app/classes/lazy-load-status';
 import { OrderHeader } from 'src/app/classes/order-header';
 import { User } from 'src/app/classes/user';
 import { Status } from 'src/app/enums/Status';
@@ -26,8 +24,23 @@ export class OrderListComponent implements OnInit, DoCheck, OnDestroy {
 
   selectedOrder!: OrderHeader;
 
-  relevantOrders: LazyLoadStatus = new LazyLoadStatus();
-  userOrders: LazyLoadStatus = new LazyLoadStatus();
+  relevantOrders = {
+    allOrders: new LazyLoadPaging(),
+    paidOrders: new LazyLoadPaging(),
+    unpaidOrders: new LazyLoadPaging(),
+  };
+  userOrders = {
+    allOrders: new LazyLoadPaging(),
+    paidOrders: new LazyLoadPaging(),
+    unpaidOrders: new LazyLoadPaging(),
+  };
+
+  onScrollEvent = () => {
+    if (this.lazyLoadService.isNeedLazyLoad()) {
+      this.lazyLoadService.incrementPageFetchIndicator();
+      this.loadData();
+    }
+  };
 
   constructor(
     private orderService: OrderService,
@@ -41,14 +54,9 @@ export class OrderListComponent implements OnInit, DoCheck, OnDestroy {
     }
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     //add event listener
-    window.addEventListener('scroll', () => {
-      if (this.lazyLoadService.isNeedLazyLoad()) {
-        this.lazyLoadService.incrementPageFetchIndicator();
-        this.loadData();
-      }
-    });
+    window.addEventListener('scroll', this.onScrollEvent);
     this.isRelevantOrder = true;
     this.selectedStatusOptions = Status.ALL;
     this.setCurrentLazyPage();
@@ -158,6 +166,6 @@ export class OrderListComponent implements OnInit, DoCheck, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    window.removeAllListeners!('scroll');
+    window.removeEventListener('scroll', this.onScrollEvent);
   }
 }

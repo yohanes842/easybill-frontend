@@ -144,21 +144,34 @@
             </div>
           </div>
           <div
-            class="flex flex-column justify-content-between align-items-ends"
+            class="flex flex-column justify-content-between align-items-end px-2"
           >
-            <button
-              pButton
-              type="button"
-              class="p-button-text p-0"
-              (click)="duplicateSubOrderToList($event, subOrder)"
-            >
-              <span class="text-secondary text-xs font-italic">duplicate</span>
-            </button>
+            <div>
+              <button
+                type="button"
+                class="p-0 text-right px-2"
+                style="background: none; border: none"
+                (click)="duplicateSubOrderToList($event, subOrder)"
+              >
+                <span class="text-secondary text-xs font-italic"
+                  >duplicate</span
+                >
+              </button>
+              <button
+                type="button"
+                class="p-0 text-right px-2"
+                style="background: none; border: none"
+                (click)="deleteSubOrder($event, i)"
+              >
+                <span class="text-secondary text-xs font-italic text-red-300"
+                  >delete</span
+                >
+              </button>
+            </div>
             <button
               *ngIf="subOrder.users.length > 0"
-              pButton
               class="p-0"
-              style="background: none"
+              style="background: none; border: none"
               (click)="showUserListDialog($event, subOrder)"
             >
               <p-avatarGroup>
