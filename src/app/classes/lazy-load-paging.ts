@@ -1,9 +1,9 @@
 import { OrderHeader } from './order-header';
 
-export class LazyLoadPaging {
+export class LazyLoadPaging<T> {
   nextPage: number = 1;
   maxPage: number = 0;
   pageFetchIndicator: number = 0;
   maxScroll: number = 0;
-  orders: OrderHeader[] = [];
+  objects: T[] = [];
 }

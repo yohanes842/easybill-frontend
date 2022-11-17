@@ -4,12 +4,12 @@ import { LazyLoadPaging } from 'src/app/classes/lazy-load-paging';
 @Injectable({
   providedIn: 'root',
 })
-export class LazyLoadService {
+export class LazyLoadService<T> {
   constructor() {}
 
-  currentLazyPaging!: LazyLoadPaging;
+  currentLazyPaging!: LazyLoadPaging<T>;
 
-  setCurrentLazyPaging(lazyPaging: LazyLoadPaging): void {
+  setCurrentLazyPaging(lazyPaging: LazyLoadPaging<T>): void {
     this.currentLazyPaging = lazyPaging;
   }
 

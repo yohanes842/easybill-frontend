@@ -2,9 +2,10 @@
   <p-dataView
     #dv
     [style]="{ 'background-color': 'white !important' }"
-    [value]="transactions"
-    [paginator]="true"
-    [rows]="9"
+    [value]="lazyPaging.objects"
+    [paginator]="false"
+    [rows]="10"
+    emptyMessage="No transactions found..."
     filterBy=",buyer.username"
     layout="grid"
   >
@@ -29,8 +30,15 @@
       >
         <transaction-history-detail
           [transaction]="transaction"
+          (onSeeDetails)="showDialog($event)"
         ></transaction-history-detail>
       </div>
     </ng-template>
   </p-dataView>
 </div>
+
+<transaction-related-orders-dialog
+  *ngIf="displayDialog"
+  [selectedTransaction]="selectedTransaction"
+  (onClose)="hideDialog()"
+></transaction-related-orders-dialog>

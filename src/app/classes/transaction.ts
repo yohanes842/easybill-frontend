@@ -1,3 +1,4 @@
+import { relatedOrder } from './related-order';
 import { User } from './user';
 
 export class Transaction {
@@ -5,6 +6,6 @@ export class Transaction {
   receiver!: User;
   paid_amount!: number;
   created_at!: Date;
-  bill_transaction_header_list!: Transaction[];
+  bill_transaction_header_list!: relatedOrder[];
   origin!: string;
 }

@@ -1,6 +1,7 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { OrderDetail } from 'src/app/classes/order-detail';
 import { OrderHeader } from 'src/app/classes/order-header';
 import { User } from 'src/app/classes/user';
 import { Response } from 'src/app/interfaces/response';

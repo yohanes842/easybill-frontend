@@ -14,7 +14,7 @@ export class JumpButtonComponent implements OnInit {
   timeoutToBeHidden!: any; //opacity 0
   timeoutToBeInvisible!: any; //visibility hidden
 
-  constructor(private lazyLoadService: LazyLoadService) {}
+  constructor() {}
 
   ngOnInit(): void {
     window.addEventListener('scroll', () => {

@@ -11,7 +11,7 @@ import { VERSION } from 'src/app/easybill.config';
 export class HeaderComponent implements OnInit {
   @Input() title!: string;
   currentUser!: User;
-  version: number = VERSION;
+  version: string = VERSION;
 
   constructor(private authService: AuthService) {
     this.currentUser = this.authService.getCurrentUser() as User;

@@ -1,4 +1,10 @@
-import { Component, DoCheck, OnDestroy, OnInit } from '@angular/core';
+import {
+  Component,
+  DoCheck,
+  OnDestroy,
+  OnInit,
+  ɵclearResolutionOfComponentResourcesQueue,
+} from '@angular/core';
 import { LazyLoadPaging } from 'src/app/classes/lazy-load-paging';
 import { OrderHeader } from 'src/app/classes/order-header';
 import { User } from 'src/app/classes/user';
@@ -20,19 +26,19 @@ export class OrderListComponent implements OnInit, DoCheck, OnDestroy {
 
   isRelevantOrder: Boolean = true;
   selectedStatusOptions: string = Status.ALL;
-  currentLazyPage!: LazyLoadPaging;
+  currentLazyPage!: LazyLoadPaging<OrderHeader>;
 
   selectedOrder!: OrderHeader;
 
   relevantOrders = {
-    allOrders: new LazyLoadPaging(),
-    paidOrders: new LazyLoadPaging(),
-    unpaidOrders: new LazyLoadPaging(),
+    allOrders: new LazyLoadPaging<OrderHeader>(),
+    paidOrders: new LazyLoadPaging<OrderHeader>(),
+    unpaidOrders: new LazyLoadPaging<OrderHeader>(),
   };
   userOrders = {
-    allOrders: new LazyLoadPaging(),
-    paidOrders: new LazyLoadPaging(),
-    unpaidOrders: new LazyLoadPaging(),
+    allOrders: new LazyLoadPaging<OrderHeader>(),
+    paidOrders: new LazyLoadPaging<OrderHeader>(),
+    unpaidOrders: new LazyLoadPaging<OrderHeader>(),
   };
 
   onScrollEvent = () => {
@@ -44,7 +50,7 @@ export class OrderListComponent implements OnInit, DoCheck, OnDestroy {
 
   constructor(
     private orderService: OrderService,
-    private lazyLoadService: LazyLoadService
+    private lazyLoadService: LazyLoadService<OrderHeader>
   ) {}
 
   ngDoCheck(): void {
@@ -102,10 +108,10 @@ export class OrderListComponent implements OnInit, DoCheck, OnDestroy {
 
   changeLazyPage(): void {
     this.setCurrentLazyPage();
-    if (this.currentLazyPage.orders.length <= 0) this.loadData();
+    if (this.currentLazyPage.objects.length <= 0) this.loadData();
     else {
       this.lazyLoadService.setCurrentLazyPaging(this.currentLazyPage);
-      this.orders = this.currentLazyPage.orders;
+      this.orders = this.currentLazyPage.objects;
     }
   }
 
@@ -119,50 +125,46 @@ export class OrderListComponent implements OnInit, DoCheck, OnDestroy {
     this.changeLazyPage();
   }
 
-  async loadData(): Promise<void> {
-    return new Promise((resolve) => {
-      if (this.isRelevantOrder) {
-        this.orderService
-          .getRelevantOrders(this.currentLazyPage.nextPage)
-          .subscribe((res: any) => {
-            this.orderSubscriptions(res);
-            console.log(
-              this.lazyLoadService.currentLazyPaging.pageFetchIndicator
-            );
+  loadData(): void {
+    const orderSubscriptions = (res: any): void => {
+      this.currentUser = res.output.data;
+      let latestFetchOrders: OrderHeader[] = this.currentUser
+        .order_list as OrderHeader[];
 
-            resolve(undefined);
-          });
-      } else {
-        this.orderService
-          .getUsersOrders(this.currentLazyPage.nextPage)
-          .subscribe((res: any) => {
-            this.orderSubscriptions(res);
-            console.log(
-              this.lazyLoadService.currentLazyPaging.pageFetchIndicator
-            );
-            resolve(undefined);
-          });
-      }
-    });
-  }
+      this.currentLazyPage.objects = this.currentLazyPage.objects.concat([
+        ...latestFetchOrders,
+      ]);
+      this.currentLazyPage.maxPage = res.output.total_pages;
+      this.currentLazyPage.pageFetchIndicator = res.output.page;
+      this.currentLazyPage.nextPage =
+        res.output.total_pages === res.output.page &&
+        res.output.total_pages != 0
+          ? res.output.total_pages
+          : res.output.page + 1;
+      this.lazyLoadService.setCurrentLazyPaging(this.currentLazyPage);
 
-  orderSubscriptions(res: any): void {
-    this.currentUser = res.output.data;
-    let latestFetchOrders: OrderHeader[] = this.currentUser
-      .order_list as OrderHeader[];
+      this.orders = this.currentLazyPage.objects;
+    };
 
-    this.currentLazyPage.orders = this.currentLazyPage.orders.concat([
-      ...latestFetchOrders,
-    ]);
-    this.currentLazyPage.maxPage = res.output.total_pages;
-    this.currentLazyPage.pageFetchIndicator = res.output.page;
-    this.currentLazyPage.nextPage = Math.min(
-      res.output.total_pages,
-      res.output.page + 1
-    );
-    this.lazyLoadService.setCurrentLazyPaging(this.currentLazyPage);
-
-    this.orders = this.currentLazyPage.orders;
+    if (this.isRelevantOrder) {
+      this.orderService
+        .getRelevantOrders(this.currentLazyPage.nextPage)
+        .subscribe((res: any) => {
+          orderSubscriptions(res);
+          console.log(
+            this.lazyLoadService.currentLazyPaging.pageFetchIndicator
+          );
+        });
+    } else {
+      this.orderService
+        .getUsersOrders(this.currentLazyPage.nextPage)
+        .subscribe((res: any) => {
+          orderSubscriptions(res);
+          console.log(
+            this.lazyLoadService.currentLazyPaging.pageFetchIndicator
+          );
+        });
+    }
   }
 
   ngOnDestroy(): void {

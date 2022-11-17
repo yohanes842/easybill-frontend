@@ -1,4 +1,8 @@
-<div>
+<button
+  class="w-full"
+  style="background: none; border: none; cursor: pointer"
+  (click)="showDialog(transaction)"
+>
   <div class="flex justify-content-between">
     <div>
       <ng-container
@@ -62,4 +66,4 @@
   <p class="p-0 m-0 mt-1 text-sm text-secondary text-right">
     {{ transaction.created_at | date: "EEEE, d/M/yy, h:mm a" }}
   </p>
-</div>
+</button>

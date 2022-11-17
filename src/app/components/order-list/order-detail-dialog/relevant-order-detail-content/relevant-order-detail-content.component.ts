@@ -1,5 +1,5 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { Navigation, Router } from '@angular/router';
+import { Component, Input, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { OrderHeader } from 'src/app/classes/order-header';
 import { Status } from 'src/app/classes/status';
 import { User } from 'src/app/classes/user';
@@ -34,7 +34,7 @@ export class RelevantOrderDetailContentComponent implements OnInit {
     )!;
 
     this.selectedOrder.bills.forEach((bill) => {
-      if (bill.user.id === this.selectedUser?.id) this.userStatus = bill;
+      if (bill.user.id === this.selectedUser.id) this.userStatus = bill;
       else this.othersStatus.push(bill);
     });
   }

@@ -64,6 +64,8 @@ import { ErrorResponseInterceptor } from './interceptor/error-response.intercept
 import { NotFoundPageComponent } from './components/not-found-page/not-found-page.component';
 import { ParticipantListDialogComponent } from './components/select-users-form/participant-list-dialog/participant-list-dialog.component';
 import { JumpButtonComponent } from './components/jump-button/jump-button.component';
+import { TransactionRelatedOrdersDialogComponent } from './components/transaction-history/transaction-related-orders-dialog/transaction-related-orders-dialog.component';
+import { TransactionRelatedOrderContentComponent } from './components/transaction-history/transaction-related-orders-dialog/transaction-related-order-content/transaction-related-order-content.component';
 
 @NgModule({
   declarations: [
@@ -93,6 +95,8 @@ import { JumpButtonComponent } from './components/jump-button/jump-button.compon
     NotFoundPageComponent,
     ParticipantListDialogComponent,
     JumpButtonComponent,
+    TransactionRelatedOrdersDialogComponent,
+    TransactionRelatedOrderContentComponent,
   ],
   imports: [
     BrowserModule,

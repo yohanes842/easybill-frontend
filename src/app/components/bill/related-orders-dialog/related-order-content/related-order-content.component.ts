@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { OrderHeader } from 'src/app/classes/order-header';
+import { User } from 'src/app/classes/user';
 
 @Component({
   selector: 'related-order-content',
@@ -13,7 +14,9 @@ export class RelatedOrderContentComponent implements OnInit {
 
   constructor() {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    console.log(this.order);
+  }
 
   showDetail(order: OrderHeader): void {
     this.onShowDetail.emit(order);
