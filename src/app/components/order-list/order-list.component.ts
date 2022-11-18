@@ -20,6 +20,7 @@ import { OrderService } from 'src/app/services/order/order.service';
 })
 export class OrderListComponent implements OnInit, DoCheck, OnDestroy {
   display: boolean = false;
+  isFetching: boolean = false;
 
   currentUser!: User;
   orders!: OrderHeader[];
@@ -54,10 +55,8 @@ export class OrderListComponent implements OnInit, DoCheck, OnDestroy {
   ) {}
 
   ngDoCheck(): void {
-    if (this.lazyLoadService.currentLazyPaging) {
-      console.log('Daniel suka tahu...');
+    if (this.lazyLoadService.currentLazyPaging)
       this.lazyLoadService.calculateMaxScroll();
-    }
   }
 
   ngOnInit(): void {
@@ -144,26 +143,24 @@ export class OrderListComponent implements OnInit, DoCheck, OnDestroy {
       this.lazyLoadService.setCurrentLazyPaging(this.currentLazyPage);
 
       this.orders = this.currentLazyPage.objects;
+      this.isFetching = false;
     };
 
-    if (this.isRelevantOrder) {
-      this.orderService
-        .getRelevantOrders(this.currentLazyPage.nextPage)
-        .subscribe((res: any) => {
-          orderSubscriptions(res);
-          console.log(
-            this.lazyLoadService.currentLazyPaging.pageFetchIndicator
-          );
-        });
-    } else {
-      this.orderService
-        .getUsersOrders(this.currentLazyPage.nextPage)
-        .subscribe((res: any) => {
-          orderSubscriptions(res);
-          console.log(
-            this.lazyLoadService.currentLazyPaging.pageFetchIndicator
-          );
-        });
+    if (!this.isFetching) {
+      this.isFetching = true;
+      if (this.isRelevantOrder) {
+        this.orderService
+          .getRelevantOrders(this.currentLazyPage.nextPage)
+          .subscribe((res: any) => {
+            orderSubscriptions(res);
+          });
+      } else {
+        this.orderService
+          .getUsersOrders(this.currentLazyPage.nextPage)
+          .subscribe((res: any) => {
+            orderSubscriptions(res);
+          });
+      }
     }
   }
 

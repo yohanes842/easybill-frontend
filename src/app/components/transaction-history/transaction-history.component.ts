@@ -36,10 +36,8 @@ export class TransactionHistoryComponent implements OnInit {
   ) {}
 
   ngDoCheck(): void {
-    if (this.lazyLoadService.currentLazyPaging) {
-      console.log('Daniel suka nutriboost...');
+    if (this.lazyLoadService.currentLazyPaging)
       this.lazyLoadService.calculateMaxScroll();
-    }
   }
 
   ngOnInit(): void {

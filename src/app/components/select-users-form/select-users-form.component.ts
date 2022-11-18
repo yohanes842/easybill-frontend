@@ -205,9 +205,6 @@ export class SelectusersFormComponent implements OnInit {
     );
 
     if (!isAnySubOrderWithNoUser) {
-      //set discount to float numbering
-      this.currentOrder.discount /= 100;
-
       // Hit add order service
       this.orderService.addOrder(this.currentOrder).subscribe((res: any) => {
         console.log(res);
@@ -272,7 +269,7 @@ export class SelectusersFormComponent implements OnInit {
     }
   }
 
-  stopPropagtion(event: Event): void {
+  stopPropagation(event: Event): void {
     event.stopPropagation();
   }
 }

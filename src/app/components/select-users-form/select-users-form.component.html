@@ -111,7 +111,7 @@
             <p class="m-0 pl-1" style="color: var(--custom-orange)">
               {{ subOrder.price * subOrder.qty | currency: "Rp " }}
             </p>
-            <div (click)="stopPropagtion($event)">
+            <div (click)="stopPropagation($event)">
               <p-inputNumber
                 [style]="{
                   width: '100%',
