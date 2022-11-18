@@ -5,6 +5,7 @@ import {
   OnInit,
   ɵclearResolutionOfComponentResourcesQueue,
 } from '@angular/core';
+import { TitleStrategy } from '@angular/router';
 import { LazyLoadPaging } from 'src/app/classes/lazy-load-paging';
 import { OrderHeader } from 'src/app/classes/order-header';
 import { User } from 'src/app/classes/user';
@@ -115,52 +116,55 @@ export class OrderListComponent implements OnInit, DoCheck, OnDestroy {
   }
 
   changeDataViewContent(isRelevantOrder: Boolean): void {
-    this.isRelevantOrder = isRelevantOrder;
-    this.changeLazyPage();
+    if (!this.isFetching) {
+      this.isRelevantOrder = isRelevantOrder;
+      this.changeLazyPage();
+    }
   }
 
   changeStatusFilter(selectedStatusOptions: string): void {
-    this.selectedStatusOptions = selectedStatusOptions;
-    this.changeLazyPage();
+    if (!this.isFetching) {
+      this.selectedStatusOptions = selectedStatusOptions;
+      this.changeLazyPage();
+    }
   }
 
   loadData(): void {
-    const orderSubscriptions = (res: any): void => {
-      this.currentUser = res.output.data;
-      let latestFetchOrders: OrderHeader[] = this.currentUser
-        .order_list as OrderHeader[];
-
-      this.currentLazyPage.objects = this.currentLazyPage.objects.concat([
-        ...latestFetchOrders,
-      ]);
-      this.currentLazyPage.maxPage = res.output.total_pages;
-      this.currentLazyPage.pageFetchIndicator = res.output.page;
-      this.currentLazyPage.nextPage =
-        res.output.total_pages === res.output.page &&
-        res.output.total_pages != 0
-          ? res.output.total_pages
-          : res.output.page + 1;
-      this.lazyLoadService.setCurrentLazyPaging(this.currentLazyPage);
-
-      this.orders = this.currentLazyPage.objects;
-      this.isFetching = false;
+    const orderSubscriptions = (res: any, currentLazyPage:LazyLoadPaging<OrderHeader>): void => {
+      if(currentLazyPage == this.currentLazyPage){
+        this.currentUser = res.output.data;
+        let latestFetchOrders: OrderHeader[] = this.currentUser
+          .order_list as OrderHeader[];
+  
+        this.currentLazyPage.objects = this.currentLazyPage.objects.concat([
+          ...latestFetchOrders,
+        ]);
+        this.currentLazyPage.maxPage = res.output.total_pages;
+        this.currentLazyPage.pageFetchIndicator = res.output.page;
+        this.currentLazyPage.nextPage =
+          res.output.total_pages === res.output.page &&
+          res.output.total_pages != 0
+            ? res.output.total_pages
+            : res.output.page + 1;
+        this.lazyLoadService.setCurrentLazyPaging(this.currentLazyPage);
+  
+        this.orders = this.currentLazyPage.objects;
+      }
     };
 
-    if (!this.isFetching) {
-      this.isFetching = true;
-      if (this.isRelevantOrder) {
-        this.orderService
-          .getRelevantOrders(this.currentLazyPage.nextPage)
-          .subscribe((res: any) => {
-            orderSubscriptions(res);
-          });
-      } else {
-        this.orderService
-          .getUsersOrders(this.currentLazyPage.nextPage)
-          .subscribe((res: any) => {
-            orderSubscriptions(res);
-          });
-      }
+    const currentLazyPage = this.currentLazyPage;
+    if (this.isRelevantOrder) {
+      this.orderService
+        .getRelevantOrders(this.currentLazyPage.nextPage)
+        .subscribe((res: any) => {
+          orderSubscriptions(res, currentLazyPage);
+        });
+    } else {
+      this.orderService
+        .getUsersOrders(this.currentLazyPage.nextPage)
+        .subscribe((res: any) => {
+          orderSubscriptions(res, currentLazyPage);
+        });
     }
   }
 
