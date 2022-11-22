@@ -12,11 +12,13 @@ import { CustomMessageService } from 'src/app/services/message/custom-message.se
   providers: [BillService],
 })
 export class BillComponent implements OnInit {
-  display!: boolean;
   bills!: Status[];
   billsPayable!: Status[];
   billsReceivable!: Status[];
   selectedBill!: Status;
+
+  displayPaymentDialog: boolean = false;
+  displayRelatedOrdersDialog: boolean = false;
 
   constructor(
     private billService: BillService,
@@ -33,19 +35,22 @@ export class BillComponent implements OnInit {
     return (event.target as HTMLInputElement).value;
   }
 
-  showDialog(bill: Status) {
+  showPaymentDialog(bill: Status) {
     this.selectedBill = bill;
-    this.display = true;
+    this.displayPaymentDialog = true;
   }
 
-  hideDialog() {
-    this.display = false;
+  showRelatedOrdersDialog(bill: Status) {
+    this.selectedBill = bill;
+    this.displayRelatedOrdersDialog = true;
   }
 
   getBillsPayable(): void {
     this.billService.getBillsPayable().subscribe(
       (res: any) => {
-        this.billsPayable = res.output.data.users_bills;
+        this.billsPayable = res.output.data.users_bills.sort(
+          (bill1: Status, bill2: Status) => bill2.owe_amount - bill1.owe_amount
+        );
         this.bills = this.billsPayable;
       },
       (error: HttpErrorResponse) => {
@@ -57,7 +62,9 @@ export class BillComponent implements OnInit {
   getBillsReceivable(): void {
     this.billService.getBillsReceivable().subscribe(
       (res: any) => {
-        this.billsReceivable = res.output.data.users_bills;
+        this.billsReceivable = res.output.data.users_bills.sort(
+          (bill1: Status, bill2: Status) => bill2.owe_amount - bill1.owe_amount
+        );
       },
       (error: HttpErrorResponse) => {
         this.messageService.showMessage(Severity.ERROR, 'REQUEST ERROR');
@@ -67,5 +74,20 @@ export class BillComponent implements OnInit {
 
   changeDataViewContent(isBillsPayable: boolean): void {
     this.bills = isBillsPayable ? this.billsPayable : this.billsReceivable;
+  }
+
+  hideDialog(): void {
+    this.displayPaymentDialog = false;
+    this.displayRelatedOrdersDialog = false;
+  }
+
+  payBill({ bill, amount }: { bill: Status; amount: number }): void {
+    if (amount < bill.owe_amount) {
+      bill.owe_amount -= amount;
+    } else if (amount == bill.owe_amount) {
+      let index = this.bills.indexOf(bill);
+      this.bills.splice(index, 1);
+    }
+    this.hideDialog();
   }
 }

@@ -1,0 +1,77 @@
+<p-dialog
+  styleClass="dialog-box w-10"
+  [style]="{
+    width: 'calc(100vw - 2rem)',
+    'max-width': '30rem',
+    overflow: 'visible'
+  }"
+  [(visible)]="display"
+  [modal]="true"
+  (onHide)="hideDialog()"
+>
+  <p-header>
+    <h3 class="m-0 p-0">Edit Account Number</h3>
+  </p-header>
+  <form
+    #editAccountNumber="ngForm"
+    class="flex flex-column p-5"
+    (ngSubmit)="submit()"
+  >
+    <div class="mb-2 w-full">
+      <label for="password" class="font-bold">Password</label>
+      <p-password
+        [style]="{ width: '100%', 'padding-block': '0.5rem' }"
+        [inputStyle]="{ width: '100%', 'padding-block': '0.5rem' }"
+        [(ngModel)]="passwordString"
+        name="password"
+        [toggleMask]="true"
+        [feedback]="false"
+        [required]="true"
+      >
+      </p-password>
+      <span *ngIf="errors.get('current_password')" class="text-red-400">{{
+        errors.get("current_password")
+      }}</span>
+    </div>
+    <div class="mb-2 w-full">
+      <label for="currentAccountNumber" class="font-bold"
+        >Current Account Number</label
+      >
+      <input
+        pInputText
+        [style]="{ 'margin-block': '0.5rem' }"
+        class="w-full py-2"
+        type="text"
+        name="currentAccountNumber"
+        [(ngModel)]="currentUser.account_number"
+        disabled
+      />
+    </div>
+    <div class="mb-2 w-full">
+      <label for="newAccountNumber" class="font-bold"
+        >New BCA Account Number</label
+      >
+      <p-inputMask
+        [style]="{ 'margin-block': '0.5rem' }"
+        styleClass="w-full py-2"
+        mask="9999999999"
+        name="newAccountNumber"
+        [autoClear]="false"
+        [required]="true"
+        [(ngModel)]="newAccountNumber"
+      ></p-inputMask>
+      <span *ngIf="errors.get('new_account_number')" class="text-red-400">{{
+        errors.get("new_account_number")
+      }}</span>
+    </div>
+    <div class="text-center w-full mt-3">
+      <button
+        pButton
+        class="p-button-primary py-2 px-7 w-fit"
+        [disabled]="editAccountNumber.invalid"
+      >
+        Save
+      </button>
+    </div>
+  </form>
+</p-dialog>

@@ -1,22 +1,19 @@
-import { Injectable } from '@angular/core';
 import {
-  HttpEvent,
-  HttpInterceptor,
-  HttpHandler,
-  HttpRequest,
   HttpErrorResponse,
+  HttpEvent,
+  HttpHandler,
+  HttpInterceptor,
+  HttpRequest,
 } from '@angular/common/http';
+import { Injectable } from '@angular/core';
 import { catchError, Observable, throwError } from 'rxjs';
-import { Router } from '@angular/router';
-import { Route } from '../enums/Route';
-import { CustomMessageService } from '../services/message/custom-message.service';
 import { Severity } from '../enums/Severity';
 import { AuthService } from '../services/auth/auth.service';
+import { CustomMessageService } from '../services/message/custom-message.service';
 
 @Injectable()
 export class ErrorResponseInterceptor implements HttpInterceptor {
   constructor(
-    private router: Router,
     private messageService: CustomMessageService,
     private authService: AuthService
   ) {}
@@ -38,7 +35,8 @@ export class ErrorResponseInterceptor implements HttpInterceptor {
             switch (error.status) {
               case 401:
               case 403:
-                this.authService.logout();
+                if (error.error.status.code != 'UNAUTHORIZED_RESOURCE_ACCESS')
+                  this.authService.logout();
                 break;
               default:
                 errMsg = error.error.status.message;
@@ -51,7 +49,7 @@ export class ErrorResponseInterceptor implements HttpInterceptor {
             errMsg
           );
         } else {
-          console.error('some thing else happened');
+          console.error('something else happened');
         }
         return throwError(() => error.error.status);
       })

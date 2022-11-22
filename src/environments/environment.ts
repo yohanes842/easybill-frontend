@@ -11,6 +11,8 @@ export const environment = {
   // url: 'http://localhost:9090',
   // url: 'http://10.20.147.193:9090',
   // url: 'http://192.168.43.181:9090',
+  // url: 'http://192.168.68.111:9090',
+  // url: 'http://10.10.10.1:9090',
 
   showVersion: true,
 };

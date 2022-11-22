@@ -1,5 +1,4 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { ConfirmationService } from 'primeng/api';
 import { OrderDetail } from 'src/app/classes/order-detail';
 import { User } from 'src/app/classes/user';
 
@@ -15,7 +14,7 @@ export class ParticipantListDialogComponent implements OnInit {
 
   display: Boolean = true;
 
-  constructor(private confirmationService: ConfirmationService) {}
+  constructor() {}
 
   ngOnInit(): void {}
 
@@ -25,7 +24,6 @@ export class ParticipantListDialogComponent implements OnInit {
   }
 
   deleteParticipant(user: User): void {
-    console.log(user);
     this.onDeleteParticipant.emit(user);
   }
 }

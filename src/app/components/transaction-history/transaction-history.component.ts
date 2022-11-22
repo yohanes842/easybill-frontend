@@ -1,11 +1,9 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { ThisReceiver } from '@angular/compiler';
 import { Component, OnInit } from '@angular/core';
 import { LazyLoadPaging } from 'src/app/classes/lazy-load-paging';
 import { Transaction } from 'src/app/classes/transaction';
 import { User } from 'src/app/classes/user';
 import { Severity } from 'src/app/enums/Severity';
-import { Response } from 'src/app/interfaces/response';
 import { LazyLoadService } from 'src/app/services/lazy-load/lazy-load.service';
 import { CustomMessageService } from 'src/app/services/message/custom-message.service';
 import { TransactionService } from 'src/app/services/transaction/transaction.service';
@@ -55,7 +53,7 @@ export class TransactionHistoryComponent implements OnInit {
           this.currentUser = res.output.data;
           let latestFetchTransactions: Transaction[] = this.currentUser
             .bill_transaction_list as Transaction[];
-          console.log(this.lazyPaging);
+
           this.lazyPaging.objects = this.lazyPaging.objects.concat([
             ...latestFetchTransactions,
           ]);

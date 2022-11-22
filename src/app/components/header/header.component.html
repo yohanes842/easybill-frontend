@@ -3,17 +3,24 @@
   style="background-color: var(--custom-black); z-index: 200"
 >
   <div class="flex gap-3">
-    <p-avatar
-      [style]="{
-        background: 'var(--custom-orange-50)',
-        color: 'black',
-        'font-weight': 'bold'
-      }"
-      shape="circle"
-      size="large"
+    <div
+      class="avatar transition-all transition-duration-200 transition-ease-in-out"
     >
-      {{ currentUser!.username | slice: 0:1 | uppercase }}
-    </p-avatar>
+      <p-avatar
+        [style]="{
+          background: 'var(--custom-orange-50)',
+          color: 'black',
+          'font-weight': 'bold',
+          transistion: 'all 500ms ease-in-out',
+          cursor: 'pointer'
+        }"
+        shape="circle"
+        size="large"
+        (click)="navigateToProfile()"
+      >
+        {{ currentUser!.username | slice : 0 : 1 | uppercase }}
+      </p-avatar>
+    </div>
     <div>
       <h5 class="m-0" style="color: var(--custom-red-200)">easyBill</h5>
       <h2 class="m-0">{{ currentUser!.username }}</h2>

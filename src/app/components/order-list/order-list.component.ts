@@ -28,6 +28,7 @@ export class OrderListComponent implements OnInit, DoCheck, OnDestroy {
 
   isRelevantOrder: Boolean = true;
   selectedStatusOptions: string = Status.ALL;
+  searchKeyword: string = '';
   currentLazyPage!: LazyLoadPaging<OrderHeader>;
 
   selectedOrder!: OrderHeader;
@@ -79,7 +80,9 @@ export class OrderListComponent implements OnInit, DoCheck, OnDestroy {
   }
 
   setCurrentLazyPage(): void {
-    if (this.isRelevantOrder) {
+    if (this.searchKeyword.length > 0)
+      this.currentLazyPage = new LazyLoadPaging<OrderHeader>();
+    else if (this.isRelevantOrder) {
       switch (this.selectedStatusOptions) {
         case Status.ALL:
           this.currentLazyPage = this.relevantOrders.allOrders;
@@ -129,13 +132,23 @@ export class OrderListComponent implements OnInit, DoCheck, OnDestroy {
     }
   }
 
+  changeKeywordInput(keyword: string): void {
+    if (!this.isFetching) {
+      this.searchKeyword = keyword;
+      this.changeLazyPage();
+    }
+  }
+
   loadData(): void {
-    const orderSubscriptions = (res: any, currentLazyPage:LazyLoadPaging<OrderHeader>): void => {
-      if(currentLazyPage == this.currentLazyPage){
+    const orderSubscriptions = (
+      res: any,
+      currentLazyPage: LazyLoadPaging<OrderHeader>
+    ): void => {
+      if (currentLazyPage == this.currentLazyPage) {
         this.currentUser = res.output.data;
         let latestFetchOrders: OrderHeader[] = this.currentUser
           .order_list as OrderHeader[];
-  
+
         this.currentLazyPage.objects = this.currentLazyPage.objects.concat([
           ...latestFetchOrders,
         ]);
@@ -147,7 +160,7 @@ export class OrderListComponent implements OnInit, DoCheck, OnDestroy {
             ? res.output.total_pages
             : res.output.page + 1;
         this.lazyLoadService.setCurrentLazyPaging(this.currentLazyPage);
-  
+
         this.orders = this.currentLazyPage.objects;
       }
     };
@@ -155,13 +168,21 @@ export class OrderListComponent implements OnInit, DoCheck, OnDestroy {
     const currentLazyPage = this.currentLazyPage;
     if (this.isRelevantOrder) {
       this.orderService
-        .getRelevantOrders(this.currentLazyPage.nextPage)
+        .getRelevantOrders(
+          this.currentLazyPage.nextPage,
+          this.searchKeyword,
+          this.selectedStatusOptions
+        )
         .subscribe((res: any) => {
           orderSubscriptions(res, currentLazyPage);
         });
     } else {
       this.orderService
-        .getUsersOrders(this.currentLazyPage.nextPage)
+        .getUsersOrders(
+          this.currentLazyPage.nextPage,
+          this.searchKeyword,
+          this.selectedStatusOptions
+        )
         .subscribe((res: any) => {
           orderSubscriptions(res, currentLazyPage);
         });

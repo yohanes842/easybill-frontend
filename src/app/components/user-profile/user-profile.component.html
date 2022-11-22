@@ -1,0 +1,83 @@
+<div class="w-full px-3 mt-3">
+  <div class="flex align-items-center gap-3">
+    <button
+      pButton
+      class="p-button-sm p-button-raised p-button-rounded p-0 text-white"
+      style="background: var(--custom-red-300); transform: scale(0.8)"
+      type="button"
+      icon="pi pi-chevron-left"
+      iconPos="left"
+      (click)="back()"
+    ></button>
+    <h2 class="font-italic">Your Profile</h2>
+  </div>
+  <div
+    class="flex flex-column justify-content-center align-items-center gap-3 mt-5"
+  >
+    <div class="text-center">
+      <p-avatar
+        [style]="{
+          background: 'var(--custom-orange-50)',
+          color: 'black',
+          'font-weight': 'bold',
+          transform: 'scale(1.7)'
+        }"
+        shape="circle"
+        size="xlarge"
+      >
+        {{ currentUser?.username | slice : 0 : 1 | uppercase }}
+      </p-avatar>
+      <h3 class="m-0 mt-4">
+        {{ currentUser?.username | uppercase }}
+      </h3>
+    </div>
+    <div class="text-center">
+      <h4 class="m-1">Your account number :</h4>
+      <div class="flex align-items-center justify-content-center gap-3">
+        <h4 class="m-0" style="color: var(--custom-orange-200)">
+          {{ currentUser?.account_number }}
+        </h4>
+        <copy-button
+          *ngIf="currentUser?.account_number != 'Not set up yet'"
+          [stringToBeCopy]="currentUser?.account_number ?? null"
+        ></copy-button>
+      </div>
+    </div>
+    <button
+      pButton
+      class="p-button-primary py-2 w-15rem text-center"
+      style="color: var(--custom-light-black)"
+      label="Change Username"
+      (click)="showChangeUsernameDialog()"
+    ></button>
+    <button
+      pButton
+      class="p-button-primary py-2 w-15rem text-center"
+      style="color: var(--custom-light-black)"
+      label="Change Password"
+      (click)="showChangePasswordDialog()"
+    ></button>
+    <button
+      pButton
+      class="p-button-primary py-2 w-15rem text-center"
+      style="color: var(--custom-light-black)"
+      label="Edit Account Number"
+      (click)="showEditAccountNumberDialog()"
+    ></button>
+  </div>
+</div>
+
+<change-username-dialog
+  *ngIf="changeUsernameDialogDisplay"
+  [currentUser]="currentUser!"
+  (onClose)="hideDialog()"
+></change-username-dialog>
+<change-password-dialog
+  *ngIf="changePasswordDialogDisplay"
+  (onClose)="hideDialog()"
+></change-password-dialog>
+<edit-account-number-dialog
+  *ngIf="editAccountNumberDialogDisplay"
+  [currentUser]="currentUser!"
+  (onClose)="hideDialog()"
+></edit-account-number-dialog>

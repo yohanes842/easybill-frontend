@@ -39,16 +39,26 @@ export class TransactionRelatedOrdersDialogComponent implements OnInit {
   }
 
   showDetail(order: OrderHeader): void {
-    this.orderService.getOrder(order.id!).subscribe(
-      (res: any) => {
-        this.selectedOrder = res.output.data;
-        this.selectedOrder.discount *= 100;
-        this.isDetailSection = true;
-      },
-      (error: HttpErrorResponse) => {
-        this.messageService.showMessage(Severity.ERROR, 'REQUEST ERROR');
-      }
-    );
+
+    this.selectedOrder = this.orderService.getViewedOrder(order.id!)!;
+
+    if (this.selectedOrder) this.isDetailSection = true;
+    else {
+      this.orderService.getOrder(order.id!).subscribe(
+        (res: any) => {
+          this.selectedOrder = res.output.data;
+          this.orderService.setViewedOrder(
+            this.selectedOrder.id!,
+            this.selectedOrder
+          );
+          this.isDetailSection = true;
+        },
+        (error: HttpErrorResponse) => {
+          this.messageService.showMessage(Severity.ERROR, 'REQUEST ERROR');
+        }
+      );
+    }
+
     this.displayDetail = true;
   }
 

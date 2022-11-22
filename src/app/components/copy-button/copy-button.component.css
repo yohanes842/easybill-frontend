@@ -1,0 +1,8 @@
+.copy-btn:hover {
+    filter: brightness(1.1);
+    transform: scale(1.1);
+}
+
+.copy-btn:active {
+    background: var(--custom-light-black) !important;
+}

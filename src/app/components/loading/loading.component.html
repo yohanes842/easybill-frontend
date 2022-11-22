@@ -1,0 +1,12 @@
+<div
+  *ngIf="loadingService.isLoading"
+  class="loading-overlay w-screen h-screen fixed top-0 transition-all transition-duration-300 opacity-0"
+  [class.opacity-100]="opacityIsFull"
+  style="background: rgba(0, 0, 0, 0.3); z-index: 999999"
+>
+  <p-progressBar
+    mode="indeterminate"
+    class="w-full"
+    [style]="{ height: '2px' }"
+  ></p-progressBar>
+</div>

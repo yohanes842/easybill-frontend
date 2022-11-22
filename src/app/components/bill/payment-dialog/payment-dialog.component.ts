@@ -32,7 +32,7 @@ export class PaymentDialogComponent implements OnInit {
   }
 
   pay(): void {
-    if (this.amount <= this.selectedBill.owe_amount) {
+    if (this.amount <= this.selectedBill.owe_amount && this.amount >= 0) {
       this.billService
         .payBill(this.amount, this.selectedBill.user.id!)
         .subscribe(
@@ -63,6 +63,5 @@ export class PaymentDialogComponent implements OnInit {
         'Payment amount is invalid!'
       );
     }
-    this.hideDialog();
   }
 }

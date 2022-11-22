@@ -23,6 +23,8 @@ export class AddFormComponent implements OnInit {
   addUserDisplay: boolean = false;
   dialogDisplay: boolean = false;
   modalType!: string;
+  isWithDiscount: boolean = true;
+  isFlatDiscount: boolean = false;
 
   users!: User[];
   filteredUsernames!: string[];
@@ -43,28 +45,34 @@ export class AddFormComponent implements OnInit {
     private confirmationService: ConfirmationService
   ) {}
 
-  ngOnDestroy(): void {
-    console.log('lala');
-  }
-
   ngOnInit(): void {
     const stringOfCurrentOrder = localStorage.getItem('currentOrder');
     let retrievedCurrentOrder: OrderHeader | null;
 
     //Set currentOrder Retrieving Process
-    if (stringOfCurrentOrder) {
+    if (stringOfCurrentOrder)
       retrievedCurrentOrder = JSON.parse(stringOfCurrentOrder);
-    } else retrievedCurrentOrder = this.orderService.getCurrentOrder();
-
+    else retrievedCurrentOrder = this.orderService.getCurrentOrder();
     if (!retrievedCurrentOrder) {
       this.currentOrder = new OrderHeader();
       this.currentOrder.order_list = [];
+      this.currentTime = new Date();
 
       const currentUser = this.authService.getCurrentUser();
       this.currentOrder.username = currentUser?.username;
-    } else this.currentOrder = retrievedCurrentOrder;
+    } else {
+      this.currentOrder = retrievedCurrentOrder;
 
-    this.currentTime = new Date();
+      const curDateISO = Date.parse(retrievedCurrentOrder?.order_at!);
+      this.currentTime = new Date(curDateISO);
+
+      if (this.currentOrder.discount > 0) {
+        this.isWithDiscount = true;
+        if (this.currentOrder.discount === 100) this.isFlatDiscount = true;
+      } else this.isWithDiscount = false;
+
+      if (this.currentOrder.upto <= 0) this.isWithDiscount = false;
+    }
 
     this.userService.getUsers().subscribe(
       (response: any) => {
@@ -96,6 +104,8 @@ export class AddFormComponent implements OnInit {
       'Successfully',
       'deleted sub-order'
     );
+
+    this.saveToLocalStorage();
   }
 
   filterUsername(keyword: string) {
@@ -127,14 +137,18 @@ export class AddFormComponent implements OnInit {
         'Order detail can not be empty'
       );
     } else {
-      //set order_at attribute
-      this.currentOrder.order_at = this.datePipe.transform(
-        this.currentTime,
-        'yyyy-MM-dd HH:mm:ss'
-      )!;
+      //set discount
+      if (
+        !this.isWithDiscount ||
+        this.currentOrder.discount === 0 ||
+        this.currentOrder.upto === 0
+      ) {
+        this.currentOrder.discount = 0;
+        this.currentOrder.upto = 0;
+      }
 
+      this.saveToLocalStorage();
       this.orderService.setCurrentOrder(this.currentOrder);
-      localStorage.setItem('currentOrder', JSON.stringify(this.currentOrder));
 
       this.router.navigateByUrl(Route.ADD_ORDER_USER_PATH);
     }
@@ -142,6 +156,7 @@ export class AddFormComponent implements OnInit {
 
   hideDialog(): void {
     this.dialogDisplay = false;
+    this.saveToLocalStorage();
   }
 
   backToHome(): void {
@@ -155,5 +170,29 @@ export class AddFormComponent implements OnInit {
         this.deleteSubOrder(index);
       },
     });
+  }
+
+  setDiscountPercentage(): void {
+    this.currentOrder.discount = this.isFlatDiscount
+      ? 100
+      : this.currentOrder.discount;
+    this.saveToLocalStorage();
+  }
+
+  saveToLocalStorage(): void {
+    //set order_at attribute
+    this.currentOrder.order_at = this.datePipe.transform(
+      this.currentTime,
+      'yyyy-MM-dd HH:mm:ss'
+    )!;
+
+    localStorage.setItem('currentOrder', JSON.stringify(this.currentOrder));
+  }
+
+  clearOrder(): void {
+    localStorage.removeItem('currentOrder');
+    this.currentOrder = new OrderHeader();
+    this.currentOrder.order_list = [];
+    this.currentTime = new Date();
   }
 }

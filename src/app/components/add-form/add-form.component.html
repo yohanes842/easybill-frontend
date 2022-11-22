@@ -17,6 +17,15 @@
     class="mx-auto w-full px-3 py-2 lg:w-6"
     (ngSubmit)="navigateToSelectUsers()"
   >
+    <div class="w-full text-right">
+      <button
+        pButton
+        type="button"
+        class="p-button-link p-button-sm m-0 p-0 text-secondary text-right font-italic"
+        label="Clear all"
+        (click)="clearOrder()"
+      ></button>
+    </div>
     <div class="mb-3 w-full">
       <label for="orderBy" class="font-bold">Order by</label>
       <p-autoComplete
@@ -28,6 +37,7 @@
         (completeMethod)="filterUsername($event.query)"
         [required]="true"
         placeholder="Order by"
+        (ngModelChange)="saveToLocalStorage()"
       ></p-autoComplete>
     </div>
 
@@ -41,8 +51,20 @@
         name="orderDescription"
         [(ngModel)]="currentOrder.order_description"
         placeholder="Order description"
+        minlength="2"
+        maxlength="50"
         required
+        #orderDescription="ngModel"
+        (ngModelChange)="saveToLocalStorage()"
       />
+      <span
+        *ngIf="
+          orderDescription.invalid &&
+          (orderDescription.dirty || orderDescription.touched)
+        "
+        class="text-red-400 text-sm"
+        >*Must be 2-50 characters</span
+      >
     </div>
 
     <div class="mb-3 w-full">
@@ -56,11 +78,17 @@
         hourFormat="24"
         [showIcon]="true"
         [required]="true"
+        (ngModelChange)="saveToLocalStorage()"
       ></p-calendar>
     </div>
 
     <div class="mb-3 w-full flex flex-column">
-      <label for="totalPayment" class="font-bold">Total Payment</label>
+      <label for="totalPayment" class="font-bold"
+        >Total Payment
+        <h6 class="text-xs text-secondary m-0">
+          (final amount after discount and other fee calculation)
+        </h6></label
+      >
       <div class="p-inputgroup">
         <span class="p-inputgroup-addon p-2 my-2">Rp</span>
         <p-inputNumber
@@ -72,11 +100,39 @@
           [min]="0"
           [required]="true"
           placeholder="Total payment"
+          (ngModelChange)="saveToLocalStorage()"
         ></p-inputNumber>
       </div>
     </div>
 
-    <div class="mb-3">
+    <p-checkbox
+      class="mb-2"
+      name="withDiscountCheckbox"
+      [binary]="true"
+      label="Include Discount"
+      [(ngModel)]="isWithDiscount"
+    ></p-checkbox>
+
+    <div *ngIf="isWithDiscount" class="mb-3">
+      <div class="flex gap-3 m-2">
+        <p-radioButton
+          labelStyleClass="text-sm"
+          name="DiscountTypeRadioBtn"
+          label="Percentage"
+          [value]="false"
+          [(ngModel)]="isFlatDiscount"
+          (onClick)="setDiscountPercentage()"
+        ></p-radioButton>
+        <p-radioButton
+          labelStyleClass="text-sm"
+          name="DiscountTypeRadioBtn"
+          label="Flat discount"
+          [value]="true"
+          [(ngModel)]="isFlatDiscount"
+          (onClick)="setDiscountPercentage()"
+        ></p-radioButton>
+      </div>
+
       <label for="discount" class="font-bold">Discount</label>
       <div
         class="flex flex-column gap-0 align-items-center sm:flex-row sm:gap-2"
@@ -92,6 +148,8 @@
             [max]="100"
             [required]="true"
             placeholder="Discount"
+            [disabled]="isFlatDiscount"
+            (ngModelChange)="saveToLocalStorage()"
           ></p-inputNumber>
           <span class="p-inputgroup-addon p-2 my-2">%</span>
         </div>
@@ -107,6 +165,7 @@
             [min]="0"
             [required]="true"
             placeholder="Max discount"
+            (ngModelChange)="saveToLocalStorage()"
           ></p-inputNumber>
         </div>
       </div>
@@ -146,7 +205,7 @@
               {{ subOrder.order_menu_desc }}
             </p>
             <p class="m-0 text-sm" style="color: var(--custom-orange)">
-              {{ subOrder.price * subOrder.qty | currency: "Rp " }}
+              {{ subOrder.price * subOrder.qty | currency : "Rp " }}
             </p>
           </div>
           <div class="flex">

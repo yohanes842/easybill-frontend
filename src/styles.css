@@ -52,3 +52,28 @@ input {
 .text-secondary {
   color: var(--custom-gray);
 }
+
+button.reset {
+  display: inline-block;
+  border: none;
+  /* padding: 1rem 2rem; */
+  margin: 0;
+  text-decoration: none;
+  background: none;
+  color: #ffffff;
+  font-family: sans-serif;
+  font-size: 1rem;
+  cursor: pointer;
+  text-align: center;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+}
+
+button:focus {
+  outline: solid var(--custom-blue-200) !important;
+}
+
+.button-no-outline:focus {
+  outline: none !important;
+}

@@ -1,0 +1,14 @@
+:host ::ng-deep .p-speeddial-button {
+    transition: all 350ms ease-in-out;
+}
+:host ::ng-deep .p-speeddial-button:hover {
+    transform: scale(1.1) rotate(-180deg);
+    filter: drop-shadow(0 0 1rem crimson);
+}
+:host ::ng-deep .p-speeddial-action {
+    transition: all 100ms ease-in-out;
+}
+:host ::ng-deep .p-speeddial-action:hover {
+    transform: scale(1.1);
+    filter: drop-shadow(0 0 0.5rem var(--custom-orange-50));
+}

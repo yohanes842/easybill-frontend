@@ -22,13 +22,15 @@
             transform: 'scale(70%)'
           }"
           shape="circle"
-          >{{ selectedBill.user.username | uppercase | slice: 0:1 }}</p-avatar
+          >{{
+            selectedBill.user.username | uppercase | slice : 0 : 1
+          }}</p-avatar
         >
       </span>
       <span>{{ selectedBill.user.username | uppercase }}</span>
     </p>
     <h3 class="m-0 font-italic" style="color: var(--custom-orange-200)">
-      {{ selectedBill.owe_amount | currency: "Rp. ":"symbol":"1.0-0" }}
+      {{ selectedBill.owe_amount | currency : "Rp. " : "symbol" : "1.0-0" }}
     </h3>
   </p-header>
   <form
@@ -36,19 +38,43 @@
     class="flex flex-column gap-2 w-full mt-3 p-5"
     (ngSubmit)="pay()"
   >
-    <div class="p-inputgroup">
-      <span class="p-inputgroup-addon p-2 my-2">Rp</span>
-      <p-inputNumber
-        [style]="{ width: '100%', 'margin-block': '0.5rem' }"
-        [inputStyle]="{ width: '100%', 'padding-block': '0.5rem' }"
-        name="totalPayment"
-        [(ngModel)]="amount"
-        mode="decimal"
-        [min]="0"
-        [required]="true"
-        placeholder="Total payment"
-      ></p-inputNumber>
+    <ng-container
+      *ngIf="selectedBill.user.account_number != null; else noAccountNumber"
+    >
+      <div>
+        <h4 class="m-0">Transfer to</h4>
+        <div class="flex align-items-center gap-3">
+          <h4 class="m-0 text-xl ml-3">
+            {{ selectedBill.user.account_number }}
+          </h4>
+          <copy-button
+            [stringToBeCopy]="selectedBill.user.account_number"
+          ></copy-button>
+        </div>
+      </div>
+    </ng-container>
+
+    <ng-template #noAccountNumber>
+      <h4 class="m-1">User's account number has not been set</h4>
+    </ng-template>
+
+    <div>
+      <div class="p-inputgroup">
+        <span class="p-inputgroup-addon p-2 my-2">Rp</span>
+        <p-inputNumber
+          [style]="{ width: '100%', 'margin-block': '0.5rem' }"
+          [inputStyle]="{ width: '100%', 'padding-block': '0.5rem' }"
+          name="totalPayment"
+          #totalPayment="ngModel"
+          [(ngModel)]="amount"
+          mode="decimal"
+          [min]="0"
+          [required]="true"
+          placeholder="Total payment"
+        ></p-inputNumber>
+      </div>
     </div>
+
     <div class="text-center w-full">
       <button
         pButton

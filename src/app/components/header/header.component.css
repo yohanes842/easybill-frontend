@@ -1,0 +1,5 @@
+.avatar:hover {
+  margin-inline: 0.2rem;
+  transform: scale(1.1);
+  filter: drop-shadow(0 0 0.85rem crimson);
+}

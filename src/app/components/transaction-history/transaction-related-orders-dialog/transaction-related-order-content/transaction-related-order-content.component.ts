@@ -14,9 +14,7 @@ export class TransactionRelatedOrderContentComponent implements OnInit {
 
   constructor() {}
 
-  ngOnInit(): void {
-    console.log(this.relatedOrder);
-  }
+  ngOnInit(): void {}
 
   showDetail(order: OrderHeader): void {
     this.onShowDetail.emit(order);

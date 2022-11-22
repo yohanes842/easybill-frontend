@@ -1,12 +1,15 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ConfirmationService } from 'primeng/api';
+import { DropdownFilterOptions } from 'primeng/dropdown';
 import { OrderDetail } from 'src/app/classes/order-detail';
 import { OrderHeader } from 'src/app/classes/order-header';
 import { User } from 'src/app/classes/user';
 import { Route } from 'src/app/enums/Route';
 import { Severity } from 'src/app/enums/Severity';
+import { Response } from 'src/app/interfaces/response';
+import { AuthService } from 'src/app/services/auth/auth.service';
 import { CustomMessageService } from 'src/app/services/message/custom-message.service';
 import { OrderService } from 'src/app/services/order/order.service';
 import { UserService } from 'src/app/services/user/user.service';
@@ -21,7 +24,9 @@ export class SelectusersFormComponent implements OnInit {
   participantListDialogDisplay: Boolean = false;
 
   users!: User[];
-  filteredUsernames!: string[];
+  selectedUserDropdown!: User | undefined;
+  dropdownFilter!: String;
+
   participants: User[] = [];
   username!: string;
   selectedParticipant!: User | null;
@@ -34,7 +39,8 @@ export class SelectusersFormComponent implements OnInit {
     private orderService: OrderService,
     private userService: UserService,
     private messageService: CustomMessageService,
-    private confirmationService: ConfirmationService
+    private confirmationService: ConfirmationService,
+    private authService: AuthService
   ) {}
 
   ngOnInit(): void {
@@ -62,6 +68,12 @@ export class SelectusersFormComponent implements OnInit {
     this.userService.getUsers().subscribe(
       (response: any) => {
         this.users = response.output.data;
+        this.users = this.users.filter(
+          (user) =>
+            !this.participants
+              .map((participant) => participant.id)
+              .includes(user.id)
+        );
       },
       (error: HttpErrorResponse) => {
         this.messageService.showMessage(Severity.ERROR, 'Request Error');
@@ -69,24 +81,38 @@ export class SelectusersFormComponent implements OnInit {
     );
   }
 
+  addEventListernerToOptions(): void {
+    document
+      .querySelectorAll('.p-dropdown-item')
+      .forEach((el) =>
+        el.addEventListener('click', () => this.addParticipant())
+      );
+
+    document
+      .querySelector('.p-dropdown-filter')!
+      .addEventListener('keydown', (event) => {
+        if (
+          (event as KeyboardEvent).key == 'Enter' &&
+          this.selectedUserDropdown
+        ) {
+          this.addParticipant();
+        }
+      });
+  }
+
+  updateFilter(event: any): void {
+    this.selectedUserDropdown = undefined;
+  }
+
   back(): void {
     this.router.navigateByUrl(Route.ADD_ORDER_PATH);
   }
 
-  showAddUserDialog() {
+  showAddUserDialog(): void {
     this.addUserDialogDisplay = true;
   }
 
-  filterUsername(keyword: string) {
-    keyword = keyword.toLocaleLowerCase();
-    this.filteredUsernames = this.users
-      .filter((user) => !this.participants.includes(user))
-      .filter((user) => user.username.includes(keyword))
-      .slice(0, 5)
-      .map((user) => user.username);
-  }
-
-  showUserListDialog(event: Event, subOrder: OrderDetail) {
+  showUserListDialog(event: Event, subOrder: OrderDetail): void {
     event.stopPropagation();
     if (subOrder.users.length > 0) {
       this.selectedSubOrder = subOrder;
@@ -94,13 +120,13 @@ export class SelectusersFormComponent implements OnInit {
     }
   }
 
-  hideParticipantListDialog() {
+  hideParticipantListDialog(): void {
     this.participantListDialogDisplay = false;
   }
 
-  addParticipant() {
-    let participant = this.participants.find(
-      (user) => user.username == this.username
+  addParticipant(): void {
+    const participant = this.participants.find(
+      (user) => user.id === this.selectedUserDropdown!.id
     );
     if (participant) {
       this.messageService.showMessage(
@@ -111,27 +137,30 @@ export class SelectusersFormComponent implements OnInit {
       return;
     }
 
-    let user = this.users.find((user) => user.username == this.username);
+    let user = this.users.find(
+      (user) => user.id == this.selectedUserDropdown!.id
+    );
 
     if (user) {
       this.participants.push(user);
-      this.username = '';
-    } else {
-      this.messageService.showMessage(
-        Severity.ERROR,
-        'Input Error',
-        'User does not exist!'
+
+      let index = this.users.indexOf(user, 0);
+      this.users.splice(index, 1);
+      console.log(this.selectedUserDropdown);
+      console.log(index);
+      console.log(this.users);
+
+      this.selectedUserDropdown = undefined;
+
+      localStorage.setItem('currentOrder', JSON.stringify(this.currentOrder));
+      localStorage.setItem(
+        'currentParticipantsInForm',
+        JSON.stringify(this.participants)
       );
     }
-
-    localStorage.setItem('currentOrder', JSON.stringify(this.currentOrder));
-    localStorage.setItem(
-      'currentParticipantsInForm',
-      JSON.stringify(this.participants)
-    );
   }
 
-  removeParticipant(index: number) {
+  removeParticipant(index: number): void {
     if (index < this.participants.length) {
       this.currentOrder.order_list.forEach((subOrder) => {
         const removalIndex = subOrder.users.findIndex(
@@ -140,6 +169,8 @@ export class SelectusersFormComponent implements OnInit {
         if (removalIndex > -1) subOrder.users.splice(removalIndex, 1);
       });
 
+      this.users.splice(0, 0, this.participants[index]);
+      this.users.sort((a, b) => a.username.localeCompare(b.username));
       this.participants.splice(index, 1);
 
       // Nullify selectedParticipant if that participant is being deleted
@@ -156,11 +187,11 @@ export class SelectusersFormComponent implements OnInit {
     }
   }
 
-  selectParticipant(user: User) {
+  selectParticipant(user: User): void {
     this.selectedParticipant = user;
   }
 
-  chooseSubOrder(subOrder: OrderDetail) {
+  chooseSubOrder(subOrder: OrderDetail): void {
     if (this.selectedParticipant) {
       let user = subOrder.users.find(
         (user) => user.id === this.selectedParticipant?.id
@@ -176,18 +207,16 @@ export class SelectusersFormComponent implements OnInit {
       }
 
       localStorage.setItem('currentOrder', JSON.stringify(this.currentOrder));
-      console.log(this.currentOrder);
     }
   }
 
   removeParticipantFromSubOrderList(
     subOrder: OrderDetail,
     selectedParticipant: User
-  ) {
+  ): void {
     let deleteIndex = subOrder.users.findIndex(
       (user) => user.id === selectedParticipant.id
     );
-    console.log(deleteIndex);
     subOrder.users.splice(deleteIndex, 1);
 
     localStorage.setItem('currentOrder', JSON.stringify(this.currentOrder));
@@ -206,20 +235,26 @@ export class SelectusersFormComponent implements OnInit {
 
     if (!isAnySubOrderWithNoUser) {
       // Hit add order service
-      this.orderService.addOrder(this.currentOrder).subscribe((res: any) => {
-        console.log(res);
+      this.orderService
+        .addOrder(this.currentOrder)
+        .subscribe((res: Response<OrderHeader>) => {
+          // Redirect to home page
+          this.messageService.showMessage(
+            Severity.SUCCESS,
+            'Successfully',
+            'Added new order'
+          );
 
-        // Redirect to home page
-        this.messageService.showMessage(
-          Severity.SUCCESS,
-          'Successfully',
-          'Added new order'
-        );
-        this.router.navigateByUrl(Route.HOME_PATH);
+          if (
+            res.output.data.buyer.username ==
+            this.authService.getCurrentUser()?.username
+          )
+            this.router.navigateByUrl(Route.PENDING_ORDERS_PATH);
+          else this.router.navigateByUrl(Route.HOME_PATH);
 
-        localStorage.removeItem('currentOrder');
-        this.orderService.setCurrentOrder(null);
-      });
+          localStorage.removeItem('currentOrder');
+          this.orderService.setCurrentOrder(null);
+        });
     } else {
       this.messageService.showMessage(
         Severity.ERROR,
@@ -267,6 +302,8 @@ export class SelectusersFormComponent implements OnInit {
     if (index < this.currentOrder.order_list.length) {
       this.currentOrder.order_list.splice(index, 1);
     }
+
+    localStorage.setItem('currentOrder', JSON.stringify(this.currentOrder));
   }
 
   stopPropagation(event: Event): void {
