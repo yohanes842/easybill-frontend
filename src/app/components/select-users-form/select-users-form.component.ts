@@ -176,7 +176,6 @@ export class SelectusersFormComponent implements OnInit {
       }
 
       localStorage.setItem('currentOrder', JSON.stringify(this.currentOrder));
-      console.log(this.currentOrder);
     }
   }
 
@@ -187,7 +186,6 @@ export class SelectusersFormComponent implements OnInit {
     let deleteIndex = subOrder.users.findIndex(
       (user) => user.id === selectedParticipant.id
     );
-    console.log(deleteIndex);
     subOrder.users.splice(deleteIndex, 1);
 
     localStorage.setItem('currentOrder', JSON.stringify(this.currentOrder));
@@ -206,9 +204,7 @@ export class SelectusersFormComponent implements OnInit {
 
     if (!isAnySubOrderWithNoUser) {
       // Hit add order service
-      this.orderService.addOrder(this.currentOrder).subscribe((res: any) => {
-        console.log(res);
-
+      this.orderService.addOrder(this.currentOrder).subscribe(() => {
         // Redirect to home page
         this.messageService.showMessage(
           Severity.SUCCESS,

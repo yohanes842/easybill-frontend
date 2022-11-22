@@ -43,28 +43,26 @@ export class AddFormComponent implements OnInit {
     private confirmationService: ConfirmationService
   ) {}
 
-  ngOnDestroy(): void {
-    console.log('lala');
-  }
-
   ngOnInit(): void {
     const stringOfCurrentOrder = localStorage.getItem('currentOrder');
     let retrievedCurrentOrder: OrderHeader | null;
 
     //Set currentOrder Retrieving Process
-    if (stringOfCurrentOrder) {
-      retrievedCurrentOrder = JSON.parse(stringOfCurrentOrder);
-    } else retrievedCurrentOrder = this.orderService.getCurrentOrder();
-
+    if (stringOfCurrentOrder) retrievedCurrentOrder = JSON.parse(stringOfCurrentOrder);
+    else retrievedCurrentOrder = this.orderService.getCurrentOrder();
     if (!retrievedCurrentOrder) {
       this.currentOrder = new OrderHeader();
       this.currentOrder.order_list = [];
+      this.currentTime = new Date();
 
       const currentUser = this.authService.getCurrentUser();
       this.currentOrder.username = currentUser?.username;
-    } else this.currentOrder = retrievedCurrentOrder;
+    } else {
+      this.currentOrder = retrievedCurrentOrder;
 
-    this.currentTime = new Date();
+      const curDateISO = Date.parse(retrievedCurrentOrder?.order_at!);
+      this.currentTime = new Date(curDateISO);
+    }
 
     this.userService.getUsers().subscribe(
       (response: any) => {

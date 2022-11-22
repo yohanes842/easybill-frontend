@@ -24,9 +24,7 @@ export class OrderDetailsComponent implements OnInit {
     this.currentUser = this.authService.getCurrentUser() as User;
   }
 
-  ngOnInit(): void {
-    console.log(this.isRelevantOrder);
-  }
+  ngOnInit(): void {}
 
   onHideDetail(): void {
     this.close.emit(null);

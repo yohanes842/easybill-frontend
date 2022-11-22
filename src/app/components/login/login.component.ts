@@ -32,7 +32,7 @@ export class LoginComponent implements OnInit {
       );
     } else {
       this.authService.login(this.user).subscribe(
-        (res) => {
+        () => {
           this.router.navigateByUrl(Route.HOME_PATH);
           this.messageService.showMessage(Severity.SUCCESS, 'LOGIN SUCCESS');
         },
