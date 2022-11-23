@@ -5,4 +5,5 @@ export enum Route {
   ADD_ORDER_USER_PATH = '/add-order/users',
   BILL_PATH = '/bill',
   TRANSACTION_HISTORY_PATH = '/transaction-history',
+  PROFILE_PATH = '/profile'
 }

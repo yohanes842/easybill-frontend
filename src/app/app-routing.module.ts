@@ -11,6 +11,7 @@ import { TransactionHistoryComponent } from './components/transaction-history/tr
 import { Route } from './enums/Route';
 import { NotFoundPageComponent } from './components/not-found-page/not-found-page.component';
 import { SelectusersFormComponent } from './components/select-users-form/select-users-form.component';
+import { UserProfileComponent } from './components/user-profile/user-profile.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent, canActivate: [LoginGuard] },
@@ -46,6 +47,11 @@ const routes: Routes = [
   {
     path: Route.ADD_ORDER_USER_PATH.slice(1),
     component: SelectusersFormComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: Route.PROFILE_PATH.slice(1),
+    component: UserProfileComponent,
     canActivate: [AuthGuard],
   },
   {
