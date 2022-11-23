@@ -1,7 +1,9 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { User } from 'src/app/classes/user';
 import { Severity } from 'src/app/enums/Severity';
 import { CustomMessageService } from 'src/app/services/message/custom-message.service';
+import { UserService } from 'src/app/services/user/user.service';
 
 @Component({
   selector: 'change-password-dialog',
@@ -18,7 +20,7 @@ export class ChangePasswordDialogComponent implements OnInit {
   newPasswordString: String = '';
   confirmPasswordString: String = '';
 
-  constructor(private messageService: CustomMessageService) { }
+  constructor(private messageService: CustomMessageService, private userService: UserService) { }
 
   ngOnInit(): void {
   }
@@ -31,7 +33,12 @@ export class ChangePasswordDialogComponent implements OnInit {
     if(this.newPasswordString != this.confirmPasswordString) {
       this.messageService.showMessage(Severity.ERROR, 'INPUT ERROR', 'Password and confirm password don\'t match');
     } else {
-      console.log('submit');
+      this.userService.changeUserPassword(this.currentPasswordString, this.newPasswordString, this.confirmPasswordString).subscribe(() => {
+        this.messageService.showMessage(Severity.SUCCESS, 'CHANGE PASSWORD SUCCESS');
+      }, (error: HttpErrorResponse) => {
+        console.log(error)
+        // this.messageService.showMessage(Severity.ERROR, 'INPUT ERROR', 'Password and confirm password don\'t match');
+      })
     }
   }
 }

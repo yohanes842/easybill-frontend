@@ -14,4 +14,21 @@ export class UserService {
   public getUsers(): Observable<Response<User>> {
     return this.http.get<Response<User>>(`${env.url}/api/users`);
   }
+
+  public changeUserPassword(currentPassword: String, newPassword: String, confirmPassword: String): Observable<Response<void>> {
+    const params = {
+      current_password: currentPassword,
+      new_password: newPassword,
+      confirm_password: confirmPassword
+    }
+    return this.http.put<Response<void>>(`${env.url}/api/users/password`, params);
+  }
+
+  public changeUserAccountNumber(password: string, accountNumber: string): Observable<Response<void>> {
+    const params = {
+      password: password,
+      account_number: accountNumber
+    }
+    return this.http.put<Response<void>>(`${env.url}/api/users/account-number`, params);
+  }
 }
