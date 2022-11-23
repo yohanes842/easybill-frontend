@@ -30,7 +30,7 @@ export class JumpButtonComponent implements OnInit {
           () => (this.isVisible = false),
           5500
         );
-      }
+      } else this.display = false;
       this.previousScrollY = window.scrollY;
     });
   }
