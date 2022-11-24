@@ -22,8 +22,6 @@ export class HeaderComponent implements OnInit {
   ngOnInit(): void {}
 
   navigateToProfile(): void {
-    console.log(this.router.getCurrentNavigation());
     this.router.navigateByUrl(Route.PROFILE_PATH);
-    console.log(this.router.getCurrentNavigation());
   }
 }

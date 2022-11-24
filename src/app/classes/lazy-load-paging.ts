@@ -1,5 +1,3 @@
-import { OrderHeader } from './order-header';
-
 export class LazyLoadPaging<T> {
   nextPage: number = 1;
   maxPage: number = 0;
