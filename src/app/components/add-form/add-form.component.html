@@ -60,7 +60,12 @@
     </div>
 
     <div class="mb-3 w-full flex flex-column">
-      <label for="totalPayment" class="font-bold">Total Payment <h6 class="text-xs text-secondary m-0">(final amount after discount and other fee calculation)</h6></label>
+      <label for="totalPayment" class="font-bold"
+        >Total Payment
+        <h6 class="text-xs text-secondary m-0">
+          (final amount after discount and other fee calculation)
+        </h6></label
+      >
       <div class="p-inputgroup">
         <span class="p-inputgroup-addon p-2 my-2">Rp</span>
         <p-inputNumber
@@ -76,7 +81,34 @@
       </div>
     </div>
 
-    <div class="mb-3">
+    <p-checkbox
+      class="mb-2"
+      name="withDiscountCheckbox"
+      [binary]="true"
+      label="Include Discount"
+      [(ngModel)]="isWithDiscount"
+    ></p-checkbox>
+
+    <div *ngIf="isWithDiscount" class="mb-3">
+      <div class="flex gap-3 m-2">
+        <p-radioButton
+        labelStyleClass="text-sm"
+          name="DiscountTypeRadioBtn"
+          label="Percentage"
+          [value]="false"
+          [(ngModel)]="isFlatDiscount"
+          (onClick)="setDiscountPercentage()"
+        ></p-radioButton>
+        <p-radioButton
+        labelStyleClass="text-sm"
+          name="DiscountTypeRadioBtn"
+          label="Flat discount"
+          [value]="true"
+          [(ngModel)]="isFlatDiscount"
+          (onClick)="setDiscountPercentage()"
+        ></p-radioButton>
+      </div>
+
       <label for="discount" class="font-bold">Discount</label>
       <div
         class="flex flex-column gap-0 align-items-center sm:flex-row sm:gap-2"
@@ -92,6 +124,7 @@
             [max]="100"
             [required]="true"
             placeholder="Discount"
+            [disabled]="isFlatDiscount"
           ></p-inputNumber>
           <span class="p-inputgroup-addon p-2 my-2">%</span>
         </div>

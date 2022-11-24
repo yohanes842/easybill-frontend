@@ -25,6 +25,7 @@ import { AutoCompleteModule } from 'primeng/autocomplete';
 import { AvatarModule } from 'primeng/avatar';
 import { AvatarGroupModule } from 'primeng/avatargroup';
 import { CalendarModule } from 'primeng/calendar';
+import { CheckboxModule } from 'primeng/checkbox';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { DataViewModule } from 'primeng/dataview';
 import { DialogModule } from 'primeng/dialog';
@@ -37,12 +38,12 @@ import { MessageModule } from 'primeng/message';
 import { MessagesModule } from 'primeng/messages';
 import { PanelModule } from 'primeng/panel';
 import { PasswordModule } from 'primeng/password';
+import { RadioButtonModule } from 'primeng/radiobutton';
 import { RippleModule } from 'primeng/ripple';
 import { TabMenuModule } from 'primeng/tabmenu';
 
 import { DatePipe } from '@angular/common';
 import { ConfirmationService, MessageService } from 'primeng/api';
-import { AutoFocusModule } from 'primeng/autofocus';
 import { PaymentDialogComponent } from 'src/app/components/bill/payment-dialog/payment-dialog.component';
 import { SelectusersFormComponent } from 'src/app/components/select-users-form/select-users-form.component';
 import { AuthApiInterceptor } from 'src/app/interceptor/auth-http.interceptor';
@@ -71,7 +72,6 @@ import { ChangePasswordDialogComponent } from './components/user-profile/change-
 import { EditAccountNumberDialogComponent } from './components/user-profile/edit-account-number-dialog/edit-account-number-dialog.component';
 import { UserProfileComponent } from './components/user-profile/user-profile.component';
 import { ErrorResponseInterceptor } from './interceptor/error-response.interceptor';
-
 
 @NgModule({
   declarations: [
@@ -136,7 +136,8 @@ import { ErrorResponseInterceptor } from './interceptor/error-response.intercept
     PasswordModule,
     TabMenuModule,
     InputMaskModule,
-    AutoFocusModule
+    CheckboxModule,
+    RadioButtonModule,
   ],
   providers: [
     UserService,

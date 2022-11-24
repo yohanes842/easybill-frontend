@@ -23,6 +23,8 @@ export class AddFormComponent implements OnInit {
   addUserDisplay: boolean = false;
   dialogDisplay: boolean = false;
   modalType!: string;
+  isWithDiscount: boolean = false;
+  isFlatDiscount: boolean = false;
 
   users!: User[];
   filteredUsernames!: string[];
@@ -62,6 +64,11 @@ export class AddFormComponent implements OnInit {
 
       const curDateISO = Date.parse(retrievedCurrentOrder?.order_at!);
       this.currentTime = new Date(curDateISO);
+
+      if(this.currentOrder.discount > 0){
+        this.isWithDiscount = true;
+        if(this.currentOrder.discount === 100) this.isFlatDiscount = true;
+      }
     }
 
     this.userService.getUsers().subscribe(
@@ -131,6 +138,12 @@ export class AddFormComponent implements OnInit {
         'yyyy-MM-dd HH:mm:ss'
       )!;
 
+      //set discount
+      if(!this.isWithDiscount || this.currentOrder.discount === 0 || this.currentOrder.upto === 0) {
+        this.currentOrder.discount = 0;
+        this.currentOrder.upto = 0;
+      }
+
       this.orderService.setCurrentOrder(this.currentOrder);
       localStorage.setItem('currentOrder', JSON.stringify(this.currentOrder));
 
@@ -153,5 +166,9 @@ export class AddFormComponent implements OnInit {
         this.deleteSubOrder(index);
       },
     });
+  }
+
+  setDiscountPercentage(): void{
+    this.currentOrder.discount = this.isFlatDiscount ? 100 : this.currentOrder.discount;
   }
 }
