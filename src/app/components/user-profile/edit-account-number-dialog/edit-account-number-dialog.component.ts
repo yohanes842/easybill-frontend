@@ -1,7 +1,9 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ConnectableObservable } from 'rxjs';
+import { CustomErrorResponse } from 'src/app/classes/error-response';
 import { Severity } from 'src/app/enums/Severity';
 import { CustomMessageService } from 'src/app/services/message/custom-message.service';
+import { UserService } from 'src/app/services/user/user.service';
 
 @Component({
   selector: 'edit-account-number-dialog',
@@ -9,19 +11,24 @@ import { CustomMessageService } from 'src/app/services/message/custom-message.se
   styleUrls: ['./edit-account-number-dialog.component.css'],
 })
 export class EditAccountNumberDialogComponent implements OnInit {
-  @Input() currentAccountNumber!: string;
+  @Input() currentAccountNumber!: string | null;
 
   @Output() onClose: EventEmitter<void> = new EventEmitter();
+  @Output() onSubmit: EventEmitter<string> = new EventEmitter();
 
   display: boolean = true;
+  errors: Map<string, string> = new Map();
 
   passwordString!: string;
   newAccountNumber!: string;
 
-  constructor(private messageService: CustomMessageService) {}
+  constructor(
+    private messageService: CustomMessageService,
+    private userService: UserService
+  ) {}
 
   ngOnInit(): void {
-    console.log(this.currentAccountNumber);
+    this.userService;
     if (!this.currentAccountNumber)
       this.currentAccountNumber = 'Not set up yet';
   }
@@ -38,7 +45,35 @@ export class EditAccountNumberDialogComponent implements OnInit {
         'Account number must be different with the old one!'
       );
     } else {
-      console.log('submit');
+      this.userService
+        .changeUserAccountNumber(this.passwordString, this.newAccountNumber)
+        .subscribe(
+          () => {
+            this.errors = new Map();
+            this.messageService.showMessage(
+              Severity.SUCCESS,
+              'CHANGE ACCOUNT NUMBER SUCCESS'
+            );
+            this.onSubmit.emit(this.newAccountNumber);
+            this.hideDialog();
+          },
+          (error: CustomErrorResponse) => {
+            console.log(error);
+            const res = error.extra_message.match(/[A-z ]+\[(.+)\]/);
+            const content = res![1];
+
+            this.errors = new Map();
+            content.split(',').forEach((s) => {
+              const [key, value] = s.split(':');
+              this.errors.set(key, value);
+            });
+
+            this.messageService.showMessage(
+              Severity.ERROR,
+              error.code.replace(/_/g, ' ')
+            );
+          }
+        );
     }
   }
 }

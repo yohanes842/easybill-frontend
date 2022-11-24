@@ -25,20 +25,21 @@
         shape="circle"
         size="xlarge"
       >
-        {{ "lala" | slice: 0:1 | uppercase }}
+        {{ currentUser?.username | slice: 0:1 | uppercase }}
       </p-avatar>
       <h3 class="m-0 mt-4">
-        {{ "lala" | uppercase }}
+        {{ currentUser?.username | uppercase }}
       </h3>
     </div>
     <div class="text-center">
       <h4 class="m-1">Your account number :</h4>
       <div class="flex align-items-center justify-content-center gap-3">
-          <h4 class="m-0">2440093665</h4>
-          <copy-button stringToBeCopy="2440093665"></copy-button>
+          <h4 class="m-0" style="color: var(--custom-orange-200);">{{ currentUser?.account_number ?? 'Not set yet'}}</h4>
+          <copy-button [stringToBeCopy]="currentUser?.account_number ?? null"></copy-button>
       </div>
     </div>
     <button
+      *ngIf="currentUser?.account_number"
       pButton
       class="p-button-primary py-2 w-15rem text-center"
       label="Change Password"
@@ -59,5 +60,7 @@
 ></change-password-dialog>
 <edit-account-number-dialog
   *ngIf="editAccountNumberDialogDisplay"
+  [currentAccountNumber]="currentUser?.account_number!"
   (onClose)="hideDialog()"
-></edit-account-number-dialog>
+  (onSubmit)="getUserDetail()"
+  ></edit-account-number-dialog>

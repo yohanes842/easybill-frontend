@@ -24,6 +24,9 @@
         [required]="true"
       >
       </p-password>
+      <span *ngIf="errors.get('current_password')" class="text-red-400">{{
+        errors.get("current_password")
+      }}</span>
     </div>
     <div class="mb-2 w-full">
       <label for="currentAccountNumber" class="font-bold">Current Account Number</label>
@@ -48,6 +51,9 @@
         [required]="true"
         [(ngModel)]="newAccountNumber"
       ></p-inputMask>
+      <span *ngIf="errors.get('new_account_number')" class="text-red-400">{{
+        errors.get("new_account_number")
+      }}</span>
     </div>
     <div class="text-center w-full mt-3">
       <button

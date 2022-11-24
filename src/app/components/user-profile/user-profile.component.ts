@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthService } from 'src/app/services/auth/auth.service';
+import { User } from 'src/app/classes/user';
+import { Response } from 'src/app/interfaces/response';
+import { UserService } from 'src/app/services/user/user.service';
 
 @Component({
   selector: 'app-user-profile',
@@ -10,10 +12,12 @@ export class UserProfileComponent implements OnInit {
   changePasswordDialogDisplay!: boolean;
   editAccountNumberDialogDisplay!: boolean;
 
-  constructor(private authService: AuthService) {}
+  currentUser!: User | null;
+
+  constructor(private userService: UserService) {}
 
   ngOnInit(): void {
-    this.authService.getCurrentUser();
+    this.getUserDetail();
   }
 
   back(): void {
@@ -31,5 +35,11 @@ export class UserProfileComponent implements OnInit {
   hideDialog(): void {
     this.changePasswordDialogDisplay = false;
     this.editAccountNumberDialogDisplay = false;
+  }
+
+  getUserDetail(): void {
+    this.userService
+      .getUserDetail()
+      .subscribe((res: Response<User>) => (this.currentUser = res.output.data));
   }
 }

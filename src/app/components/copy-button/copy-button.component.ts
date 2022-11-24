@@ -6,7 +6,7 @@ import { Component, Input, OnInit } from '@angular/core';
   styleUrls: ['./copy-button.component.css']
 })
 export class CopyButtonComponent implements OnInit {
-  @Input() stringToBeCopy!: string;
+  @Input() stringToBeCopy!: string | null;
 
   constructor() { }
 
@@ -14,6 +14,6 @@ export class CopyButtonComponent implements OnInit {
   }
 
   copy(): void {
-    navigator.clipboard.writeText(this.stringToBeCopy);
+    if(this.stringToBeCopy) navigator.clipboard.writeText(this.stringToBeCopy);
   }
 }
