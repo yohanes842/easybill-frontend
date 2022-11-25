@@ -72,6 +72,8 @@ import { ChangePasswordDialogComponent } from './components/user-profile/change-
 import { EditAccountNumberDialogComponent } from './components/user-profile/edit-account-number-dialog/edit-account-number-dialog.component';
 import { UserProfileComponent } from './components/user-profile/user-profile.component';
 import { ErrorResponseInterceptor } from './interceptor/error-response.interceptor';
+import { PendingOrderListComponent } from './components/pending-order-list/pending-order-list.component';
+import { PendingOrderListContentComponent } from './components/pending-order-list/pending-order-list-content/pending-order-list-content.component';
 
 @NgModule({
   declarations: [
@@ -107,6 +109,8 @@ import { ErrorResponseInterceptor } from './interceptor/error-response.intercept
     ChangePasswordDialogComponent,
     EditAccountNumberDialogComponent,
     CopyButtonComponent,
+    PendingOrderListComponent,
+    PendingOrderListContentComponent,
   ],
   imports: [
     BrowserModule,
