@@ -43,19 +43,24 @@
         <copy-button stringToBeCopy="lala"></copy-button>
       </div>
     </div>
-    <div class="p-inputgroup">
-      <span class="p-inputgroup-addon p-2 my-2">Rp</span>
-      <p-inputNumber
-        [style]="{ width: '100%', 'margin-block': '0.5rem' }"
-        [inputStyle]="{ width: '100%', 'padding-block': '0.5rem' }"
-        name="totalPayment"
-        [(ngModel)]="amount"
-        mode="decimal"
-        [min]="0"
-        [required]="true"
-        placeholder="Total payment"
-      ></p-inputNumber>
+    <div>
+      <div class="p-inputgroup">
+        <span class="p-inputgroup-addon p-2 my-2">Rp</span>
+        <p-inputNumber
+          [style]="{ width: '100%', 'margin-block': '0.5rem' }"
+          [inputStyle]="{ width: '100%', 'padding-block': '0.5rem' }"
+          name="totalPayment"
+          #totalPayment="ngModel"
+          [(ngModel)]="amount"
+          mode="decimal"
+          [min]="0"
+          [required]="true"
+          placeholder="Total payment"
+        ></p-inputNumber>
+      </div>
+      <span *ngIf="amount < 10000" class="text-red-400">*minimum transfer amount is 10.000</span>
     </div>
+
     <div class="text-center w-full">
       <button
         pButton
