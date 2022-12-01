@@ -1,3 +1,4 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ConfirmationService } from 'primeng/api';
 import { OrderHeader } from 'src/app/classes/order-header';
@@ -22,16 +23,25 @@ export class PendingOrderListContentComponent implements OnInit {
   ngOnInit(): void {}
 
   showDetail(order: OrderHeader) {
-    this.orderService.getOrder(order.id!).subscribe(
-      (res: any) => {
-        this.selectedOrder = res.output.data;
-        this.selectedOrder.discount *= 100;
-        this.onShowDetail.emit(this.selectedOrder);
-      },
-      (error: ErrorResponse) => {
-        this.messageService.showMessage(Severity.ERROR, 'REQUEST ERROR');
-      }
-    );
+    this.selectedOrder = this.orderService.getViewedOrder(order.id!)!;
+
+    if (this.selectedOrder) this.onShowDetail.emit(this.selectedOrder);
+    else {
+      this.orderService.getOrder(order.id!).subscribe(
+        (res: any) => {
+          this.selectedOrder = res.output.data;
+          this.orderService.setViewedOrder(
+            this.selectedOrder.id!,
+            this.selectedOrder
+          );
+
+          this.onShowDetail.emit(this.selectedOrder);
+        },
+        (error: HttpErrorResponse) => {
+          this.messageService.showMessage(Severity.ERROR, 'REQUEST ERROR');
+        }
+      );
+    }
   }
 
   showApproveConfirmation(): void {

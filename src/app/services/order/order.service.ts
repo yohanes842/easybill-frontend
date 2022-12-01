@@ -1,7 +1,6 @@
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { OrderDetail } from 'src/app/classes/order-detail';
 import { OrderHeader } from 'src/app/classes/order-header';
 import { User } from 'src/app/classes/user';
 import { Response } from 'src/app/interfaces/response';
@@ -14,6 +13,7 @@ export class OrderService {
   constructor(private http: HttpClient) {}
 
   currentOrder!: OrderHeader | null;
+  viewedOrders: Map<Number, OrderHeader> = new Map();
 
   public setCurrentOrder(orderHeader: OrderHeader | null): void {
     this.currentOrder = orderHeader;
@@ -22,6 +22,14 @@ export class OrderService {
 
   public getCurrentOrder(): OrderHeader | null {
     return this.currentOrder;
+  }
+
+  public setViewedOrder(orderId: Number, orderHeader: OrderHeader): void {
+    this.viewedOrders.set(orderId, orderHeader);
+  }
+
+  public getViewedOrder(orderId: Number): OrderHeader | undefined {
+    return this.viewedOrders.get(orderId);
   }
 
   public getRelevantOrders(page: number): Observable<Response<User>> {

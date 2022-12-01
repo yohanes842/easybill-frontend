@@ -100,7 +100,7 @@
     </div>
     <div class="flex justify-content-between text-green-400">
       <div>
-        <p class="m-0 text-sm">Discount ({{ selectedOrder.discount }}%)</p>
+        <p class="m-0 text-sm">Discount ({{ selectedOrder.discount*100 }}%)</p>
         <h6 class="m-0 px-1 font-italic text-white">
           *Up to {{ selectedOrder.upto | currency: "":"":"1.0-0" }}
         </h6>
