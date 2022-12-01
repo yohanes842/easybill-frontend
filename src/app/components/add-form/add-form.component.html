@@ -28,6 +28,7 @@
         (completeMethod)="filterUsername($event.query)"
         [required]="true"
         placeholder="Order by"
+        (ngModelChange)="saveToLocalStorage()"
       ></p-autoComplete>
     </div>
 
@@ -42,6 +43,7 @@
         [(ngModel)]="currentOrder.order_description"
         placeholder="Order description"
         required
+        (ngModelChange)="saveToLocalStorage()"
       />
     </div>
 
@@ -56,6 +58,7 @@
         hourFormat="24"
         [showIcon]="true"
         [required]="true"
+        (ngModelChange)="saveToLocalStorage()"
       ></p-calendar>
     </div>
 
@@ -77,6 +80,7 @@
           [min]="0"
           [required]="true"
           placeholder="Total payment"
+          (ngModelChange)="saveToLocalStorage()"
         ></p-inputNumber>
       </div>
     </div>
@@ -108,6 +112,7 @@
           (onClick)="setDiscountPercentage()"
         ></p-radioButton>
       </div>
+      <span>{{isFlatDiscount}}</span>
 
       <label for="discount" class="font-bold">Discount</label>
       <div
@@ -125,6 +130,7 @@
             [required]="true"
             placeholder="Discount"
             [disabled]="isFlatDiscount"
+            (ngModelChange)="saveToLocalStorage()"
           ></p-inputNumber>
           <span class="p-inputgroup-addon p-2 my-2">%</span>
         </div>
@@ -140,6 +146,7 @@
             [min]="0"
             [required]="true"
             placeholder="Max discount"
+            (ngModelChange)="saveToLocalStorage()"
           ></p-inputNumber>
         </div>
       </div>
