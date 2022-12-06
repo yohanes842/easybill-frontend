@@ -9,6 +9,7 @@ import { UserService } from 'src/app/services/user/user.service';
   styleUrls: ['./user-profile.component.css'],
 })
 export class UserProfileComponent implements OnInit {
+  changeUsernameDialogDisplay!: boolean;
   changePasswordDialogDisplay!: boolean;
   editAccountNumberDialogDisplay!: boolean;
 
@@ -24,6 +25,10 @@ export class UserProfileComponent implements OnInit {
     history.back();
   }
 
+  showChangeUsernameDialog(): void {
+    this.changeUsernameDialogDisplay = true;
+  }
+
   showChangePasswordDialog(): void {
     this.changePasswordDialogDisplay = true;
   }
@@ -33,6 +38,7 @@ export class UserProfileComponent implements OnInit {
   }
 
   hideDialog(): void {
+    this.changeUsernameDialogDisplay = false;
     this.changePasswordDialogDisplay = false;
     this.editAccountNumberDialogDisplay = false;
   }

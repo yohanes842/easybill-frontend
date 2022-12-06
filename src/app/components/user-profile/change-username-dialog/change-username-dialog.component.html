@@ -1,0 +1,64 @@
+<p-dialog
+  styleClass="dialog-box w-10"
+  [(visible)]="display"
+  [modal]="true"
+  (onHide)="hideDialog()"
+>
+  <p-header>
+    <h3 class="m-0 p-0">Change Username</h3>
+  </p-header>
+  <form
+    #changePassword="ngForm"
+    class="flex flex-column p-5"
+    (ngSubmit)="submit()"
+  >
+    <div class="mb-2 w-full">
+      <label for="currentPassword" class="font-bold">Current Password</label>
+      <p-password
+        [style]="{ width: '100%' }"
+        [inputStyle]="{ width: '100%', 'padding-block': '0.5rem' }"
+        [(ngModel)]="currentPasswordString"
+        name="currentPassword"
+        [toggleMask]="true"
+        [feedback]="false"
+        required
+        #currentPassword="ngModel"
+      >
+      </p-password>
+      <span *ngIf="errors.get('current_password')" class="text-red-400">{{
+        errors.get("current_password")
+      }}</span>
+    </div>
+    <div class="mb-2 w-full">
+      <label for="newUsername" class="font-bold">New Username</label>
+      <input
+        pInputText
+        class="w-full py-2"
+        [(ngModel)]="newUsernameString"
+        name="newUsername"
+        minlength="3"
+        required
+        #newUsername="ngModel"
+      />
+      <span
+        *ngIf="
+          newUsername.invalid && (newUsername.dirty || newUsername.touched)
+        "
+        class="text-red-400"
+        >*Must be at least 3 characters</span
+      >
+      <span *ngIf="errors.get('new_password')" class="text-red-400">{{
+        errors.get("new_password")
+      }}</span>
+    </div>
+    <div class="text-center w-full mt-3">
+      <button
+        pButton
+        class="p-button-primary py-2 px-7 w-fit"
+        [disabled]="changePassword.invalid"
+      >
+        Save
+      </button>
+    </div>
+  </form>
+</p-dialog>

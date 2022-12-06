@@ -34,12 +34,21 @@
     <div class="text-center">
       <h4 class="m-1">Your account number :</h4>
       <div class="flex align-items-center justify-content-center gap-3">
-          <h4 class="m-0" style="color: var(--custom-orange-200);">{{ currentUser?.account_number ?? 'Not set yet'}}</h4>
-          <copy-button [stringToBeCopy]="currentUser?.account_number ?? null"></copy-button>
+        <h4 class="m-0" style="color: var(--custom-orange-200)">
+          {{ currentUser?.account_number ?? "Not set yet" }}
+        </h4>
+        <copy-button
+          [stringToBeCopy]="currentUser?.account_number ?? null"
+        ></copy-button>
       </div>
     </div>
     <button
-      *ngIf="currentUser?.account_number"
+      pButton
+      class="p-button-primary py-2 w-15rem text-center"
+      label="Change Username"
+      (click)="showChangeUsernameDialog()"
+    ></button>
+    <button
       pButton
       class="p-button-primary py-2 w-15rem text-center"
       label="Change Password"
@@ -54,6 +63,10 @@
   </div>
 </div>
 
+<change-username-dialog
+  *ngIf="changeUsernameDialogDisplay"
+  (onClose)="hideDialog()"
+></change-username-dialog>
 <change-password-dialog
   *ngIf="changePasswordDialogDisplay"
   (onClose)="hideDialog()"
@@ -63,4 +76,4 @@
   [currentAccountNumber]="currentUser?.account_number!"
   (onClose)="hideDialog()"
   (onSubmit)="getUserDetail()"
-  ></edit-account-number-dialog>
+></edit-account-number-dialog>

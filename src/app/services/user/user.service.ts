@@ -19,20 +19,47 @@ export class UserService {
     return this.http.get<Response<User>>(`${env.url}/api/users/profile`);
   }
 
-  public changeUserPassword(currentPassword: String, newPassword: String, confirmPassword: String): Observable<Response<void>> {
+  public changeUserUsername(
+    currentPassword: String,
+    newUsername: String
+  ): Observable<Response<void>> {
+    const params = {
+      current_password: currentPassword,
+      new_username: newUsername,
+    };
+    return this.http.put<Response<void>>(
+      `${env.url}/api/users/password`,
+      params
+    );
+  }
+
+  public changeUserPassword(
+    currentPassword: String,
+    newPassword: String,
+    confirmPassword: String
+  ): Observable<Response<void>> {
     const params = {
       current_password: currentPassword,
       new_password: newPassword,
-      confirm_password: confirmPassword
-    }
-    return this.http.put<Response<void>>(`${env.url}/api/users/password`, params);
+      confirm_password: confirmPassword,
+    };
+    return this.http.put<Response<void>>(
+      `${env.url}/api/users/password`,
+      params
+    );
   }
 
-  public changeUserAccountNumber(password: string, accountNumber: string): Observable<Response<void>> {
+  public changeUserAccountNumber(
+    password: string,
+    accountNumber: string
+  ): Observable<Response<void>> {
     const params = {
       current_password: password,
-      new_account_number: accountNumber
-    }
-    return this.http.put<Response<void>>(`${env.url}/api/users/account-number`, params);
+      new_account_number: accountNumber,
+    };
+    return this.http.put<Response<void>>(
+      `${env.url}/api/users/account-number`,
+      params
+    );
   }
 }

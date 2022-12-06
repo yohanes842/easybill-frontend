@@ -74,6 +74,7 @@ import { UserProfileComponent } from './components/user-profile/user-profile.com
 import { ErrorResponseInterceptor } from './interceptor/error-response.interceptor';
 import { PendingOrderListComponent } from './components/pending-order-list/pending-order-list.component';
 import { PendingOrderListContentComponent } from './components/pending-order-list/pending-order-list-content/pending-order-list-content.component';
+import { ChangeUsernameDialogComponent } from './components/user-profile/change-username-dialog/change-username-dialog.component';
 
 @NgModule({
   declarations: [
@@ -111,6 +112,7 @@ import { PendingOrderListContentComponent } from './components/pending-order-lis
     CopyButtonComponent,
     PendingOrderListComponent,
     PendingOrderListContentComponent,
+    ChangeUsernameDialogComponent,
   ],
   imports: [
     BrowserModule,
