@@ -32,8 +32,16 @@ export class OrderService {
     return this.viewedOrders.get(orderId);
   }
 
-  public getRelevantOrders(page: number): Observable<Response<User>> {
-    let params = new URLSearchParams({ page: page.toString() });
+  public getRelevantOrders(
+    page: number,
+    keyword: string,
+    status: string
+  ): Observable<Response<User>> {
+    let params = new URLSearchParams({
+      page: page.toString(),
+      q: keyword,
+      status: status,
+    });
 
     return this.http.get<Response<User>>(
       `${env.url}/api/users/relevant-orders?${params.toString()}`

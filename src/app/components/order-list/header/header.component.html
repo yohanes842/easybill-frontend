@@ -5,11 +5,12 @@
     <i class="pi pi-search"></i>
     <input
       pInputText
+      class="w-full py-2"
+      name="keyword"
       type="search"
       placeholder="Search something ..."
-      (input)="dv.filter(getValue($event))"
-      class="w-full py-2"
-      disabled
+      [(ngModel)]="keyword"
+      (input)="searchOrder()"
     />
   </span>
   <button
@@ -21,7 +22,7 @@
 </div>
 <div class="flex align-items-center justify-content-between">
   <h2 class="m-0 font-italic p-2">{{ headerTitle }}</h2>
-  <!-- <p-dropdown
+  <p-dropdown
     [style]="{
       padding: '0rem',
       transform: 'scale(0.75)',
@@ -36,7 +37,7 @@
     [(ngModel)]="selectedStatusOptions"
     (onChange)="changeStatusFilter()"
     placeholder="Sort by time"
-  ></p-dropdown> -->
+  ></p-dropdown>
 </div>
 <div *ngIf="withTabMenu" class="w-full sm:w-fit">
   <p-tabMenu

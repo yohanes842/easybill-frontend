@@ -15,12 +15,16 @@ export class OrderListHeaderComponent implements OnInit {
   @Input() withTabMenu!: boolean;
   @Output() onTapMenu: EventEmitter<any> = new EventEmitter();
   @Output() onChangeStatusFilter: EventEmitter<any> = new EventEmitter();
+  @Output() onKeywordInput: EventEmitter<string> = new EventEmitter();
 
   tabMenus!: MenuItem[];
   activeMenu!: MenuItem;
   statusOptions!: string[];
   selectedStatusOptions!: string;
   isRelevantOrder: boolean = true;
+  keyword: string = '';
+
+  timeout: any;
 
   constructor(private router: Router) {
     this.tabMenus = [
@@ -57,5 +61,12 @@ export class OrderListHeaderComponent implements OnInit {
 
   changeStatusFilter(): void {
     this.onChangeStatusFilter.emit(this.selectedStatusOptions);
+  }
+
+  searchOrder(): void {
+    clearTimeout(this.timeout);
+    this.timeout = setTimeout(() => {
+      this.onKeywordInput.emit(this.keyword);
+    }, 500);
   }
 }
