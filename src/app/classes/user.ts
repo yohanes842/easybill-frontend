@@ -7,6 +7,7 @@ export class User {
   username!: string;
   account_number?: string | null;
   order_list?: OrderHeader[];
+  pending_orders?: OrderHeader[];
   sub_order_list?: OrderDetail[];
   access_token?: string;
   user_orders?: OrderDetail[];

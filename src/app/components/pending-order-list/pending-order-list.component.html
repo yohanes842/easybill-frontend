@@ -2,7 +2,7 @@
   <p-dataView
     #dv
     [style]="{ 'background-color': 'white !important' }"
-    [value]="lazyPaging.objects"
+    [value]="pendingOrders"
     [paginator]="false"
     emptyMessage="No orders found..."
     filterBy="order_description,buyer.username"
@@ -17,6 +17,7 @@
         <pending-order-list-content
           [order]="order"
           (onShowDetail)="showDetail($event)"
+          (onApprovedOrDeleted)="removeOrder($event)"
         ></pending-order-list-content>
       </div>
     </ng-template>

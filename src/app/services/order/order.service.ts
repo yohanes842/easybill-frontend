@@ -44,7 +44,7 @@ export class OrderService {
     });
 
     return this.http.get<Response<User>>(
-      `${env.url}/api/users/relevant-orders?${params.toString()}`
+      `${env.url}/api/orders/relevant-orders?${params.toString()}`
     );
   }
 
@@ -52,7 +52,27 @@ export class OrderService {
     let params = new URLSearchParams({ page: page.toString() });
 
     return this.http.get<Response<User>>(
-      `${env.url}/api/users/users-orders?${params.toString()}`
+      `${env.url}/api/orders/users-orders?${params.toString()}`
+    );
+  }
+
+  public approveOrder(orderId: number): Observable<Response<void>> {
+    return this.http.put<Response<void>>(
+      `${env.url}/api/orders/${orderId}/validity`,
+      {}
+    );
+  }
+
+  public deleteOrder(orderId: number): Observable<Response<void>> {
+    return this.http.delete<Response<void>>(
+      `${env.url}/api/orders/${orderId}`,
+      {}
+    );
+  }
+
+  public getPendingOrders(): Observable<Response<User>> {
+    return this.http.get<Response<User>>(
+      `${env.url}/api/orders/pending-orders`
     );
   }
 

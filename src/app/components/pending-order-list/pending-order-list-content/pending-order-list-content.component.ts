@@ -10,15 +10,20 @@ import { OrderService } from 'src/app/services/order/order.service';
 @Component({
   selector: 'pending-order-list-content',
   templateUrl: './pending-order-list-content.component.html',
-  styleUrls: ['./pending-order-list-content.component.css']
+  styleUrls: ['./pending-order-list-content.component.css'],
 })
 export class PendingOrderListContentComponent implements OnInit {
   @Input() order!: OrderHeader;
   @Output() onShowDetail: EventEmitter<any> = new EventEmitter();
+  @Output() onApprovedOrDeleted: EventEmitter<OrderHeader> = new EventEmitter();
 
   selectedOrder!: OrderHeader;
 
-  constructor(private orderService: OrderService, private messageService: CustomMessageService, private confirmationService: ConfirmationService) { }
+  constructor(
+    private orderService: OrderService,
+    private messageService: CustomMessageService,
+    private confirmationService: ConfirmationService
+  ) {}
 
   ngOnInit(): void {}
 
@@ -48,7 +53,10 @@ export class PendingOrderListContentComponent implements OnInit {
     this.confirmationService.confirm({
       message: 'Are you sure that you want to approve this order?',
       accept: () => {
-        console.log('lala')
+        this.orderService.approveOrder(this.order.id!).subscribe((res: any) => {
+          this.messageService.showMessage(Severity.SUCCESS, 'ORDER APPROVED');
+          this.onApprovedOrDeleted.emit(this.order);
+        });
       },
     });
   }
@@ -56,9 +64,11 @@ export class PendingOrderListContentComponent implements OnInit {
     this.confirmationService.confirm({
       message: 'Are you sure that you want to delete this order?',
       accept: () => {
-        console.log('lala')
+        this.orderService.deleteOrder(this.order.id!).subscribe((res: any) => {
+          this.messageService.showMessage(Severity.SUCCESS, 'ORDER DELETED');
+          this.onApprovedOrDeleted.emit(this.order);
+        });
       },
     });
   }
-
 }

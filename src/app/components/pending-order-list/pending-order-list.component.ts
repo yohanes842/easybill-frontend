@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { LazyLoadPaging } from 'src/app/classes/lazy-load-paging';
 import { OrderHeader } from 'src/app/classes/order-header';
 import { User } from 'src/app/classes/user';
+import { Response } from 'src/app/interfaces/response';
 import { LazyLoadService } from 'src/app/services/lazy-load/lazy-load.service';
 import { OrderService } from 'src/app/services/order/order.service';
 
@@ -15,29 +16,12 @@ export class PendingOrderListComponent implements OnInit {
   isFetching: boolean = false;
 
   currentUser!: User;
-  lazyPaging: LazyLoadPaging<OrderHeader> = new LazyLoadPaging();
   selectedOrder!: OrderHeader;
+  pendingOrders!: OrderHeader[];
 
-  onScrollEvent = () => {
-    if (this.lazyLoadService.isNeedLazyLoad()) {
-      this.lazyLoadService.incrementPageFetchIndicator();
-      this.loadData();
-    }
-  };
-
-  constructor(
-    private orderService: OrderService,
-    private lazyLoadService: LazyLoadService<OrderHeader>
-  ) {}
-
-  ngDoCheck(): void {
-    if (this.lazyLoadService.currentLazyPaging)
-      this.lazyLoadService.calculateMaxScroll();
-  }
+  constructor(private orderService: OrderService) {}
 
   ngOnInit(): void {
-    //add event listener
-    window.addEventListener('scroll', this.onScrollEvent);
     this.loadData();
   }
 
@@ -50,32 +34,14 @@ export class PendingOrderListComponent implements OnInit {
     this.display = false;
   }
 
-  loadData(): void {
-    const orderSubscriptions = (res: any): void => {
-      this.currentUser = res.output.data;
-      let latestFetchOrders: OrderHeader[] = this.currentUser
-        .order_list as OrderHeader[];
-
-      this.lazyPaging.objects = this.lazyPaging.objects.concat([
-        ...latestFetchOrders,
-      ]);
-      this.lazyPaging.maxPage = res.output.total_pages;
-      this.lazyPaging.pageFetchIndicator = res.output.page;
-      this.lazyPaging.nextPage =
-        res.output.total_pages === res.output.page &&
-        res.output.total_pages != 0
-          ? res.output.total_pages
-          : res.output.page + 1;
-    };
-
-    this.orderService
-      .getUsersOrders(this.lazyPaging.nextPage)
-      .subscribe((res: any) => {
-        orderSubscriptions(res);
-      });
+  removeOrder(order: OrderHeader): void {
+    let index = this.pendingOrders.indexOf(order);
+    this.pendingOrders.splice(index, 1);
   }
 
-  ngOnDestroy(): void {
-    window.removeEventListener('scroll', this.onScrollEvent);
+  loadData(): void {
+    this.orderService.getPendingOrders().subscribe((res: Response<User>) => {
+      this.pendingOrders = res.output.data.pending_orders!;
+    });
   }
 }

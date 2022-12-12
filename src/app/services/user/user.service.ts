@@ -28,7 +28,7 @@ export class UserService {
       new_username: newUsername,
     };
     return this.http.put<Response<void>>(
-      `${env.url}/api/users/password`,
+      `${env.url}/api/users/username`,
       params
     );
   }
