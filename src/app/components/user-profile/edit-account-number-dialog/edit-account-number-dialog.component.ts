@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ConnectableObservable } from 'rxjs';
 import { CustomErrorResponse } from 'src/app/classes/error-response';
+import { User } from 'src/app/classes/user';
 import { Severity } from 'src/app/enums/Severity';
 import { CustomMessageService } from 'src/app/services/message/custom-message.service';
 import { UserService } from 'src/app/services/user/user.service';
@@ -11,7 +12,7 @@ import { UserService } from 'src/app/services/user/user.service';
   styleUrls: ['./edit-account-number-dialog.component.css'],
 })
 export class EditAccountNumberDialogComponent implements OnInit {
-  @Input() currentAccountNumber!: string | null;
+  @Input() currentUser!: User;
 
   @Output() onClose: EventEmitter<void> = new EventEmitter();
   @Output() onSubmit: EventEmitter<string> = new EventEmitter();
@@ -29,8 +30,8 @@ export class EditAccountNumberDialogComponent implements OnInit {
 
   ngOnInit(): void {
     this.userService;
-    if (!this.currentAccountNumber)
-      this.currentAccountNumber = 'Not set up yet';
+    if (!this.currentUser.account_number)
+      this.currentUser.account_number = 'Not set up yet';
   }
 
   hideDialog(): void {
@@ -38,7 +39,7 @@ export class EditAccountNumberDialogComponent implements OnInit {
   }
 
   submit(): void {
-    if (this.currentAccountNumber == this.newAccountNumber) {
+    if (this.currentUser.account_number == this.newAccountNumber) {
       this.messageService.showMessage(
         Severity.ERROR,
         'INPUT ERROR',
@@ -54,11 +55,14 @@ export class EditAccountNumberDialogComponent implements OnInit {
               Severity.SUCCESS,
               'CHANGE ACCOUNT NUMBER SUCCESS'
             );
-            this.onSubmit.emit(this.newAccountNumber);
+            this.currentUser.account_number = this.newAccountNumber;
+            localStorage.setItem(
+              'currentUser',
+              JSON.stringify(this.currentUser)
+            );
             this.hideDialog();
           },
           (error: CustomErrorResponse) => {
-            console.log(error);
             const res = error.extra_message.match(/[A-z ]+\[(.+)\]/);
             const content = res![1];
 

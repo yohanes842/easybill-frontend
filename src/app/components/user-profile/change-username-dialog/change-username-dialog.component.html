@@ -13,9 +13,9 @@
     (ngSubmit)="submit()"
   >
     <div class="mb-2 w-full">
-      <label for="currentPassword" class="font-bold">Current Password</label>
+      <label for="currentPassword" class="font-bold">Password</label>
       <p-password
-        [style]="{ width: '100%' }"
+        [style]="{ width: '100%', 'padding-block': '0.5rem' }"
         [inputStyle]="{ width: '100%', 'padding-block': '0.5rem' }"
         [(ngModel)]="currentPasswordString"
         name="currentPassword"

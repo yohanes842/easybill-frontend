@@ -44,8 +44,13 @@ export class UserProfileComponent implements OnInit {
   }
 
   getUserDetail(): void {
-    this.userService
-      .getUserDetail()
-      .subscribe((res: Response<User>) => (this.currentUser = res.output.data));
+    this.userService.getUserDetail().subscribe((res: Response<User>) => {
+      const currentUserString = localStorage.getItem('currentUser')!;
+      if (currentUserString) this.currentUser = JSON.parse(currentUserString);
+
+      const fetchedUser = res.output.data;
+      fetchedUser.account_number =
+        fetchedUser.account_number ?? 'Not set up yet';
+    });
   }
 }

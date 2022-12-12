@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { CustomErrorResponse } from 'src/app/classes/error-response';
 import { User } from 'src/app/classes/user';
 import { Severity } from 'src/app/enums/Severity';
@@ -11,13 +11,14 @@ import { UserService } from 'src/app/services/user/user.service';
   styleUrls: ['./change-username-dialog.component.css'],
 })
 export class ChangeUsernameDialogComponent implements OnInit {
+  @Input() currentUser!: User;
   @Output() onClose: EventEmitter<void> = new EventEmitter();
+  @Output() onSubmit: EventEmitter<string> = new EventEmitter();
 
   display: boolean = true;
 
-  currentUser!: User;
-  currentPasswordString: String = '';
-  newUsernameString: String = '';
+  currentPasswordString: string = '';
+  newUsernameString: string = '';
   errors: Map<string, string> = new Map();
 
   constructor(
@@ -32,7 +33,7 @@ export class ChangeUsernameDialogComponent implements OnInit {
   }
 
   submit(): void {
-    if (this.newUsernameString != this.currentUser.username) {
+    if (this.newUsernameString == this.currentUser.username) {
       this.messageService.showMessage(
         Severity.ERROR,
         'INPUT ERROR',
@@ -47,6 +48,11 @@ export class ChangeUsernameDialogComponent implements OnInit {
             this.messageService.showMessage(
               Severity.SUCCESS,
               'CHANGE USERNAME SUCCESS'
+            );
+            this.currentUser.username = this.newUsernameString;
+            localStorage.setItem(
+              'currentUser',
+              JSON.stringify(this.currentUser)
             );
             this.hideDialog();
           },
