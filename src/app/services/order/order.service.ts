@@ -48,8 +48,16 @@ export class OrderService {
     );
   }
 
-  public getUsersOrders(page: number): Observable<Response<User>> {
-    let params = new URLSearchParams({ page: page.toString() });
+  public getUsersOrders(
+    page: number,
+    keyword: string,
+    status: string
+  ): Observable<Response<User>> {
+    let params = new URLSearchParams({
+      page: page.toString(),
+      q: keyword,
+      status: status,
+    });
 
     return this.http.get<Response<User>>(
       `${env.url}/api/orders/users-orders?${params.toString()}`

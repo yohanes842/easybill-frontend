@@ -141,7 +141,6 @@ export class AddFormComponent implements OnInit {
         this.currentOrder.discount === 0 ||
         this.currentOrder.upto === 0
       ) {
-        console.log(this.isWithDiscount);
         this.currentOrder.discount = 0;
         this.currentOrder.upto = 0;
       }

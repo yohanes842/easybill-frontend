@@ -178,7 +178,11 @@ export class OrderListComponent implements OnInit, DoCheck, OnDestroy {
         });
     } else {
       this.orderService
-        .getUsersOrders(this.currentLazyPage.nextPage)
+        .getUsersOrders(
+          this.currentLazyPage.nextPage,
+          this.searchKeyword,
+          this.selectedStatusOptions
+        )
         .subscribe((res: any) => {
           orderSubscriptions(res, currentLazyPage);
         });
