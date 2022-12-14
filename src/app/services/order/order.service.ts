@@ -96,4 +96,10 @@ export class OrderService {
       `${env.url}/api/orders/${orderId}`
     );
   }
+
+  public reOrder(orderId: number): Observable<Response<OrderHeader>> {
+    return this.http.get<Response<OrderHeader>>(
+      `${env.url}/api/orders/reorder/${orderId}`
+    );
+  }
 }

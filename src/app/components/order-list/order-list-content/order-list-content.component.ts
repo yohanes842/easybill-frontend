@@ -1,7 +1,11 @@
+import { DatePipe } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Router } from '@angular/router';
 import { OrderHeader } from 'src/app/classes/order-header';
+import { Route } from 'src/app/enums/Route';
 import { Severity } from 'src/app/enums/Severity';
+import { Response } from 'src/app/interfaces/response';
 import { CustomMessageService } from 'src/app/services/message/custom-message.service';
 import { OrderService } from 'src/app/services/order/order.service';
 
@@ -18,7 +22,9 @@ export class OrderListContentComponent implements OnInit {
 
   constructor(
     private orderService: OrderService,
-    private messageService: CustomMessageService
+    private messageService: CustomMessageService,
+    private router: Router,
+    private datePipe: DatePipe
   ) {}
 
   ngOnInit(): void {}
@@ -43,5 +49,21 @@ export class OrderListContentComponent implements OnInit {
         }
       );
     }
+  }
+
+  reOrder(order: OrderHeader): void {
+    this.orderService
+      .reOrder(order.id!)
+      .subscribe((res: Response<OrderHeader>) => {
+        const orderObject = res.output.data;
+        orderObject.order_at = this.datePipe.transform(
+          new Date(),
+          'yyyy-MM-dd HH:mm:ss'
+        )!;
+        orderObject.order_list.forEach((orderList) => (orderList.users = []));
+        localStorage.setItem('currentOrder', JSON.stringify(orderObject));
+
+        this.router.navigateByUrl(Route.ADD_ORDER_PATH);
+      });
   }
 }
