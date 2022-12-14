@@ -15,7 +15,8 @@ import { OrderService } from 'src/app/services/order/order.service';
 export class PendingOrderListContentComponent implements OnInit {
   @Input() order!: OrderHeader;
   @Output() onShowDetail: EventEmitter<any> = new EventEmitter();
-  @Output() onApprovedOrDeleted: EventEmitter<OrderHeader> = new EventEmitter();
+  @Output() onDeleted: EventEmitter<OrderHeader> = new EventEmitter();
+  @Output() onApproved: EventEmitter<OrderHeader> = new EventEmitter();
 
   selectedOrder!: OrderHeader;
 
@@ -55,18 +56,19 @@ export class PendingOrderListContentComponent implements OnInit {
       accept: () => {
         this.orderService.approveOrder(this.order.id!).subscribe((res: any) => {
           this.messageService.showMessage(Severity.SUCCESS, 'ORDER APPROVED');
-          this.onApprovedOrDeleted.emit(this.order);
+          this.onApproved.emit(this.order);
         });
       },
     });
   }
+
   showDeleteConfirmation(): void {
     this.confirmationService.confirm({
       message: 'Are you sure that you want to delete this order?',
       accept: () => {
         this.orderService.deleteOrder(this.order.id!).subscribe((res: any) => {
           this.messageService.showMessage(Severity.SUCCESS, 'ORDER DELETED');
-          this.onApprovedOrDeleted.emit(this.order);
+          this.onDeleted.emit(this.order);
         });
       },
     });

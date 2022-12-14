@@ -17,7 +17,8 @@
         <pending-order-list-content
           [order]="order"
           (onShowDetail)="showDetail($event)"
-          (onApprovedOrDeleted)="removeOrder($event)"
+          (onDeleted)="removeOrder($event)"
+          (onApproved)="approveOrder($event)"
         ></pending-order-list-content>
       </div>
     </ng-template>

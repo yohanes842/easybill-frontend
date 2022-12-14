@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { LazyLoadPaging } from 'src/app/classes/lazy-load-paging';
 import { OrderHeader } from 'src/app/classes/order-header';
 import { User } from 'src/app/classes/user';
+import { Route } from 'src/app/enums/Route';
 import { Response } from 'src/app/interfaces/response';
 import { LazyLoadService } from 'src/app/services/lazy-load/lazy-load.service';
 import { OrderService } from 'src/app/services/order/order.service';
@@ -19,7 +21,7 @@ export class PendingOrderListComponent implements OnInit {
   selectedOrder!: OrderHeader;
   pendingOrders!: OrderHeader[];
 
-  constructor(private orderService: OrderService) {}
+  constructor(private orderService: OrderService, private router: Router) {}
 
   ngOnInit(): void {
     this.loadData();
@@ -37,6 +39,11 @@ export class PendingOrderListComponent implements OnInit {
   removeOrder(order: OrderHeader): void {
     let index = this.pendingOrders.indexOf(order);
     this.pendingOrders.splice(index, 1);
+  }
+
+  approveOrder(order: OrderHeader): void {
+    this.removeOrder(order);
+    this.router.navigateByUrl(Route.HOME_PATH);
   }
 
   loadData(): void {
