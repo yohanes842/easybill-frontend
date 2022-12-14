@@ -96,7 +96,7 @@
     <div *ngIf="isWithDiscount" class="mb-3">
       <div class="flex gap-3 m-2">
         <p-radioButton
-        labelStyleClass="text-sm"
+          labelStyleClass="text-sm"
           name="DiscountTypeRadioBtn"
           label="Percentage"
           [value]="false"
@@ -104,7 +104,7 @@
           (onClick)="setDiscountPercentage()"
         ></p-radioButton>
         <p-radioButton
-        labelStyleClass="text-sm"
+          labelStyleClass="text-sm"
           name="DiscountTypeRadioBtn"
           label="Flat discount"
           [value]="true"
@@ -112,7 +112,6 @@
           (onClick)="setDiscountPercentage()"
         ></p-radioButton>
       </div>
-      <span>{{isFlatDiscount}}</span>
 
       <label for="discount" class="font-bold">Discount</label>
       <div
@@ -186,7 +185,7 @@
               {{ subOrder.order_menu_desc }}
             </p>
             <p class="m-0 text-sm" style="color: var(--custom-orange)">
-              {{ subOrder.price * subOrder.qty | currency: "Rp " }}
+              {{ subOrder.price * subOrder.qty | currency : "Rp " }}
             </p>
           </div>
           <div class="flex">

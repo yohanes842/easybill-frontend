@@ -49,7 +49,7 @@ export class ChangeUsernameDialogComponent implements OnInit {
               Severity.SUCCESS,
               'CHANGE USERNAME SUCCESS'
             );
-            this.currentUser.username = this.newUsernameString;
+            this.currentUser.username = this.newUsernameString.toLowerCase();
             localStorage.setItem(
               'currentUser',
               JSON.stringify(this.currentUser)

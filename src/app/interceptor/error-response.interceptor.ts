@@ -38,7 +38,8 @@ export class ErrorResponseInterceptor implements HttpInterceptor {
             switch (error.status) {
               case 401:
               case 403:
-                this.authService.logout();
+                if (error.error.status.code == 'UNAUTHORIZED_REQUEST')
+                  this.authService.logout();
                 break;
               default:
                 errMsg = error.error.status.message;
@@ -51,7 +52,7 @@ export class ErrorResponseInterceptor implements HttpInterceptor {
             errMsg
           );
         } else {
-          console.error('some thing else happened');
+          console.error('something else happened');
         }
         return throwError(() => error.error.status);
       })
