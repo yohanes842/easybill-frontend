@@ -1,6 +1,7 @@
-<div
-  class="p-col-12 w-full px-3 mt-3 border-round-top"
+<button
+  class="p-col-12 w-full px-3 mt-3 border-round-top border-none cursor-pointer"
   style="background: var(--custom-light-black)"
+  (click)="showDetail(order)"
 >
   <div class="flex justify-content-between py-3">
     <div>
@@ -37,7 +38,7 @@
           style="background: var(--custom-green-300)"
           type="button"
           icon="pi pi-check"
-          (click)="showApproveConfirmation()"
+          (click)="showApproveConfirmation($event)"
         ></button>
         <!-- <button
           pButton
@@ -52,7 +53,7 @@
           style="background: var(--custom-red-300)"
           type="button"
           icon="pi pi-trash"
-          (click)="showDeleteConfirmation()"
+          (click)="showDeleteConfirmation($event)"
         ></button>
       </span>
       <button
@@ -60,8 +61,7 @@
         class="p-button-sm p-button-link text-right p-0"
         label="see details"
         type="button"
-        (click)="showDetail(order)"
       ></button>
     </div>
   </div>
-</div>
+</button>

@@ -19,7 +19,7 @@
               }"
               shape="circle"
               >{{
-                transaction.payer.username | uppercase | slice: 0:1
+                transaction.payer.username | uppercase | slice : 0 : 1
               }}</p-avatar
             >
           </span>
@@ -28,12 +28,12 @@
           }}</span>
         </p>
         <h2 class="m-0 pl-3 pt-2 w-fit" style="color: var(--custom-green-200)">
-          {{ transaction.paid_amount | currency: "Rp ":"symbol":"1.0-0" }}
+          {{ transaction.paid_amount | currency : "Rp " : "symbol" : "1.0-0" }}
         </h2>
       </ng-container>
 
       <ng-template #to>
-        <p class="m-0 text-sm text-secondary">
+        <p class="m-0 text-sm text-secondary text-left">
           <span>to</span>
           <span>
             <p-avatar
@@ -44,7 +44,7 @@
               }"
               shape="circle"
               >{{
-                transaction.receiver.username | uppercase | slice: 0:1
+                transaction.receiver.username | uppercase | slice : 0 : 1
               }}</p-avatar
             >
           </span>
@@ -53,7 +53,7 @@
           }}</span>
         </p>
         <h2 class="m-0 pl-3 pt-2 w-fit" style="color: var(--custom-orange-100)">
-          {{ transaction.paid_amount | currency: "Rp ":"symbol":"1.0-0" }}
+          {{ transaction.paid_amount | currency : "Rp " : "symbol" : "1.0-0" }}
         </h2>
       </ng-template>
     </div>
@@ -62,6 +62,6 @@
   </div>
 
   <p class="p-0 m-0 mt-1 text-sm text-secondary text-right">
-    {{ transaction.created_at | date: "EEEE, d/M/yy, h:mm a" }}
+    {{ transaction.created_at | date : "EEEE, d/M/yy, h:mm a" }}
   </p>
 </button>

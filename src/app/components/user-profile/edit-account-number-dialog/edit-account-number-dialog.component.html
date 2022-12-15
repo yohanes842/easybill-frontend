@@ -1,5 +1,10 @@
 <p-dialog
   styleClass="dialog-box w-10"
+  [style]="{
+    width: 'calc(100vw - 2rem)',
+    'max-width': '30rem',
+    overflow: 'visible'
+  }"
   [(visible)]="display"
   [modal]="true"
   (onHide)="hideDialog()"

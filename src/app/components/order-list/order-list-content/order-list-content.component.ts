@@ -53,7 +53,8 @@ export class OrderListContentComponent implements OnInit {
     }
   }
 
-  reOrder(order: OrderHeader): void {
+  reOrder(event: Event, order: OrderHeader): void {
+    event.stopPropagation();
     this.orderService
       .reOrder(order.id!)
       .subscribe((res: Response<OrderHeader>) => {

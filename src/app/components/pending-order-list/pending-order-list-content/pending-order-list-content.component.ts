@@ -50,7 +50,8 @@ export class PendingOrderListContentComponent implements OnInit {
     }
   }
 
-  showApproveConfirmation(): void {
+  showApproveConfirmation(event: Event): void {
+    event.stopPropagation();
     this.confirmationService.confirm({
       message: 'Are you sure that you want to approve this order?',
       accept: () => {
@@ -62,7 +63,8 @@ export class PendingOrderListContentComponent implements OnInit {
     });
   }
 
-  showDeleteConfirmation(): void {
+  showDeleteConfirmation(event: Event): void {
+    event.stopPropagation();
     this.confirmationService.confirm({
       message: 'Are you sure that you want to delete this order?',
       accept: () => {

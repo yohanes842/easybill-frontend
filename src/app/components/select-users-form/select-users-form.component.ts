@@ -8,6 +8,8 @@ import { OrderHeader } from 'src/app/classes/order-header';
 import { User } from 'src/app/classes/user';
 import { Route } from 'src/app/enums/Route';
 import { Severity } from 'src/app/enums/Severity';
+import { Response } from 'src/app/interfaces/response';
+import { AuthService } from 'src/app/services/auth/auth.service';
 import { CustomMessageService } from 'src/app/services/message/custom-message.service';
 import { OrderService } from 'src/app/services/order/order.service';
 import { UserService } from 'src/app/services/user/user.service';
@@ -37,7 +39,8 @@ export class SelectusersFormComponent implements OnInit {
     private orderService: OrderService,
     private userService: UserService,
     private messageService: CustomMessageService,
-    private confirmationService: ConfirmationService
+    private confirmationService: ConfirmationService,
+    private authService: AuthService
   ) {}
 
   ngOnInit(): void {
@@ -232,18 +235,26 @@ export class SelectusersFormComponent implements OnInit {
 
     if (!isAnySubOrderWithNoUser) {
       // Hit add order service
-      this.orderService.addOrder(this.currentOrder).subscribe(() => {
-        // Redirect to home page
-        this.messageService.showMessage(
-          Severity.SUCCESS,
-          'Successfully',
-          'Added new order'
-        );
-        this.router.navigateByUrl(Route.HOME_PATH);
+      this.orderService
+        .addOrder(this.currentOrder)
+        .subscribe((res: Response<OrderHeader>) => {
+          // Redirect to home page
+          this.messageService.showMessage(
+            Severity.SUCCESS,
+            'Successfully',
+            'Added new order'
+          );
 
-        localStorage.removeItem('currentOrder');
-        this.orderService.setCurrentOrder(null);
-      });
+          if (
+            res.output.data.buyer.username ==
+            this.authService.getCurrentUser()?.username
+          )
+            this.router.navigateByUrl(Route.PENDING_ORDERS_PATH);
+          else this.router.navigateByUrl(Route.HOME_PATH);
+
+          localStorage.removeItem('currentOrder');
+          this.orderService.setCurrentOrder(null);
+        });
     } else {
       this.messageService.showMessage(
         Severity.ERROR,
