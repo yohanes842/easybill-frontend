@@ -69,7 +69,9 @@ export class AddFormComponent implements OnInit {
       if (this.currentOrder.discount > 0) {
         this.isWithDiscount = true;
         if (this.currentOrder.discount === 100) this.isFlatDiscount = true;
-      }
+      } else this.isWithDiscount = false;
+
+      if (this.currentOrder.upto <= 0) this.isWithDiscount = false;
     }
 
     this.userService.getUsers().subscribe(

@@ -6,6 +6,7 @@ import { OrderHeader } from 'src/app/classes/order-header';
 import { Route } from 'src/app/enums/Route';
 import { Severity } from 'src/app/enums/Severity';
 import { Response } from 'src/app/interfaces/response';
+import { AuthService } from 'src/app/services/auth/auth.service';
 import { CustomMessageService } from 'src/app/services/message/custom-message.service';
 import { OrderService } from 'src/app/services/order/order.service';
 
@@ -24,7 +25,8 @@ export class OrderListContentComponent implements OnInit {
     private orderService: OrderService,
     private messageService: CustomMessageService,
     private router: Router,
-    private datePipe: DatePipe
+    private datePipe: DatePipe,
+    private authService: AuthService
   ) {}
 
   ngOnInit(): void {}
@@ -56,6 +58,8 @@ export class OrderListContentComponent implements OnInit {
       .reOrder(order.id!)
       .subscribe((res: Response<OrderHeader>) => {
         const orderObject = res.output.data;
+        orderObject.username =
+          orderObject.username ?? this.authService.getCurrentUser()?.username;
         orderObject.order_at = this.datePipe.transform(
           new Date(),
           'yyyy-MM-dd HH:mm:ss'
