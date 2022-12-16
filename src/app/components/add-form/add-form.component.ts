@@ -188,4 +188,11 @@ export class AddFormComponent implements OnInit {
 
     localStorage.setItem('currentOrder', JSON.stringify(this.currentOrder));
   }
+
+  clearOrder(): void {
+    localStorage.removeItem('currentOrder');
+    this.currentOrder = new OrderHeader();
+    this.currentOrder.order_list = [];
+    this.currentTime = new Date();
+  }
 }

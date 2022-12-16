@@ -17,6 +17,15 @@
     class="mx-auto w-full px-3 py-2 lg:w-6"
     (ngSubmit)="navigateToSelectUsers()"
   >
+    <div class="w-full text-right">
+      <button
+        pButton
+        type="button"
+        class="p-button-link p-button-sm m-0 p-0 text-secondary text-right font-italic"
+        label="Clear all"
+        (click)="clearOrder()"
+      ></button>
+    </div>
     <div class="mb-3 w-full">
       <label for="orderBy" class="font-bold">Order by</label>
       <p-autoComplete
