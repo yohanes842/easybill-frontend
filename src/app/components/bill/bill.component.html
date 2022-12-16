@@ -2,7 +2,7 @@
   <bill-header (onTapMenu)="changeDataViewContent($event)"></bill-header>
   <div class="flex flex-column align-items-center gap-2 mt-3">
     <ng-container *ngIf="bills.length > 0; else emptyBillMessage">
-      <div *ngFor="let bill of bills" class="w-full h-fit text-center px-3">
+      <div *ngFor="let bill of bills" class="w-full h-fit text-center">
         <bill-content
           [bill]="bill"
           [isPayable]="bills == billsPayable"
