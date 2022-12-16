@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { LazyLoadService } from 'src/app/services/lazy-load/lazy-load.service';
 
 @Component({
   selector: 'jump-button',

@@ -31,31 +31,33 @@
       </p>
     </div>
     <div class="flex flex-column justify-content-between align-items-end gap-2">
-      <span class="p-buttonset">
-        <button
-          pButton
-          class="button-set-item p-button-sm py-2 px-3 w-fit"
-          style="background: var(--custom-green-300)"
-          type="button"
-          icon="pi pi-check"
-          (click)="showApproveConfirmation($event)"
-        ></button>
-        <!-- <button
-          pButton
-          class="button-set-item p-button-sm py-2 px-3 w-fit"
-          style="background: var(--custom-orange-300)"
-          type="button"
-          icon="pi pi-pencil"
-        ></button> -->
-        <button
-          pButton
-          class="button-set-item p-button-sm py-2 px-3 w-fit"
-          style="background: var(--custom-red-300)"
-          type="button"
-          icon="pi pi-trash"
-          (click)="showDeleteConfirmation($event)"
-        ></button>
-      </span>
+      <div style="white-space: nowrap">
+        <span class="p-buttonset">
+          <button
+            pButton
+            class="button-set-item p-button-sm py-2 px-3 w-fit"
+            style="background: var(--custom-green-300)"
+            type="button"
+            icon="pi pi-check"
+            (click)="showApproveConfirmation($event)"
+          ></button>
+          <!-- <button
+            pButton
+            class="button-set-item p-button-sm py-2 px-3 w-fit"
+            style="background: var(--custom-orange-300)"
+            type="button"
+            icon="pi pi-pencil"
+          ></button> -->
+          <button
+            pButton
+            class="button-set-item p-button-sm py-2 px-3 w-fit"
+            style="background: var(--custom-red-300)"
+            type="button"
+            icon="pi pi-trash"
+            (click)="showDeleteConfirmation($event)"
+          ></button>
+        </span>
+      </div>
       <button
         pButton
         class="p-button-sm p-button-link text-right p-0"
