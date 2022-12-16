@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { User } from 'src/app/classes/user';
 import { Response } from 'src/app/interfaces/response';
+import { AuthService } from 'src/app/services/auth/auth.service';
 import { UserService } from 'src/app/services/user/user.service';
 
 @Component({
@@ -13,11 +14,16 @@ export class UserProfileComponent implements OnInit {
   changePasswordDialogDisplay!: boolean;
   editAccountNumberDialogDisplay!: boolean;
 
-  currentUser!: User | null;
+  currentUser!: User | undefined;
 
-  constructor(private userService: UserService) {}
+  constructor(
+    private userService: UserService,
+    private authService: AuthService
+  ) {}
 
   ngOnInit(): void {
+    this.currentUser = this.authService.getCurrentUser();
+    localStorage.setItem('currentUser', JSON.stringify(this.currentUser));
     this.getUserDetail();
   }
 
