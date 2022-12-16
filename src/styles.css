@@ -70,6 +70,6 @@ button.reset {
   -moz-appearance: none;
 }
 
-button.reset:focus {
-  outline: solid var(--custom-blue-200);
+button:focus {
+  outline: solid var(--custom-blue-200) !important;
 }

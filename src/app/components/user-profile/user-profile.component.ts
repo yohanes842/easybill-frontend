@@ -22,8 +22,6 @@ export class UserProfileComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.currentUser = this.authService.getCurrentUser();
-    localStorage.setItem('currentUser', JSON.stringify(this.currentUser));
     this.getUserDetail();
   }
 
@@ -55,9 +53,12 @@ export class UserProfileComponent implements OnInit {
 
       const currentUserString = localStorage.getItem('currentUser')!;
       if (currentUserString) {
-        this.currentUser = JSON.parse(currentUserString);
-        this.currentUser!.account_number =
+        fetchedUser.account_number =
           fetchedUser.account_number ?? 'Not set up yet';
+        this.currentUser = fetchedUser;
+        this.currentUser.access_token =
+          JSON.parse(currentUserString).access_token;
+        localStorage.setItem('currentUser', JSON.stringify(this.currentUser));
       }
     });
   }

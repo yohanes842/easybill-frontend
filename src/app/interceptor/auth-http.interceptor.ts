@@ -41,7 +41,18 @@ export class AuthApiInterceptor implements HttpInterceptor {
         })
       );
     } else {
-      return next.handle(req);
+      return next.handle(req).pipe(
+        tap({
+          next: (event) => {
+            if (event instanceof HttpResponse) {
+              this.loadingService.isLoading = false;
+            }
+          },
+          error: (err: ErrorResponse) => {
+            this.loadingService.isLoading = false;
+          },
+        })
+      );
     }
   }
 }
