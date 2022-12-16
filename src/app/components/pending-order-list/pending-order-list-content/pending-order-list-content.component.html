@@ -1,10 +1,10 @@
 <button
-  class="p-col-12 w-full px-3 mt-3 border-round-top border-none cursor-pointer"
+  class="reset p-col-12 w-full px-3 py-0 mt-3 border-round-top text-left border-none cursor-pointer"
   style="background: var(--custom-light-black)"
   (click)="showDetail(order)"
 >
   <div class="flex justify-content-between py-3">
-    <div>
+    <div class="flex flex-column gap-1">
       <p class="m-0 mb-2 text-sm text-secondary">
         {{ order.order_at | date : "EEEE, d/M/yy, h:mm a" }}
       </p>
