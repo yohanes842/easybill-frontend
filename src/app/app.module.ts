@@ -41,6 +41,7 @@ import { PasswordModule } from 'primeng/password';
 import { RadioButtonModule } from 'primeng/radiobutton';
 import { RippleModule } from 'primeng/ripple';
 import { TabMenuModule } from 'primeng/tabmenu';
+import { ProgressBarModule } from 'primeng/progressbar';
 
 import { DatePipe } from '@angular/common';
 import { ConfirmationService, MessageService } from 'primeng/api';
@@ -75,6 +76,7 @@ import { ErrorResponseInterceptor } from './interceptor/error-response.intercept
 import { PendingOrderListComponent } from './components/pending-order-list/pending-order-list.component';
 import { PendingOrderListContentComponent } from './components/pending-order-list/pending-order-list-content/pending-order-list-content.component';
 import { ChangeUsernameDialogComponent } from './components/user-profile/change-username-dialog/change-username-dialog.component';
+import { LoadingComponent } from './components/loading/loading.component';
 
 @NgModule({
   declarations: [
@@ -113,6 +115,7 @@ import { ChangeUsernameDialogComponent } from './components/user-profile/change-
     PendingOrderListComponent,
     PendingOrderListContentComponent,
     ChangeUsernameDialogComponent,
+    LoadingComponent,
   ],
   imports: [
     BrowserModule,
@@ -144,6 +147,7 @@ import { ChangeUsernameDialogComponent } from './components/user-profile/change-
     InputMaskModule,
     CheckboxModule,
     RadioButtonModule,
+    ProgressBarModule,
   ],
   providers: [
     UserService,

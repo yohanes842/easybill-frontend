@@ -8,4 +8,7 @@
   acceptIcon=""
   rejectIcon=""
 ></p-confirmDialog>
+<ng-container *ngIf="loadingService.isLoading">
+  <loading-overlay></loading-overlay>
+</ng-container>
 <router-outlet></router-outlet>

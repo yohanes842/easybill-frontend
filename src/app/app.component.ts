@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { PrimeNGConfig } from 'primeng/api';
+import { LoadingService } from './services/loading/loading.service';
 
 @Component({
   selector: 'app-root',
@@ -9,9 +10,17 @@ import { PrimeNGConfig } from 'primeng/api';
 export class AppComponent implements OnInit {
   title = 'easybill-frontend';
 
-  constructor(private primengConfig: PrimeNGConfig) {}
+  constructor(
+    private primengConfig: PrimeNGConfig,
+    private cd: ChangeDetectorRef,
+    public loadingService: LoadingService
+  ) {}
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.primengConfig.ripple = true;
+  }
+
+  ngAfterViewChecked(): void {
+    this.cd.detectChanges();
   }
 }
