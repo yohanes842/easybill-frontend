@@ -42,6 +42,7 @@
         [(ngModel)]="newUsernameString"
         name="newUsername"
         minlength="3"
+        maxlength="10"
         required
         #newUsername="ngModel"
       />
@@ -50,11 +51,8 @@
           newUsername.invalid && (newUsername.dirty || newUsername.touched)
         "
         class="text-red-400"
-        >*Must be at least 3 characters</span
+        >*Must be 3-10 characters</span
       >
-      <span *ngIf="errors.get('new_password')" class="text-red-400">{{
-        errors.get("new_password")
-      }}</span>
     </div>
     <div class="text-center w-full mt-3">
       <button

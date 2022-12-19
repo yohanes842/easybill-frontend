@@ -51,9 +51,20 @@
         name="orderDescription"
         [(ngModel)]="currentOrder.order_description"
         placeholder="Order description"
+        minlength="2"
+        maxlength="50"
         required
+        #orderDescription="ngModel"
         (ngModelChange)="saveToLocalStorage()"
       />
+      <span
+        *ngIf="
+          orderDescription.invalid &&
+          (orderDescription.dirty || orderDescription.touched)
+        "
+        class="text-red-400 text-sm"
+        >*Must be 2-50 characters</span
+      >
     </div>
 
     <div class="mb-3 w-full">

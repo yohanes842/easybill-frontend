@@ -4,11 +4,11 @@
   (click)="showDetail(order)"
 >
   <div class="flex justify-content-between py-3">
-    <div class="flex flex-column gap-1">
+    <div class="flex flex-column gap-1" style="max-width: 60%">
       <p class="m-0 mb-2 text-sm text-secondary">
         {{ order.order_at | date : "EEEE, d/M/yy, h:mm a" }}
       </p>
-      <h4 class="m-0" style="color: var(--custom-orange-300)">
+      <h4 class="m-0 overflow-x-hidden" style="color: var(--custom-orange-300)">
         {{ order.order_description }}
       </h4>
       <p class="m-0 text-sm text-secondary">
@@ -60,7 +60,7 @@
       </div>
       <button
         pButton
-        class="p-button-sm p-button-link text-right p-0"
+        class="p-button-sm p-button-link text-right p-1"
         label="see details"
         type="button"
       ></button>

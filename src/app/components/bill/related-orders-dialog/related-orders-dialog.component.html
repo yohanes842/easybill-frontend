@@ -21,7 +21,9 @@
             transform: 'scale(70%)'
           }"
           shape="circle"
-          >{{ selectedBill.user.username | uppercase | slice: 0:1 }}</p-avatar
+          >{{
+            selectedBill.user.username | uppercase | slice : 0 : 1
+          }}</p-avatar
         >
       </span>
       <span
@@ -30,7 +32,7 @@
       </span>
     </p>
     <h3 class="m-0 font-italic" style="color: var(--custom-green-300)">
-      {{ selectedBill.owe_amount | currency: "Rp. ":"symbol":"1.0-0" }}
+      {{ selectedBill.owe_amount | currency : "Rp. " : "symbol" : "1.0-0" }}
     </h3>
   </p-header>
 
@@ -51,12 +53,19 @@
       <div>
         <button
           pButton
-          class="p-button-link p-button-sm w-fit p-0"
+          class="button-no-outline p-button-link p-button-sm w-fit p-0 text-left"
+          label="back"
           (click)="backToRelatedOrders()"
-        >
-          back
-        </button>
+        ></button>
       </div>
+
+      <h2
+        class="m-0 p-0 font-italic font-bold"
+        style="color: var(--custom-orange-200); word-break: break-word"
+      >
+        {{ selectedOrder.order_description }}
+      </h2>
+
       <relevant-order-detail-content
         [selectedOrder]="selectedOrder"
         [selectedUser]="isPayable ? currentUser : selectedBill.user"

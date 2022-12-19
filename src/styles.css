@@ -73,3 +73,7 @@ button.reset {
 button:focus {
   outline: solid var(--custom-blue-200) !important;
 }
+
+.button-no-outline:focus {
+  outline: none !important;
+}

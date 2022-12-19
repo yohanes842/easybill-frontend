@@ -3,13 +3,16 @@
     <p class="p-0 m-0 my-1 text-xs text-secondary">
       {{
         relatedOrder.related_order_header.order_at
-          | date: "EEEE, d/M/yy yy, h:mm a"
+          | date : "EEEE, d/M/yy yy, h:mm a"
       }}
     </p>
 
     <div class="flex justify-content-between">
       <div>
-        <h3 class="m-0" style="color: var(--custom-green-300)">
+        <h3
+          class="m-0 overflow-x-hidden"
+          style="color: var(--custom-green-300)"
+        >
           {{ relatedOrder.related_order_header.order_description }}
         </h3>
         <p class="m-0 text-xs text-secondary">
@@ -26,7 +29,7 @@
               >{{
                 relatedOrder.related_order_header.buyer.username
                   | uppercase
-                  | slice: 0:1
+                  | slice : 0 : 1
               }}</p-avatar
             >
           </span>
@@ -39,7 +42,8 @@
           style="color: var(--custom-green-200)"
         >
           {{
-            relatedOrder.contributed_amount | currency: "Rp ":"symbol":"1.0-0"
+            relatedOrder.contributed_amount
+              | currency : "Rp " : "symbol" : "1.0-0"
           }}
         </h3>
       </div>
@@ -48,11 +52,10 @@
   <div class="text-right h-fit">
     <button
       pButton
-      class="p-button-sm p-button-link p-0 my-1"
+      class="p-button-sm p-button-link p-1"
       type="button"
+      label="see details"
       (click)="showDetail(relatedOrder.related_order_header)"
-    >
-      see details
-    </button>
+    ></button>
   </div>
 </div>
