@@ -121,7 +121,7 @@ export class SelectusersFormComponent implements OnInit {
   }
 
   hideParticipantListDialog(): void {
-    this.participantListDialogDisplay = true;
+    this.participantListDialogDisplay = false;
   }
 
   addParticipant(): void {
