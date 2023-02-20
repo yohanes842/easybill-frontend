@@ -1,5 +1,11 @@
-import { HttpErrorResponse } from '@angular/common/http';
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  OnInit,
+  Output,
+  ViewChild,
+} from '@angular/core';
+import { NgForm } from '@angular/forms';
 import { CustomErrorResponse } from 'src/app/classes/error-response';
 import { User } from 'src/app/classes/user';
 import { Severity } from 'src/app/enums/Severity';
@@ -7,14 +13,12 @@ import { CustomMessageService } from 'src/app/services/message/custom-message.se
 import { UserService } from 'src/app/services/user/user.service';
 
 @Component({
-  selector: 'change-password-dialog',
-  templateUrl: './change-password-dialog.component.html',
-  styleUrls: ['./change-password-dialog.component.css'],
+  selector: 'change-password-form',
+  templateUrl: './change-password-form.component.html',
+  styleUrls: ['./change-password-form.component.css'],
 })
-export class ChangePasswordDialogComponent implements OnInit {
-  @Output() onClose: EventEmitter<void> = new EventEmitter();
-
-  display: boolean = true;
+export class ChangePasswordFormComponent implements OnInit {
+  @Output() onSuccess: EventEmitter<void> = new EventEmitter();
 
   currentUser!: User;
   currentPasswordString: String = '';
@@ -28,10 +32,6 @@ export class ChangePasswordDialogComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {}
-
-  hideDialog(): void {
-    this.onClose.emit();
-  }
 
   submit(): void {
     if (this.newPasswordString != this.confirmPasswordString) {
@@ -54,7 +54,7 @@ export class ChangePasswordDialogComponent implements OnInit {
               Severity.SUCCESS,
               'CHANGE PASSWORD SUCCESS'
             );
-            this.hideDialog();
+            this.onSuccess.emit();
           },
           (error: CustomErrorResponse) => {
             const res = error.extra_message.match(/[A-z ]+\[(.+)\]/);
@@ -66,7 +66,10 @@ export class ChangePasswordDialogComponent implements OnInit {
               this.errors.set(key, value);
             });
 
-            this.messageService.showMessage(Severity.ERROR, error.code.replace(/_/g, ' '));
+            this.messageService.showMessage(
+              Severity.ERROR,
+              error.code.replace(/_/g, ' ')
+            );
           }
         );
     }

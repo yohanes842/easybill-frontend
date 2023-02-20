@@ -1,0 +1,54 @@
+<form #customForm="ngForm" class="flex flex-column p-5" (ngSubmit)="submit()">
+  <div class="mb-2 w-full">
+    <label for="currentPassword" class="font-bold">Password</label>
+    <p-password
+      [style]="{ width: '100%', 'padding-block': '0.5rem' }"
+      [inputStyle]="{ width: '100%', 'padding-block': '0.5rem' }"
+      [(ngModel)]="currentPasswordString"
+      name="currentPassword"
+      [toggleMask]="true"
+      [feedback]="false"
+      required
+      #currentPassword="ngModel"
+    >
+    </p-password>
+
+    <!--check the ngModel binding variable is not null to ensure that the initial state will not shown the error message-->
+    <span
+      *ngIf="errors.get('current_password') && currentPasswordString != null"
+      class="text-red-400"
+      >{{ errors.get("current_password") }}</span
+    >
+  </div>
+  <div class="mb-2 w-full">
+    <label for="newUsername" class="font-bold">New Username</label>
+    <input
+      pInputText
+      class="w-full py-2"
+      [(ngModel)]="newUsernameString"
+      name="newUsername"
+      minlength="3"
+      maxlength="10"
+      required
+      #newUsername="ngModel"
+    />
+    <span
+      *ngIf="
+        newUsername.invalid &&
+        (newUsername.dirty || newUsername.touched) &&
+        newUsernameString != null
+      "
+      class="text-red-400"
+      >*Must be 3-10 characters</span
+    >
+  </div>
+  <div class="text-center w-full mt-3">
+    <button
+      pButton
+      class="p-button-primary py-2 px-7 w-fit"
+      [disabled]="customForm.invalid"
+    >
+      Save
+    </button>
+  </div>
+</form>

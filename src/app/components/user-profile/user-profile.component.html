@@ -67,17 +67,43 @@
   </div>
 </div>
 
-<change-username-dialog
-  *ngIf="changeUsernameDialogDisplay"
-  [currentUser]="currentUser!"
-  (onClose)="hideDialog()"
-></change-username-dialog>
-<change-password-dialog
-  *ngIf="changePasswordDialogDisplay"
-  (onClose)="hideDialog()"
-></change-password-dialog>
-<edit-account-number-dialog
-  *ngIf="editAccountNumberDialogDisplay"
-  [currentUser]="currentUser!"
-  (onClose)="hideDialog()"
-></edit-account-number-dialog>
+<popup-dialog [(display)]="changeUsernameDialogDisplay">
+  <ng-container header>
+    <h3 class="m-0 p-0">Change Username</h3>
+  </ng-container>
+
+  <ng-container content>
+    <change-username-form
+      *ngIf="currentUser && changeUsernameDialogDisplay"
+      [currentUser]="currentUser!"
+      (onSuccess)="hideDialog()"
+    ></change-username-form>
+  </ng-container>
+</popup-dialog>
+
+<popup-dialog [(display)]="changePasswordDialogDisplay">
+  <ng-container header>
+    <h3 class="m-0 p-0">Change Password</h3>
+  </ng-container>
+
+  <ng-container content>
+    <change-password-form
+      *ngIf="changePasswordDialogDisplay"
+      (onSuccess)="hideDialog()"
+    ></change-password-form>
+  </ng-container>
+</popup-dialog>
+
+<popup-dialog [(display)]="editAccountNumberDialogDisplay">
+  <ng-container header>
+    <h3 class="m-0 p-0">Edit Account Number</h3>
+  </ng-container>
+
+  <ng-container content>
+    <edit-account-number-form
+      *ngIf="currentUser && editAccountNumberDialogDisplay"
+      [currentUser]="currentUser!"
+      (onSuccess)="hideDialog()"
+    ></edit-account-number-form>
+  </ng-container>
+</popup-dialog>

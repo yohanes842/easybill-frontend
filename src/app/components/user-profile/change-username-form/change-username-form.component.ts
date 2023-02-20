@@ -1,5 +1,12 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { ConnectableObservable } from 'rxjs';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+  ViewChild,
+} from '@angular/core';
+import { NgForm } from '@angular/forms';
 import { CustomErrorResponse } from 'src/app/classes/error-response';
 import { User } from 'src/app/classes/user';
 import { Severity } from 'src/app/enums/Severity';
@@ -7,60 +14,54 @@ import { CustomMessageService } from 'src/app/services/message/custom-message.se
 import { UserService } from 'src/app/services/user/user.service';
 
 @Component({
-  selector: 'edit-account-number-dialog',
-  templateUrl: './edit-account-number-dialog.component.html',
-  styleUrls: ['./edit-account-number-dialog.component.css'],
+  selector: 'change-username-form',
+  templateUrl: './change-username-form.component.html',
+  styleUrls: ['./change-username-form.component.css'],
 })
-export class EditAccountNumberDialogComponent implements OnInit {
+export class ChangeUsernameFormComponent implements OnInit {
   @Input() currentUser!: User;
+  @Output() onSuccess: EventEmitter<string> = new EventEmitter();
 
-  @Output() onClose: EventEmitter<void> = new EventEmitter();
-  @Output() onSubmit: EventEmitter<string> = new EventEmitter();
-
-  display: boolean = true;
+  currentPasswordString: string | null = '';
+  newUsernameString: string = '';
   errors: Map<string, string> = new Map();
-
-  passwordString!: string;
-  newAccountNumber!: string;
 
   constructor(
     private messageService: CustomMessageService,
     private userService: UserService
   ) {}
 
-  ngOnInit(): void {
-    this.userService;
-    if (!this.currentUser.account_number)
-      this.currentUser.account_number = 'Not set up yet';
-  }
-
-  hideDialog(): void {
-    this.onClose.emit();
-  }
+  ngOnInit(): void {}
 
   submit(): void {
-    if (this.currentUser.account_number == this.newAccountNumber) {
+    if (this.newUsernameString.length <= 0) {
       this.messageService.showMessage(
         Severity.ERROR,
         'INPUT ERROR',
-        'Account number must be different with the old one!'
+        'Username must be filled'
+      );
+    } else if (this.newUsernameString == this.currentUser.username) {
+      this.messageService.showMessage(
+        Severity.ERROR,
+        'INPUT ERROR',
+        'Username must be different'
       );
     } else {
       this.userService
-        .changeUserAccountNumber(this.passwordString, this.newAccountNumber)
+        .changeUserUsername(this.currentPasswordString!, this.newUsernameString)
         .subscribe(
           () => {
             this.errors = new Map();
             this.messageService.showMessage(
               Severity.SUCCESS,
-              'CHANGE ACCOUNT NUMBER SUCCESS'
+              'CHANGE USERNAME SUCCESS'
             );
-            this.currentUser.account_number = this.newAccountNumber;
+            this.currentUser.username = this.newUsernameString.toLowerCase();
             localStorage.setItem(
               'currentUser',
               JSON.stringify(this.currentUser)
             );
-            this.hideDialog();
+            this.onSuccess.emit();
           },
           (error: CustomErrorResponse) => {
             const res = error.extra_message.match(/[A-z ]+\[(.+)\]/);

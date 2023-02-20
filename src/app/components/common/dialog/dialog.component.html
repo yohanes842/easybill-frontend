@@ -1,0 +1,18 @@
+<p-dialog
+  styleClass="dialog-box w-10"
+  [style]="{
+    width: 'calc(100vw - 2rem)',
+    'max-width': '30rem',
+    overflow: 'visible'
+  }"
+  [(visible)]="display"
+  [modal]="true"
+  (onHide)="hideDialog()"
+>
+  <p-header>
+    <ng-content select="[header]"></ng-content>
+  </p-header>
+  <div>
+    <ng-content select="[content]"></ng-content>
+  </div>
+</p-dialog>

@@ -1,0 +1,63 @@
+<form #customForm="ngForm" (ngSubmit)="submit()" class="flex flex-column p-5">
+  <div class="mb-2 w-full">
+    <label for="password" class="font-bold">Password</label>
+    <p-password
+      [style]="{ width: '100%', 'padding-block': '0.5rem' }"
+      [inputStyle]="{ width: '100%', 'padding-block': '0.5rem' }"
+      [(ngModel)]="passwordString"
+      name="password"
+      [toggleMask]="true"
+      [feedback]="false"
+      [required]="true"
+    >
+    </p-password>
+    <span
+      *ngIf="errors.get('current_password') && passwordString != null"
+      class="text-red-400"
+      >{{ errors.get("current_password") }}</span
+    >
+  </div>
+  <div class="mb-2 w-full">
+    <label for="currentAccountNumber" class="font-bold"
+      >Current Account Number</label
+    >
+    <input
+      pInputText
+      [style]="{ 'margin-block': '0.5rem' }"
+      class="w-full py-2"
+      type="text"
+      name="currentAccountNumber"
+      [(ngModel)]="currentUser.account_number"
+      disabled
+    />
+  </div>
+  <div class="mb-2 w-full">
+    <label for="newAccountNumber" class="font-bold"
+      >New BCA Account Number</label
+    >
+    <p-inputMask
+      [style]="{ 'margin-block': '0.5rem' }"
+      styleClass="w-full py-2"
+      mask="9999999999"
+      name="newAccountNumber"
+      [autoClear]="false"
+      [required]="true"
+      [(ngModel)]="newAccountNumber"
+    ></p-inputMask>
+    <!--check the ngModel binding variable is not null to ensure that the initial state will not shown the error message-->
+    <span
+      *ngIf="errors.get('new_account_number') && newAccountNumber != null"
+      class="text-red-400"
+      >{{ errors.get("new_account_number") }}</span
+    >
+  </div>
+  <div class="text-center w-full mt-3">
+    <button
+      pButton
+      class="p-button-primary py-2 px-7 w-fit"
+      [disabled]="customForm.invalid"
+    >
+      Save
+    </button>
+  </div>
+</form>

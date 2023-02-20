@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
@@ -69,14 +69,15 @@ import { TransactionHistoryDetailComponent } from './components/transaction-hist
 import { TransactionHistoryComponent } from './components/transaction-history/transaction-history.component';
 import { TransactionRelatedOrderContentComponent } from './components/transaction-history/transaction-related-orders-dialog/transaction-related-order-content/transaction-related-order-content.component';
 import { TransactionRelatedOrdersDialogComponent } from './components/transaction-history/transaction-related-orders-dialog/transaction-related-orders-dialog.component';
-import { ChangePasswordDialogComponent } from './components/user-profile/change-password-dialog/change-password-dialog.component';
-import { EditAccountNumberDialogComponent } from './components/user-profile/edit-account-number-dialog/edit-account-number-dialog.component';
+import { ChangeUsernameFormComponent } from './components/user-profile/change-username-form/change-username-form.component';
+import { ChangePasswordFormComponent } from './components/user-profile/change-password-form/change-password-form.component';
+import { EditAccountNumberFormComponent } from './components/user-profile/edit-account-number-form/edit-account-number-form.component';
 import { UserProfileComponent } from './components/user-profile/user-profile.component';
 import { ErrorResponseInterceptor } from './interceptor/error-response.interceptor';
 import { PendingOrderListComponent } from './components/pending-order-list/pending-order-list.component';
 import { PendingOrderListContentComponent } from './components/pending-order-list/pending-order-list-content/pending-order-list-content.component';
-import { ChangeUsernameDialogComponent } from './components/user-profile/change-username-dialog/change-username-dialog.component';
 import { LoadingComponent } from './components/loading/loading.component';
+import { DialogComponent } from './components/common/dialog/dialog.component';
 
 @NgModule({
   declarations: [
@@ -109,17 +110,19 @@ import { LoadingComponent } from './components/loading/loading.component';
     TransactionRelatedOrdersDialogComponent,
     TransactionRelatedOrderContentComponent,
     UserProfileComponent,
-    ChangePasswordDialogComponent,
-    EditAccountNumberDialogComponent,
+    ChangeUsernameFormComponent,
+    ChangePasswordFormComponent,
+    EditAccountNumberFormComponent,
     CopyButtonComponent,
     PendingOrderListComponent,
     PendingOrderListContentComponent,
-    ChangeUsernameDialogComponent,
     LoadingComponent,
+    DialogComponent,
   ],
   imports: [
     BrowserModule,
     FormsModule,
+    ReactiveFormsModule,
     BrowserAnimationsModule,
     HttpClientModule,
     AppRoutingModule,
