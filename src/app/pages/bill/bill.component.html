@@ -1,0 +1,49 @@
+<div class="px-3">
+  <bill-header (onTapMenu)="changeDataViewContent($event)"></bill-header>
+
+  <div class="flex flex-column align-items-center gap-2 mt-3">
+    <ng-container *ngIf="bills.length > 0; else emptyBillMessage">
+      <div *ngFor="let bill of bills" class="w-full h-fit text-center">
+        <bill-content
+          [bill]="bill"
+          [isPayable]="bills == billsPayable"
+          (onShowPaymentDialog)="showPaymentDialog($event)"
+          (onShowRelatedOrdersDialog)="showRelatedOrdersDialog($event)"
+        ></bill-content>
+      </div>
+    </ng-container>
+
+    <ng-template #emptyBillMessage>
+      <p>No Bills</p>
+    </ng-template>
+  </div>
+</div>
+
+<popup-dialog [(display)]="paymentDialogDisplay">
+  <ng-container *ngIf="selectedBill" header>
+    <payment-dialog-header
+      [selectedBill]="selectedBill"
+    ></payment-dialog-header>
+  </ng-container>
+
+  <ng-container *ngIf="selectedBill && paymentDialogDisplay" content>
+    <payment-dialog-content
+      [selectedBill]="selectedBill"
+      (onPay)="payBill($event)"
+    ></payment-dialog-content>
+  </ng-container>
+</popup-dialog>
+
+<!-- <related-orders-dialog
+  *ngIf="displayRelatedOrdersDialog"
+  [selectedBill]="selectedBill"
+  [isPayable]="bills == billsPayable"
+  (onClose)="hideDialog()"
+></related-orders-dialog> -->
+
+<bill-details-dialog
+  [(dialogDisplay)]="billDetailsDialogDisplay"
+  [selectedBill]="selectedBill"
+  [isPayable]="bills === billsPayable"
+>
+</bill-details-dialog>

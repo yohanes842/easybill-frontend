@@ -1,0 +1,42 @@
+<div>
+  <p-dataView
+    #dv
+    [style]="{ 'background-color': 'white !important' }"
+    [value]="pendingOrders"
+    [paginator]="false"
+    emptyMessage="No orders found..."
+    filterBy="order_description,buyer.username"
+    layout="grid"
+  >
+    <ng-template pTemplate="header">
+      <h2 class="m-1 font-italic">Pending Orders</h2>
+    </ng-template>
+
+    <ng-template let-order pTemplate="gridItem" class="flex flex-column gap-3">
+      <div class="w-full px-5">
+        <pending-order-list-content
+          [order]="order"
+          (onShowDetail)="showDetail($event)"
+          (onDeleted)="removeOrder($event)"
+          (onApproved)="approveOrder($event)"
+        ></pending-order-list-content>
+      </div>
+    </ng-template>
+  </p-dataView>
+</div>
+
+<popup-dialog [(display)]="display">
+  <ng-container *ngIf="selectedOrder" header>
+    <order-detail-header [selectedOrder]="selectedOrder"></order-detail-header>
+  </ng-container>
+
+  <ng-container *ngIf="selectedOrder" content>
+    <your-order-detail-content
+      [selectedOrder]="selectedOrder"
+    ></your-order-detail-content>
+
+    <order-detail-summary-content
+      [selectedOrder]="selectedOrder"
+    ></order-detail-summary-content>
+  </ng-container>
+</popup-dialog>

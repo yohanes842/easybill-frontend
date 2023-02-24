@@ -1,18 +1,18 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { ContainerComponent } from 'src/app/components/container/container.component';
-import { BillComponent } from 'src/app/components/bill/bill.component';
-import { OrderListComponent } from 'src/app/components/order-list/order-list.component';
-import { AddFormComponent } from './components/add-form/add-form.component';
-import { LoginComponent } from './components/login/login.component';
+import { BillComponent } from 'src/app/pages/bill/bill.component';
+import { OrderListComponent } from 'src/app/pages/order-list/order-list.component';
+import { AddFormComponent } from './pages/add-form/add-form.component';
+import { LoginComponent } from './pages/login/login.component';
 import { AuthGuard } from 'src/app/guards/auth/auth.guard';
 import { LoginGuard } from 'src/app/guards/login/login.guard';
-import { TransactionHistoryComponent } from './components/transaction-history/transaction-history.component';
+import { TransactionHistoryComponent } from './pages/transaction-history/transaction-history.component';
 import { Route } from './enums/Route';
-import { NotFoundPageComponent } from './components/not-found-page/not-found-page.component';
-import { SelectusersFormComponent } from './components/select-users-form/select-users-form.component';
-import { UserProfileComponent } from './components/user-profile/user-profile.component';
-import { PendingOrderListComponent } from './components/pending-order-list/pending-order-list.component';
+import { NotFoundPageComponent } from './pages/not-found-page/not-found-page.component';
+import { SelectusersFormComponent } from './pages/select-users-form/select-users-form.component';
+import { UserProfileComponent } from './pages/user-profile/user-profile.component';
+import { PendingOrderListComponent } from './pages/pending-order-list/pending-order-list.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent, canActivate: [LoginGuard] },

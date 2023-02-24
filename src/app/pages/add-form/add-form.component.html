@@ -1,0 +1,265 @@
+<div class="w-full px-3 mt-3">
+  <div class="flex align-items-center gap-3">
+    <button
+      pButton
+      class="p-button-sm p-button-raised p-button-rounded p-0 text-white"
+      style="background: var(--custom-red-300); transform: scale(0.8)"
+      type="button"
+      icon="pi pi-chevron-left"
+      iconPos="left"
+      (click)="backToHome()"
+    ></button>
+    <h2 class="font-italic">Add New Order</h2>
+  </div>
+
+  <form
+    #addOrder="ngForm"
+    class="mx-auto w-full px-3 py-2 lg:w-6"
+    (ngSubmit)="navigateToSelectUsers()"
+  >
+    <div class="w-full text-right">
+      <button
+        pButton
+        type="button"
+        class="p-button-link p-button-sm m-0 p-0 text-secondary text-right font-italic"
+        label="Clear all"
+        (click)="clearOrder()"
+      ></button>
+    </div>
+    <div class="mb-3 w-full">
+      <label for="orderBy" class="font-bold">Order by</label>
+      <p-autoComplete
+        [style]="{ width: '100%', 'margin-block': '0.5rem' }"
+        [inputStyle]="{ width: '100%', 'padding-block': '0.5rem' }"
+        name="orderBy"
+        [(ngModel)]="currentOrder.username"
+        [suggestions]="filteredUsernames"
+        [required]="true"
+        placeholder="Order by"
+        (completeMethod)="filterUsername($event.query)"
+        (ngModelChange)="saveToLocalStorage()"
+      ></p-autoComplete>
+    </div>
+
+    <div class="mb-3 w-full">
+      <label for="orderDescription" class="font-bold">Description</label>
+      <input
+        pInputText
+        [style]="{ 'margin-block': '0.5rem' }"
+        class="w-full py-2"
+        type="text"
+        name="orderDescription"
+        [(ngModel)]="currentOrder.order_description"
+        placeholder="Order description"
+        minlength="2"
+        maxlength="50"
+        required
+        #orderDescription="ngModel"
+        (ngModelChange)="saveToLocalStorage()"
+      />
+      <span
+        *ngIf="
+          orderDescription.invalid &&
+          (orderDescription.dirty || orderDescription.touched)
+        "
+        class="text-red-400 text-sm"
+        >*Must be 2-50 characters</span
+      >
+    </div>
+
+    <div class="mb-3 w-full">
+      <label for="orderAt" class="font-bold">Order time</label>
+      <p-calendar
+        [style]="{ width: '100%', 'margin-block': '0.5rem' }"
+        [inputStyle]="{ width: '100%', 'padding-block': '0.5rem' }"
+        name="orderAt"
+        [(ngModel)]="currentTime"
+        [showTime]="true"
+        hourFormat="24"
+        [showIcon]="true"
+        [required]="true"
+        (ngModelChange)="saveToLocalStorage()"
+      ></p-calendar>
+    </div>
+
+    <div class="mb-3 w-full flex flex-column">
+      <label for="totalPayment" class="font-bold"
+        >Total Payment
+        <h6 class="text-xs text-secondary m-0">
+          (final amount after discount and other fee calculation)
+        </h6></label
+      >
+      <div class="p-inputgroup">
+        <span class="p-inputgroup-addon p-2 my-2">Rp</span>
+        <p-inputNumber
+          [style]="{ width: '100%', 'margin-block': '0.5rem' }"
+          [inputStyle]="{ width: '100%', 'padding-block': '0.5rem' }"
+          name="totalPayment"
+          [(ngModel)]="currentOrder.total_payment"
+          mode="decimal"
+          [min]="0"
+          [required]="true"
+          placeholder="Total payment"
+          (ngModelChange)="saveToLocalStorage()"
+        ></p-inputNumber>
+      </div>
+    </div>
+
+    <p-checkbox
+      class="mb-2"
+      name="withDiscountCheckbox"
+      [binary]="true"
+      label="Include Discount"
+      [(ngModel)]="isWithDiscount"
+    ></p-checkbox>
+
+    <div *ngIf="isWithDiscount" class="mb-3">
+      <div class="flex gap-3 m-2">
+        <p-radioButton
+          labelStyleClass="text-sm"
+          name="DiscountTypeRadioBtn"
+          label="Percentage"
+          [value]="false"
+          [(ngModel)]="isFlatDiscount"
+          (onClick)="setDiscountPercentage()"
+        ></p-radioButton>
+        <p-radioButton
+          labelStyleClass="text-sm"
+          name="DiscountTypeRadioBtn"
+          label="Flat discount"
+          [value]="true"
+          [(ngModel)]="isFlatDiscount"
+          (onClick)="setDiscountPercentage()"
+        ></p-radioButton>
+      </div>
+
+      <label for="discount" class="font-bold">Discount</label>
+      <div
+        class="flex flex-column gap-0 align-items-center sm:flex-row sm:gap-2"
+      >
+        <div class="p-inputgroup">
+          <p-inputNumber
+            [style]="{ 'margin-block': '0.5rem' }"
+            [inputStyle]="{ 'padding-block': '0.5rem' }"
+            name="discount"
+            [(ngModel)]="currentOrder.discount"
+            mode="decimal"
+            [min]="0"
+            [max]="100"
+            [required]="true"
+            placeholder="Discount"
+            [disabled]="isFlatDiscount"
+            (ngModelChange)="saveToLocalStorage()"
+          ></p-inputNumber>
+          <span class="p-inputgroup-addon p-2 my-2">%</span>
+        </div>
+        <p class="m-0 w-7rem text-center text-sm">up to</p>
+        <div class="p-inputgroup">
+          <span class="p-inputgroup-addon p-2 my-2">Rp</span>
+          <p-inputNumber
+            [style]="{ 'margin-block': '0.5rem' }"
+            [inputStyle]="{ 'padding-block': '0.5rem' }"
+            name="upto"
+            [(ngModel)]="currentOrder.upto"
+            mode="decimal"
+            [min]="0"
+            [required]="true"
+            placeholder="Max discount"
+            (ngModelChange)="saveToLocalStorage()"
+          ></p-inputNumber>
+        </div>
+      </div>
+    </div>
+
+    <div class="mb-3">
+      <label for="discount" class="font-bold">Order Details</label>
+      <div class="w-full text-center">
+        <button
+          pButton
+          type="button"
+          class="p-button-sm p-button-secondary text-white"
+          icon="pi pi-plus"
+          (click)="showAddSubOrderDialog()"
+        ></button>
+      </div>
+    </div>
+    <div
+      *ngIf="currentOrder.order_list.length > 0"
+      class="card p-component border-1 border-300 border-round"
+    >
+      <div
+        *ngFor="
+          let subOrder of currentOrder.order_list;
+          let subOrderIndex = index
+        "
+        [attr.data-index]="subOrderIndex"
+        class="flex gap-1 align-items-center border-top-1 border-300 py-1 pl-2"
+        [class.border-top-1]="subOrderIndex > 0"
+      >
+        <div class="p-2 text-pink-300 font-bold w-3rem text-center text-sm">
+          {{ subOrder.qty }}x
+        </div>
+        <div class="flex align-items-center justify-content-between w-full">
+          <div>
+            <p class="m-0 text-sm" style="overflow-wrap: break-word">
+              {{ subOrder.order_menu_desc }}
+            </p>
+            <p class="m-0 text-sm" style="color: var(--custom-orange)">
+              {{ subOrder.price * subOrder.qty | currency : "Rp " }}
+            </p>
+          </div>
+          <div class="flex">
+            <button
+              pButton
+              class="p-button-sm p-button-link"
+              [style]="{
+                'padding-block': '0.5rem',
+                'padding-inline': '1rem',
+                width: 'fit-content'
+              }"
+              type="button"
+              icon="pi pi-pencil"
+              (click)="showEditSubOrderDialog(subOrder)"
+            ></button>
+            <button
+              pButton
+              class="p-button-sm p-button-link p-button-danger text-red-300"
+              [style]="{
+                'padding-block': '0.5rem',
+                'padding-inline': '1rem',
+                width: 'fit-content'
+              }"
+              type="button"
+              icon="pi pi-trash"
+              (click)="showDeleteSubOrderConfirmation(subOrderIndex)"
+            ></button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="text-center mt-5">
+      <button
+        pButton
+        class="p-button-primary py-3 px-8 w-fit"
+        [disabled]="addOrder.invalid"
+      >
+        Next
+      </button>
+    </div>
+  </form>
+</div>
+
+<popup-dialog [(display)]="dialogDisplay" [customStyle]="dialogStyle">
+  <ng-container header>
+    <h3 class="m-0 p-0">{{ modalType }} Sub-Order</h3>
+  </ng-container>
+  <ng-container *ngIf="selectedSubOrder && dialogDisplay" content>
+    <add-sub-form
+      [modalType]="modalType"
+      [subOrders]="currentOrder.order_list"
+      [selectedSubOrder]="selectedSubOrder"
+      (onSuccess)="hideDialog()"
+    ></add-sub-form>
+  </ng-container>
+</popup-dialog>

@@ -1,0 +1,8 @@
+:host ::ng-deep .p-dropdown {
+  width: 14rem;
+  font-weight: normal;
+}
+
+:host ::ng-deep .p-dialog .p-dialog-header {
+  background: var(--custom-light-black);
+}

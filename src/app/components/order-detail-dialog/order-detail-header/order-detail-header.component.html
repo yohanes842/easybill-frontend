@@ -1,0 +1,31 @@
+<p class="p-0 m-0 mt-1 text-xs text-secondary">
+  {{ selectedOrder.order_at | date : "EEEE, d/M/yy h:mm a" }}
+</p>
+<h5
+  class="my-1"
+  style="
+    color: var(--custom-orange-300);
+    word-break: break-word;
+    overflow-x: hidden;
+  "
+>
+  {{ selectedOrder.order_description }}
+</h5>
+<p class="m-0 text-sm text-secondary">
+  by
+  <span>
+    <p-avatar
+      styleClass="p-mr-2 font-bold"
+      [style]="{
+        'background-color': 'var(--custom-orange-50)',
+        color: 'black',
+        transform: 'scale(70%)'
+      }"
+      shape="circle"
+      >{{ selectedOrder.buyer.username | uppercase | slice : 0 : 1 }}</p-avatar
+    >
+  </span>
+  <span style="color: var(--custom-orange-100)">{{
+    selectedOrder.buyer.username | uppercase
+  }}</span>
+</p>

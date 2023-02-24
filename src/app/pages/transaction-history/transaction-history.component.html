@@ -1,0 +1,49 @@
+<div>
+  <p-dataView
+    #dv
+    [style]="{ 'background-color': 'white !important' }"
+    [value]="lazyPaging.objects"
+    [paginator]="false"
+    [rows]="10"
+    emptyMessage="No transactions found..."
+    filterBy=",buyer.username"
+    layout="grid"
+  >
+    <ng-template pTemplate="header">
+      <h2 class="m-0 font-italic">Bill History</h2>
+      <!-- <order-list-header
+        [dv]="dv"
+        headerTitle="Bill History"
+        [withTabMenu]="false"
+      ></order-list-header> -->
+    </ng-template>
+
+    <ng-template
+      let-transaction
+      let-index="rowIndex"
+      pTemplate="gridItem"
+      class="flex flex-column"
+    >
+      <div
+        [class.border-bottom-1]="index < lazyPaging.objects.length - 1"
+        class="w-full border-500"
+      >
+        <transaction-history-detail
+          [transaction]="transaction"
+          (onSeeDetails)="showDialog($event)"
+        ></transaction-history-detail>
+      </div>
+    </ng-template>
+  </p-dataView>
+</div>
+
+<!-- <transaction-related-orders-dialog
+  *ngIf="relatedOrderDialogDisplay"
+  [selectedTransaction]="selectedTransaction"
+  (onClose)="hideDialog()"
+></transaction-related-orders-dialog> -->
+
+<transaction-details-dialog
+  [(dialogDisplay)]="relatedOrderDialogDisplay"
+  [selectedTransaction]="selectedTransaction"
+></transaction-details-dialog>

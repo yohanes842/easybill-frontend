@@ -1,0 +1,67 @@
+<popup-dialog [(display)]="dialogDisplay" (displayChange)="displayChange()">
+  <ng-container *ngIf="selectedBill" header>
+    <ng-container *ngIf="!isDetailSection; else detailSection">
+      <p class="m-0 text-xs">
+        <span *ngIf="isPayable">Your bill to</span>
+        <span>
+          <p-avatar
+            styleClass="p-mr-2 font-bold"
+            [style]="{
+              'background-color': 'var(--custom-green-100)',
+              color: 'black',
+              transform: 'scale(70%)'
+            }"
+            shape="circle"
+            >{{
+              selectedBill.user.username | uppercase | slice : 0 : 1
+            }}</p-avatar
+          >
+        </span>
+        <span
+          >{{ selectedBill.user.username | uppercase }}
+          <span *ngIf="!isPayable">bill to you</span>
+        </span>
+      </p>
+      <h3 class="m-0 font-italic" style="color: var(--custom-green-300)">
+        {{ selectedBill.owe_amount | currency : "Rp. " : "symbol" : "1.0-0" }}
+      </h3>
+    </ng-container>
+
+    <ng-template #detailSection>
+      <button
+        pButton
+        class="button-no-outline p-button-link p-button-sm w-fit p-0 text-left outline-none my-2"
+        label="back"
+        (click)="backToRelatedOrders()"
+      ></button>
+      <order-detail-header
+        [selectedOrder]="selectedOrder"
+      ></order-detail-header>
+    </ng-template>
+  </ng-container>
+
+  <ng-container *ngIf="selectedBill" content>
+    <ng-container *ngIf="!isDetailSection; else detailOrder">
+      <div
+        *ngFor="let order of selectedBill.related_order_header; let i = index"
+      >
+        <bill-related-order-content
+          [order]="order"
+          [index]="i"
+          (onShowDetail)="showDetail($event)"
+        ></bill-related-order-content>
+      </div>
+    </ng-container>
+
+    <ng-template #detailOrder>
+      <relevant-order-detail-content
+        [selectedOrder]="selectedOrder"
+        [selectedUser]="isPayable ? currentUser : selectedBill.user"
+      ></relevant-order-detail-content>
+
+      <order-detail-summary-content
+        [selectedOrder]="selectedOrder"
+      ></order-detail-summary-content>
+    </ng-template>
+  </ng-container>
+</popup-dialog>

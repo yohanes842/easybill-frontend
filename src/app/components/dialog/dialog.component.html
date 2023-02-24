@@ -1,0 +1,14 @@
+<p-dialog
+  styleClass="dialog-box w-10"
+  [style]="customStyle ?? defaultStyle"
+  [(visible)]="display"
+  [modal]="true"
+  (onHide)="hideDialog()"
+>
+  <p-header>
+    <ng-content select="[header]"></ng-content>
+  </p-header>
+  <div class="flex flex-column gap-3 p-3">
+    <ng-content select="[content]"></ng-content>
+  </div>
+</p-dialog>

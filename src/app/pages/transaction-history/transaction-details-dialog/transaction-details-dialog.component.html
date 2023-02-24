@@ -1,0 +1,49 @@
+<popup-dialog [(display)]="dialogDisplay" (displayChange)="displayChange()">
+  <ng-container header>
+    <ng-container *ngIf="!isDetailSection; else detailHeader">
+      <h3 class="m-0 p-0">Related Order(s)</h3>
+    </ng-container>
+
+    <ng-template #detailHeader>
+      <button
+        pButton
+        class="button-no-outline p-button-link p-button-sm w-fit p-0 text-left outline-none my-2"
+        label="back"
+        (click)="backToRelatedOrders()"
+      ></button>
+      <order-detail-header
+        [selectedOrder]="selectedOrder"
+      ></order-detail-header>
+    </ng-template>
+  </ng-container>
+
+  <ng-container *ngIf="selectedTransaction" content>
+    <ng-container *ngIf="!isDetailSection; else detailContent">
+      <div
+        *ngFor="
+          let relatedOrder of selectedTransaction.bill_transaction_header_list;
+          let i = index
+        "
+      >
+        <transaction-related-order-content
+          [relatedOrder]="relatedOrder"
+          [index]="i"
+          (onShowDetail)="showDetail($event)"
+        ></transaction-related-order-content>
+      </div>
+    </ng-container>
+
+    <ng-template #detailContent>
+      <ng-container *ngIf="selectedTransaction && selectedOrder">
+        <relevant-order-detail-content
+          [selectedOrder]="selectedOrder"
+          [selectedUser]="selectedTransaction.payer"
+        ></relevant-order-detail-content>
+
+        <order-detail-summary-content
+          [selectedOrder]="selectedOrder"
+        ></order-detail-summary-content>
+      </ng-container>
+    </ng-template>
+  </ng-container>
+</popup-dialog>
