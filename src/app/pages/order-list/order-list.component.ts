@@ -10,6 +10,7 @@ import { LazyLoadPaging } from 'src/app/classes/lazy-load-paging';
 import { OrderHeader } from 'src/app/classes/order-header';
 import { User } from 'src/app/classes/user';
 import { Status } from 'src/app/enums/Status';
+import { Response } from 'src/app/interfaces/response';
 import { LazyLoadService } from 'src/app/services/lazy-load/lazy-load.service';
 import { OrderService } from 'src/app/services/order/order.service';
 
@@ -141,7 +142,7 @@ export class OrderListComponent implements OnInit, DoCheck, OnDestroy {
 
   loadData(): void {
     const orderSubscriptions = (
-      res: any,
+      res: Response<User>,
       currentLazyPage: LazyLoadPaging<OrderHeader>
     ): void => {
       if (currentLazyPage == this.currentLazyPage) {
@@ -152,13 +153,13 @@ export class OrderListComponent implements OnInit, DoCheck, OnDestroy {
         this.currentLazyPage.objects = this.currentLazyPage.objects.concat([
           ...latestFetchOrders,
         ]);
-        this.currentLazyPage.maxPage = res.output.total_pages;
-        this.currentLazyPage.pageFetchIndicator = res.output.page;
+        this.currentLazyPage.maxPage = res.output.total_pages as number;
+        this.currentLazyPage.pageFetchIndicator = res.output.page as number;
         this.currentLazyPage.nextPage =
           res.output.total_pages === res.output.page &&
           res.output.total_pages != 0
-            ? res.output.total_pages
-            : res.output.page + 1;
+            ? (res.output.total_pages as number)
+            : (res.output.page as number) + 1;
         this.lazyLoadService.setCurrentLazyPaging(this.currentLazyPage);
 
         this.orders = this.currentLazyPage.objects;
@@ -173,7 +174,7 @@ export class OrderListComponent implements OnInit, DoCheck, OnDestroy {
           this.searchKeyword,
           this.selectedStatusOptions
         )
-        .subscribe((res: any) => {
+        .subscribe((res) => {
           orderSubscriptions(res, currentLazyPage);
         });
     } else {

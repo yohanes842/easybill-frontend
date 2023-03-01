@@ -11,12 +11,8 @@ import { environment as env } from 'src/environments/environment';
 export class UserService {
   constructor(private http: HttpClient) {}
 
-  public getUsers(): Observable<Response<User>> {
-    return this.http.get<Response<User>>(`${env.url}/api/users`);
-  }
-
-  public getUserDetail(): Observable<Response<User>> {
-    return this.http.get<Response<User>>(`${env.url}/api/users/profile`);
+  public getUsers(): Observable<Response<User[]>> {
+    return this.http.get<Response<User[]>>(`${env.url}/api/users`);
   }
 
   public changeUserUsername(

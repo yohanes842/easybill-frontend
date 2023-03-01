@@ -59,8 +59,11 @@ export class OrderListContentComponent implements OnInit {
       .reOrder(order.id!)
       .subscribe((res: Response<OrderHeader>) => {
         const orderObject = res.output.data;
-        orderObject.username =
-          orderObject.username ?? this.authService.getCurrentUser()?.username;
+
+        this.authService
+          .getAuthUser()
+          .subscribe((user) => (orderObject.username = user.username));
+
         orderObject.order_at = this.datePipe.transform(
           new Date(),
           'yyyy-MM-dd HH:mm:ss'

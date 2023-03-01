@@ -18,12 +18,12 @@
         size="large"
         (click)="navigateToProfile()"
       >
-        {{ currentUser!.username | slice : 0 : 1 | uppercase }}
+        {{ username | slice : 0 : 1 | uppercase }}
       </p-avatar>
     </div>
     <div>
       <h5 class="m-0" style="color: var(--custom-red-200)">easyBill</h5>
-      <h2 class="m-0">{{ currentUser!.username }}</h2>
+      <h2 class="m-0">{{ username }}</h2>
     </div>
   </div>
 

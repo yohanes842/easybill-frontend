@@ -64,9 +64,9 @@ export class AddFormComponent implements OnInit {
       this.currentOrder = new OrderHeader();
       this.currentOrder.order_list = [];
       this.currentTime = new Date();
-
-      const currentUser = this.authService.getCurrentUser();
-      this.currentOrder.username = currentUser?.username;
+      this.authService
+        .getAuthUser()
+        .subscribe((user) => (this.currentOrder.username = user.username));
     } else {
       this.currentOrder = retrievedCurrentOrder;
 

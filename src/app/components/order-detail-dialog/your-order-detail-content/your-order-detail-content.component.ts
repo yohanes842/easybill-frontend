@@ -17,7 +17,9 @@ export class YourRelevantOrderDetailContentComponent implements OnInit {
   othersStatus: Status[] = [];
 
   constructor(private authService: AuthService) {
-    this.currentUser = this.authService.getCurrentUser() as User;
+    this.authService
+      .getAuthUser()
+      .subscribe((user) => (this.currentUser = user));
   }
 
   ngOnInit(): void {

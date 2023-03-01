@@ -15,15 +15,17 @@ export class RelevantOrderDetailContentComponent implements OnInit {
   @Input() selectedOrder!: OrderHeader;
   @Input() selectedUser!: User; // User yang ordernya akan ditampilkan
 
-  currentUser!: User;
-  currentRoute!: string;
-  billRoute!: string;
+  currentUser: User;
+  currentRoute: string;
+  billRoute: string;
 
-  userStatus!: Status;
+  userStatus: Status;
   othersStatus: Status[] = [];
 
   constructor(private router: Router, private authService: AuthService) {
-    this.currentUser = this.authService.getCurrentUser() as User;
+    this.authService
+      .getAuthUser()
+      .subscribe((user) => (this.currentUser = user));
     this.currentRoute = this.router.url;
     this.billRoute = Route.BILL_PATH;
   }

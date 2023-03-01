@@ -18,7 +18,7 @@ import { ChangeUsernameFormComponent } from 'src/app/pages/user-profile/change-u
 import { ContainerComponent } from 'src/app/components/container/container.component';
 import { CopyButtonComponent } from 'src/app/components/copy-button/copy-button.component';
 import { DialogComponent } from 'src/app/components/dialog/dialog.component';
-import { EditAccountNumberFormComponent } from 'src/app/pages/user-profile/edit-account-number-form/edit-account-number-form.component';
+import { ChangeAccountNumberFormComponent } from 'src/app/pages/user-profile/change-account-number-form/change-account-number-form.component';
 import { HeaderComponent } from 'src/app/components/header/header.component';
 import { JumpButtonComponent } from 'src/app/components/jump-button/jump-button.component';
 import { LoadingComponent } from 'src/app/components/loading/loading.component';
@@ -80,6 +80,8 @@ import { CustomMessageService } from 'src/app/services/message/custom-message.se
 import { OrderService } from 'src/app/services/order/order.service';
 import { UserService } from 'src/app/services/user/user.service';
 import { TransactionDetailsDialogComponent } from './pages/transaction-history/transaction-details-dialog/transaction-details-dialog.component';
+import { StoreModule } from '@ngrx/store';
+import { dialogDisplayReducer } from './state/dialogDisplay.reducer';
 
 @NgModule({
   declarations: [
@@ -110,7 +112,7 @@ import { TransactionDetailsDialogComponent } from './pages/transaction-history/t
     UserProfileComponent,
     ChangeUsernameFormComponent,
     ChangePasswordFormComponent,
-    EditAccountNumberFormComponent,
+    ChangeAccountNumberFormComponent,
     CopyButtonComponent,
     PendingOrderListComponent,
     PendingOrderListContentComponent,
@@ -155,6 +157,7 @@ import { TransactionDetailsDialogComponent } from './pages/transaction-history/t
     CheckboxModule,
     RadioButtonModule,
     ProgressBarModule,
+    StoreModule.forRoot({ dialogDisplay: dialogDisplayReducer }),
   ],
   providers: [
     UserService,

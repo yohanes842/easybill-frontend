@@ -1,8 +1,20 @@
 import { Component, OnInit } from '@angular/core';
+import { Action, Store } from '@ngrx/store';
+import { Observable } from 'rxjs';
 import { User } from 'src/app/classes/user';
-import { Response } from 'src/app/interfaces/response';
+import { DialogDisplayState } from 'src/app/interfaces/dialogDisplayState';
 import { AuthService } from 'src/app/services/auth/auth.service';
-import { UserService } from 'src/app/services/user/user.service';
+import {
+  changeAccountNumberDialogDisplay,
+  changePasswordDialogDisplay,
+  changeUsernameDialogDisplay,
+  Props,
+} from 'src/app/state/dialogDisplay.actions';
+import {
+  getChangeAccountNumberDialogDisplay,
+  getChangePasswordDialogDisplay,
+  getChangeUsernameDialogDisplay,
+} from 'src/app/state/dialogDisplay.selectors';
 
 @Component({
   selector: 'app-user-profile',
@@ -10,56 +22,65 @@ import { UserService } from 'src/app/services/user/user.service';
   styleUrls: ['./user-profile.component.css'],
 })
 export class UserProfileComponent implements OnInit {
-  changeUsernameDialogDisplay!: boolean;
-  changePasswordDialogDisplay!: boolean;
-  editAccountNumberDialogDisplay!: boolean;
+  authUser: User | undefined;
 
-  currentUser!: User | undefined;
+  changeUsernameDialogDisplay$: Observable<boolean>;
+  changePasswordDialogDisplay$: Observable<boolean>;
+  changeAccountNumberDialogDisplay$: Observable<boolean>;
 
   constructor(
-    private userService: UserService,
-    private authService: AuthService
-  ) {}
+    private authService: AuthService,
+    private store: Store<{
+      dialogDisplay: DialogDisplayState;
+    }>
+  ) {
+    // Get auth user profile
+    this.authService.getAuthUser().subscribe((user) => {
+      this.authUser = user;
+      this.authUser.account_number =
+        this.authUser.account_number ?? 'Not set up yet';
+    });
 
-  ngOnInit(): void {
-    this.getUserDetail();
+    this.changeUsernameDialogDisplay$ = this.store.select(
+      getChangeUsernameDialogDisplay
+    );
+    this.changePasswordDialogDisplay$ = this.store.select(
+      getChangePasswordDialogDisplay
+    );
+    this.changeAccountNumberDialogDisplay$ = this.store.select(
+      getChangeAccountNumberDialogDisplay
+    );
   }
 
-  back(): void {
+  ngOnInit() {}
+
+  back() {
     history.back();
   }
 
-  showChangeUsernameDialog(): void {
-    this.changeUsernameDialogDisplay = true;
+  //Dialog utility function
+
+  showChangeUsernameDialog() {
+    this.store.dispatch(changeUsernameDialogDisplay({ display: true }));
   }
 
-  showChangePasswordDialog(): void {
-    this.changePasswordDialogDisplay = true;
+  showChangePasswordDialog() {
+    this.store.dispatch(changePasswordDialogDisplay({ display: true }));
   }
 
-  showEditAccountNumberDialog(): void {
-    this.editAccountNumberDialogDisplay = true;
+  showEditAccountNumberDialog() {
+    this.store.dispatch(changeAccountNumberDialogDisplay({ display: true }));
   }
 
-  hideDialog(): void {
-    this.changeUsernameDialogDisplay = false;
-    this.changePasswordDialogDisplay = false;
-    this.editAccountNumberDialogDisplay = false;
+  changeUsernameDialogDisplayAction(actionProbs: Props): Action {
+    return changeUsernameDialogDisplay(actionProbs);
   }
 
-  getUserDetail(): void {
-    this.userService.getUserDetail().subscribe((res: Response<User>) => {
-      const fetchedUser = res.output.data;
+  changePasswordDialogDisplayAction(actionProbs: Props): Action {
+    return changePasswordDialogDisplay(actionProbs);
+  }
 
-      const currentUserString = localStorage.getItem('currentUser')!;
-      if (currentUserString) {
-        fetchedUser.account_number =
-          fetchedUser.account_number ?? 'Not set up yet';
-        this.currentUser = fetchedUser;
-        this.currentUser.access_token =
-          JSON.parse(currentUserString).access_token;
-        localStorage.setItem('currentUser', JSON.stringify(this.currentUser));
-      }
-    });
+  changeAccountNumberDialogDisplayAction(actionProbs: Props): Action {
+    return changeAccountNumberDialogDisplay(actionProbs);
   }
 }

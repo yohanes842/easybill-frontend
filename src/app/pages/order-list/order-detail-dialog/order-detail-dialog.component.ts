@@ -21,7 +21,9 @@ export class OrderDetailsComponent implements OnInit {
   display: boolean = true;
 
   constructor(private authService: AuthService) {
-    this.currentUser = this.authService.getCurrentUser() as User;
+    this.authService
+      .getAuthUser()
+      .subscribe((user) => (this.currentUser = user));
   }
 
   ngOnInit(): void {}

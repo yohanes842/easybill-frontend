@@ -21,7 +21,11 @@ export class OrderService {
   }
 
   public getCurrentOrder(): OrderHeader | null {
-    return this.currentOrder;
+    const stringOfCurrentOrder = localStorage.getItem('currentOrder');
+
+    //Set currentOrder retrieving process
+    if (stringOfCurrentOrder) return JSON.parse(stringOfCurrentOrder);
+    else return null;
   }
 
   public setViewedOrder(orderId: Number, orderHeader: OrderHeader): void {

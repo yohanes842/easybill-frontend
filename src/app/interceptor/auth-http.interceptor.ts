@@ -20,13 +20,12 @@ export class AuthApiInterceptor implements HttpInterceptor {
   ): Observable<HttpEvent<any>> {
     this.loadingService.isLoading = true;
 
-    const user = localStorage.getItem('currentUser');
-    if (user) {
-      const token = JSON.parse(user).access_token; //get token
+    const accessToken = localStorage.getItem('accessToken');
+    if (accessToken) {
       const authRequest = req.clone({
         headers: req.headers
           .set('Content-Type', 'application/json')
-          .set('Authorization', 'Bearer ' + token),
+          .set('Authorization', 'Bearer ' + accessToken),
       });
       return next.handle(authRequest).pipe(
         tap({

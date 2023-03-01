@@ -1,16 +1,11 @@
-import {
-  Component,
-  EventEmitter,
-  OnInit,
-  Output,
-  ViewChild,
-} from '@angular/core';
-import { NgForm } from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
+import { Store } from '@ngrx/store';
 import { CustomErrorResponse } from 'src/app/classes/error-response';
-import { User } from 'src/app/classes/user';
 import { Severity } from 'src/app/enums/Severity';
+import { DialogDisplayState } from 'src/app/interfaces/dialogDisplayState';
 import { CustomMessageService } from 'src/app/services/message/custom-message.service';
 import { UserService } from 'src/app/services/user/user.service';
+import { changePasswordDialogDisplay } from 'src/app/state/dialogDisplay.actions';
 
 @Component({
   selector: 'change-password-form',
@@ -18,9 +13,6 @@ import { UserService } from 'src/app/services/user/user.service';
   styleUrls: ['./change-password-form.component.css'],
 })
 export class ChangePasswordFormComponent implements OnInit {
-  @Output() onSuccess: EventEmitter<void> = new EventEmitter();
-
-  currentUser!: User;
   currentPasswordString: String = '';
   newPasswordString: String = '';
   confirmPasswordString: String = '';
@@ -28,7 +20,8 @@ export class ChangePasswordFormComponent implements OnInit {
 
   constructor(
     private messageService: CustomMessageService,
-    private userService: UserService
+    private userService: UserService,
+    private store: Store<{ dialogDisplay: DialogDisplayState }>
   ) {}
 
   ngOnInit(): void {}
@@ -47,20 +40,21 @@ export class ChangePasswordFormComponent implements OnInit {
           this.newPasswordString,
           this.confirmPasswordString
         )
-        .subscribe(
-          () => {
-            this.errors = new Map();
+        .subscribe({
+          next: () => {
             this.messageService.showMessage(
               Severity.SUCCESS,
               'CHANGE PASSWORD SUCCESS'
             );
-            this.onSuccess.emit();
+            this.store.dispatch(
+              changePasswordDialogDisplay({ display: false })
+            );
           },
-          (error: CustomErrorResponse) => {
+          error: (error: CustomErrorResponse) => {
             const res = error.extra_message.match(/[A-z ]+\[(.+)\]/);
             const content = res![1];
 
-            this.errors = new Map();
+            this.errors.clear();
             content.split(',').forEach((s) => {
               const [key, value] = s.split(':');
               this.errors.set(key, value);
@@ -70,8 +64,8 @@ export class ChangePasswordFormComponent implements OnInit {
               Severity.ERROR,
               error.code.replace(/_/g, ' ')
             );
-          }
-        );
+          },
+        });
     }
   }
 }

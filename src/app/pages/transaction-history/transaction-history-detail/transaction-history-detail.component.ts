@@ -15,7 +15,9 @@ export class TransactionHistoryDetailComponent implements OnInit {
   currentUser!: User;
 
   constructor(private authService: AuthService) {
-    this.currentUser = this.authService.getCurrentUser() as User;
+    this.authService
+      .getAuthUser()
+      .subscribe((user) => (this.currentUser = user));
   }
 
   ngOnInit(): void {}

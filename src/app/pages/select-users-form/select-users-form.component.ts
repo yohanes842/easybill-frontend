@@ -23,16 +23,16 @@ export class SelectusersFormComponent implements OnInit {
   addUserDialogDisplay: Boolean = false;
   participantListDialogDisplay: Boolean = false;
 
-  users!: User[];
-  selectedUserDropdown!: User | undefined;
-  dropdownFilter!: String;
+  currentOrder: OrderHeader;
+  currentUser: User;
 
+  users: User[];
+  dropdownFilter: String;
   participants: User[] = [];
-  username!: string;
-  selectedParticipant!: User | null;
-  selectedSubOrder!: OrderDetail;
 
-  currentOrder!: OrderHeader;
+  selectedUserDropdown: User | null;
+  selectedParticipant: User | null;
+  selectedSubOrder: OrderDetail;
 
   constructor(
     private router: Router,
@@ -43,31 +43,29 @@ export class SelectusersFormComponent implements OnInit {
     private authService: AuthService
   ) {}
 
-  ngOnInit(): void {
-    const stringOfCurrentOrder = localStorage.getItem('currentOrder');
+  ngOnInit() {
+    // Get current Order from localStorage
+    const tempCurrentOrder = this.orderService.getCurrentOrder();
+
+    if (!tempCurrentOrder) {
+      this.router.navigateByUrl(Route.ADD_ORDER_PATH);
+      return;
+    }
+    this.currentOrder = tempCurrentOrder;
+
+    // Get participant from localStorage
     const stringOfCurrentParticipantsInForm = localStorage.getItem(
       'currentParticipantsInForm'
     );
-    let retrievedCurrentOrder: OrderHeader | null;
-
-    //Set currentOrder retrieving process
-    if (stringOfCurrentOrder) {
-      retrievedCurrentOrder = JSON.parse(stringOfCurrentOrder);
-    } else retrievedCurrentOrder = this.orderService.getCurrentOrder();
-
-    if (!retrievedCurrentOrder) {
-      this.router.navigateByUrl(Route.ADD_ORDER_PATH);
-      return;
-    } else this.currentOrder = retrievedCurrentOrder;
 
     this.participants = stringOfCurrentParticipantsInForm
       ? JSON.parse(stringOfCurrentParticipantsInForm)
       : [];
 
     //Set users
-    this.userService.getUsers().subscribe(
-      (response: any) => {
-        this.users = response.output.data;
+    this.userService.getUsers().subscribe({
+      next: (res) => {
+        this.users = res.output.data;
         this.users = this.users.filter(
           (user) =>
             !this.participants
@@ -75,13 +73,14 @@ export class SelectusersFormComponent implements OnInit {
               .includes(user.id)
         );
       },
-      (error: HttpErrorResponse) => {
+      error: (error: HttpErrorResponse) => {
+        console.log(error);
         this.messageService.showMessage(Severity.ERROR, 'Request Error');
-      }
-    );
+      },
+    });
   }
 
-  addEventListernerToOptions(): void {
+  addEventListernerToOptions() {
     document
       .querySelectorAll('.p-dropdown-item')
       .forEach((el) =>
@@ -100,19 +99,19 @@ export class SelectusersFormComponent implements OnInit {
       });
   }
 
-  updateFilter(event: any): void {
-    this.selectedUserDropdown = undefined;
+  updateFilter() {
+    this.selectedUserDropdown = null;
   }
 
-  back(): void {
+  back() {
     this.router.navigateByUrl(Route.ADD_ORDER_PATH);
   }
 
-  showAddUserDialog(): void {
+  showAddUserDialog() {
     this.addUserDialogDisplay = true;
   }
 
-  showUserListDialog(event: Event, subOrder: OrderDetail): void {
+  showUserListDialog(event: Event, subOrder: OrderDetail) {
     event.stopPropagation();
     if (subOrder.users.length > 0) {
       this.selectedSubOrder = subOrder;
@@ -120,11 +119,11 @@ export class SelectusersFormComponent implements OnInit {
     }
   }
 
-  hideParticipantListDialog(): void {
+  hideParticipantListDialog() {
     this.participantListDialogDisplay = false;
   }
 
-  addParticipant(): void {
+  addParticipant() {
     const participant = this.participants.find(
       (user) => user.id === this.selectedUserDropdown!.id
     );
@@ -146,11 +145,8 @@ export class SelectusersFormComponent implements OnInit {
 
       let index = this.users.indexOf(user, 0);
       this.users.splice(index, 1);
-      console.log(this.selectedUserDropdown);
-      console.log(index);
-      console.log(this.users);
 
-      this.selectedUserDropdown = undefined;
+      this.selectedUserDropdown = null;
 
       localStorage.setItem('currentOrder', JSON.stringify(this.currentOrder));
       localStorage.setItem(
@@ -160,7 +156,7 @@ export class SelectusersFormComponent implements OnInit {
     }
   }
 
-  removeParticipant(index: number): void {
+  removeParticipant(index: number) {
     if (index < this.participants.length) {
       this.currentOrder.order_list.forEach((subOrder) => {
         const removalIndex = subOrder.users.findIndex(
@@ -245,10 +241,12 @@ export class SelectusersFormComponent implements OnInit {
             'Added new order'
           );
 
-          if (
-            res.output.data.buyer.username ==
-            this.authService.getCurrentUser()?.username
-          )
+          let authUsername = '';
+          this.authService
+            .getAuthUser()
+            .subscribe((user) => (authUsername = user.username));
+
+          if (res.output.data.buyer.username == authUsername)
             this.router.navigateByUrl(Route.PENDING_ORDERS_PATH);
           else this.router.navigateByUrl(Route.HOME_PATH);
 

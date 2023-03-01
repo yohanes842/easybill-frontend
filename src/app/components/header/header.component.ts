@@ -11,12 +11,14 @@ import { Route } from 'src/app/enums/Route';
   styleUrls: ['./header.component.css'],
 })
 export class HeaderComponent implements OnInit {
-  @Input() title!: string;
-  currentUser!: User;
+  @Input() title: string;
+  username: string;
   version: string = VERSION;
 
   constructor(private authService: AuthService, private router: Router) {
-    this.currentUser = this.authService.getCurrentUser() as User;
+    this.authService
+      .getAuthUser()
+      .subscribe((user) => (this.username = user.username));
   }
 
   ngOnInit(): void {}

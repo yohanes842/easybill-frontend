@@ -7,18 +7,18 @@ import { DialogDisplayState } from 'src/app/interfaces/dialogDisplayState';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { CustomMessageService } from 'src/app/services/message/custom-message.service';
 import { UserService } from 'src/app/services/user/user.service';
-import { changeUsernameDialogDisplay } from 'src/app/state/dialogDisplay.actions';
+import { changeAccountNumberDialogDisplay } from 'src/app/state/dialogDisplay.actions';
 
 @Component({
-  selector: 'change-username-form',
-  templateUrl: './change-username-form.component.html',
-  styleUrls: ['./change-username-form.component.css'],
+  selector: 'change-account-number-form',
+  templateUrl: './change-account-number-form.component.html',
+  styleUrls: ['./change-account-number-form.component.css'],
 })
-export class ChangeUsernameFormComponent implements OnInit {
+export class ChangeAccountNumberFormComponent implements OnInit {
   authUser: User;
 
-  currentPasswordString: string = '';
-  newUsernameString: string = '';
+  passwordString: string;
+  newAccountNumber: string;
   errors: Map<string, string> = new Map();
 
   constructor(
@@ -38,34 +38,27 @@ export class ChangeUsernameFormComponent implements OnInit {
   ngOnInit() {}
 
   submit() {
-    if (this.newUsernameString.length <= 0) {
+    if (this.authUser.account_number == this.newAccountNumber) {
       this.messageService.showMessage(
         Severity.ERROR,
         'INPUT ERROR',
-        'Username must be filled'
+        'Account number must be different with the old one!'
       );
-
-      return;
-    } else if (this.newUsernameString == this.authUser.username) {
-      this.messageService.showMessage(
-        Severity.ERROR,
-        'INPUT ERROR',
-        'Username must be different'
-      );
-
       return;
     }
 
     this.userService
-      .changeUserUsername(this.currentPasswordString!, this.newUsernameString)
+      .changeUserAccountNumber(this.passwordString!, this.newAccountNumber!)
       .subscribe({
         next: () => {
           this.messageService.showMessage(
             Severity.SUCCESS,
-            'CHANGE USERNAME SUCCESS'
+            'CHANGE ACCOUNT NUMBER SUCCESS'
           );
-          this.authUser.username = this.newUsernameString.toLowerCase();
-          this.store.dispatch(changeUsernameDialogDisplay({ display: false }));
+          this.authUser.account_number = this.newAccountNumber;
+          this.store.dispatch(
+            changeAccountNumberDialogDisplay({ display: false })
+          );
         },
         error: (error: CustomErrorResponse) => {
           const res = error.extra_message.match(/[A-z ]+\[(.+)\]/);

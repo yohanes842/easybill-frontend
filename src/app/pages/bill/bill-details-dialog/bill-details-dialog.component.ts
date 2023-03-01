@@ -29,7 +29,9 @@ export class BillDetailsDialogComponent implements OnInit {
     private messageService: CustomMessageService,
     private authService: AuthService
   ) {
-    this.currentUser = this.authService.getCurrentUser() as User;
+    this.authService
+      .getAuthUser()
+      .subscribe((user) => (this.currentUser = user));
   }
 
   ngOnInit(): void {}

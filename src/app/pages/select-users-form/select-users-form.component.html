@@ -29,7 +29,7 @@
           [showClear]="true"
           placeholder="Add participant"
           (onShow)="addEventListernerToOptions()"
-          (onFilter)="updateFilter($event)"
+          (onFilter)="updateFilter()"
         >
           <ng-template pTemplate="selectedItem">
             <div *ngIf="selectedUserDropdown">

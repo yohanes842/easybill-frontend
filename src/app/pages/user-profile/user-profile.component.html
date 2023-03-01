@@ -25,21 +25,21 @@
         shape="circle"
         size="xlarge"
       >
-        {{ currentUser?.username | slice : 0 : 1 | uppercase }}
+        {{ authUser?.username | slice : 0 : 1 | uppercase }}
       </p-avatar>
       <h3 class="m-0 mt-4">
-        {{ currentUser?.username | uppercase }}
+        {{ authUser?.username | uppercase }}
       </h3>
     </div>
     <div class="text-center">
       <h4 class="m-1">Your account number :</h4>
       <div class="flex align-items-center justify-content-center gap-3">
         <h4 class="m-0" style="color: var(--custom-orange-200)">
-          {{ currentUser?.account_number }}
+          {{ authUser?.account_number }}
         </h4>
         <copy-button
-          *ngIf="currentUser?.account_number != 'Not set up yet'"
-          [stringToBeCopy]="currentUser?.account_number ?? null"
+          *ngIf="authUser?.account_number != 'Not set up yet'"
+          [stringToBeCopy]="authUser?.account_number ?? null"
         ></copy-button>
       </div>
     </div>
@@ -67,38 +67,41 @@
   </div>
 </div>
 
-<popup-dialog [(display)]="changeUsernameDialogDisplay">
+<popup-dialog
+  *ngIf="changeUsernameDialogDisplay$ | async"
+  [popupStateAction]="changeUsernameDialogDisplayAction"
+>
   <ng-container header>
     <h3 class="m-0 p-0">Change Username</h3>
   </ng-container>
 
-  <ng-container *ngIf="currentUser && changeUsernameDialogDisplay" content>
-    <change-username-form
-      [currentUser]="currentUser!"
-      (onSuccess)="hideDialog()"
-    ></change-username-form>
+  <ng-container content>
+    <change-username-form></change-username-form>
   </ng-container>
 </popup-dialog>
 
-<popup-dialog [(display)]="changePasswordDialogDisplay">
+<popup-dialog
+  *ngIf="changePasswordDialogDisplay$ | async"
+  [popupStateAction]="changePasswordDialogDisplayAction"
+>
   <ng-container header>
     <h3 class="m-0 p-0">Change Password</h3>
   </ng-container>
 
-  <ng-container *ngIf="changePasswordDialogDisplay" content>
-    <change-password-form (onSuccess)="hideDialog()"></change-password-form>
+  <ng-container content>
+    <change-password-form></change-password-form>
   </ng-container>
 </popup-dialog>
 
-<popup-dialog [(display)]="editAccountNumberDialogDisplay">
+<popup-dialog
+  *ngIf="changeAccountNumberDialogDisplay$ | async"
+  [popupStateAction]="changeAccountNumberDialogDisplayAction"
+>
   <ng-container header>
     <h3 class="m-0 p-0">Edit Account Number</h3>
   </ng-container>
 
-  <ng-container *ngIf="currentUser && editAccountNumberDialogDisplay" content>
-    <edit-account-number-form
-      [currentUser]="currentUser!"
-      (onSuccess)="hideDialog()"
-    ></edit-account-number-form>
+  <ng-container content>
+    <change-account-number-form></change-account-number-form>
   </ng-container>
 </popup-dialog>
