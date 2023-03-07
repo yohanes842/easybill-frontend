@@ -4,8 +4,8 @@
 
 export const environment = {
   production: false,
-  // url: 'https://easybill.arville.net',
-  url: 'https://easybill-beta.arville.net',
+  url: 'https://easybill.arville.net',
+  // url: 'https://easybill-beta.arville.net',
   // url: 'http://p090whp547094.intra.bca.co.id:9090',
   // url: 'http://192.168.100.92:9090',
   // url: 'http://localhost:9090',
