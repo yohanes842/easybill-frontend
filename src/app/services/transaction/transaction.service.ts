@@ -11,10 +11,9 @@ import { environment as env } from 'src/environments/environment';
 export class TransactionService {
   constructor(private http: HttpClient) {}
 
-  public getTransactionsHistory(page: number): Observable<any> {
+  public getTransactionsHistory(page: number): Observable<Response<User>> {
     let params = new URLSearchParams({ page: page.toString() });
-    // return this.http.get<Response<User>>(`${env.url}/api/users`);
-    return this.http.get<any>(
+    return this.http.get<Response<User>>(
       `${env.url}/api/bill-transactions/history?${params.toString()}`
     );
   }

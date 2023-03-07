@@ -155,7 +155,6 @@ export class AddFormComponent implements OnInit {
       }
 
       this.saveToLocalStorage();
-      this.orderService.setCurrentOrder(this.currentOrder);
 
       this.router.navigateByUrl(Route.ADD_ORDER_USER_PATH);
     }

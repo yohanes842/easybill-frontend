@@ -1,10 +1,15 @@
-import { HttpErrorResponse } from '@angular/common/http';
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { Store } from '@ngrx/store';
 import { OrderHeader } from 'src/app/classes/order-header';
 import { Transaction } from 'src/app/classes/transaction';
-import { Severity } from 'src/app/enums/Severity';
-import { CustomMessageService } from 'src/app/services/message/custom-message.service';
-import { OrderService } from 'src/app/services/order/order.service';
+import { AppState } from 'src/app/state/app.state';
+import { setSelectedOrder } from 'src/app/state/currentSelected/currentSelected.actions';
+import {
+  getSelectedOrder,
+  getSelectedTransaction,
+} from 'src/app/state/currentSelected/currentSelected.selectors';
+import { setDetailOrderDialogDisplay } from 'src/app/state/dialogDisplay/dialogDisplay.actions';
+import { getDetailOrderDialogDisplay } from 'src/app/state/dialogDisplay/dialogDisplay.selectors';
 
 @Component({
   selector: 'transaction-details-dialog',
@@ -12,47 +17,33 @@ import { OrderService } from 'src/app/services/order/order.service';
   styleUrls: ['./transaction-details-dialog.component.css'],
 })
 export class TransactionDetailsDialogComponent implements OnInit {
-  @Input() dialogDisplay!: boolean;
-  @Output() dialogDisplayChange: EventEmitter<boolean> = new EventEmitter();
-  @Input() selectedTransaction!: Transaction;
+  selectedTransaction!: Transaction;
 
   selectedOrder!: OrderHeader;
-  isDetailSection: boolean = false;
+  isDetailSection: boolean;
 
-  constructor(
-    private orderService: OrderService,
-    private messageService: CustomMessageService
-  ) {}
-
-  ngOnInit(): void {}
-
-  showDetail(order: OrderHeader): void {
-    this.selectedOrder = this.orderService.getViewedOrder(order.id!)!;
-
-    if (this.selectedOrder) this.isDetailSection = true;
-    else {
-      this.orderService.getOrder(order.id!).subscribe(
-        (res: any) => {
-          this.selectedOrder = res.output.data;
-          this.orderService.setViewedOrder(
-            this.selectedOrder.id!,
-            this.selectedOrder
-          );
-          this.isDetailSection = true;
-        },
-        (error: HttpErrorResponse) => {
-          this.messageService.showMessage(Severity.ERROR, 'REQUEST ERROR');
-        }
-      );
-    }
+  constructor(private store: Store<AppState>) {
+    this.store
+      .select(getSelectedOrder)
+      .subscribe((res) => (this.selectedOrder = res));
+    this.store
+      .select(getSelectedTransaction)
+      .subscribe((res) => (this.selectedTransaction = res));
+    this.store
+      .select(getDetailOrderDialogDisplay)
+      .subscribe((res) => (this.isDetailSection = res));
   }
 
-  backToRelatedOrders(): void {
-    this.isDetailSection = false;
+  ngOnInit() {
+    this.store.dispatch(setDetailOrderDialogDisplay({ display: false }));
   }
 
-  displayChange(): void {
-    this.isDetailSection = false;
-    this.dialogDisplayChange.emit(this.dialogDisplay);
+  backToRelatedOrders() {
+    this.store.dispatch(setDetailOrderDialogDisplay({ display: false }));
+    this.store.dispatch(setSelectedOrder({ order: new OrderHeader() }));
+  }
+
+  displayChange() {
+    this.store.dispatch(setDetailOrderDialogDisplay({ display: false }));
   }
 }

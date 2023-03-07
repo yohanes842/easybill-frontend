@@ -1,4 +1,4 @@
-<popup-dialog [(display)]="dialogDisplay" (displayChange)="displayChange()">
+<popup-dialog>
   <ng-container header>
     <ng-container *ngIf="!isDetailSection; else detailHeader">
       <h3 class="m-0 p-0">Related Order(s)</h3>
@@ -11,9 +11,7 @@
         label="back"
         (click)="backToRelatedOrders()"
       ></button>
-      <order-detail-header
-        [selectedOrder]="selectedOrder"
-      ></order-detail-header>
+      <order-detail-header></order-detail-header>
     </ng-template>
   </ng-container>
 
@@ -25,24 +23,19 @@
           let i = index
         "
       >
-        <transaction-related-order-content
-          [relatedOrder]="relatedOrder"
-          [index]="i"
-          (onShowDetail)="showDetail($event)"
-        ></transaction-related-order-content>
+        <div [class.border-top-1]="i > 0" class="w-full px-3 pt-2 pb-1">
+          <transaction-related-order-content
+            [relatedOrder]="relatedOrder"
+          ></transaction-related-order-content>
+        </div>
       </div>
     </ng-container>
 
     <ng-template #detailContent>
-      <ng-container *ngIf="selectedTransaction && selectedOrder">
-        <relevant-order-detail-content
-          [selectedOrder]="selectedOrder"
-          [selectedUser]="selectedTransaction.payer"
-        ></relevant-order-detail-content>
+      <ng-container>
+        <relevant-order-detail-content></relevant-order-detail-content>
 
-        <order-detail-summary-content
-          [selectedOrder]="selectedOrder"
-        ></order-detail-summary-content>
+        <order-detail-summary-content></order-detail-summary-content>
       </ng-container>
     </ng-template>
   </ng-container>

@@ -3,8 +3,8 @@ import { OrderHeader } from './order-header';
 import { Transaction } from './transaction';
 
 export class User {
-  id?: number;
-  username!: string;
+  id: number;
+  username: string;
   account_number?: string | null;
   order_list?: OrderHeader[];
   pending_orders?: OrderHeader[];

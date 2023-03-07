@@ -73,8 +73,7 @@ export class SelectusersFormComponent implements OnInit {
               .includes(user.id)
         );
       },
-      error: (error: HttpErrorResponse) => {
-        console.log(error);
+      error: () => {
         this.messageService.showMessage(Severity.ERROR, 'Request Error');
       },
     });
@@ -251,7 +250,6 @@ export class SelectusersFormComponent implements OnInit {
           else this.router.navigateByUrl(Route.HOME_PATH);
 
           localStorage.removeItem('currentOrder');
-          this.orderService.setCurrentOrder(null);
         });
     } else {
       this.messageService.showMessage(

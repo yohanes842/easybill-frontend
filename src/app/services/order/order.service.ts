@@ -10,15 +10,9 @@ import { environment as env } from 'src/environments/environment';
   providedIn: 'root',
 })
 export class OrderService {
-  constructor(private http: HttpClient) {}
-
-  currentOrder!: OrderHeader | null;
   viewedOrders: Map<Number, OrderHeader> = new Map();
 
-  public setCurrentOrder(orderHeader: OrderHeader | null): void {
-    this.currentOrder = orderHeader;
-    return;
-  }
+  constructor(private http: HttpClient) {}
 
   public getCurrentOrder(): OrderHeader | null {
     const stringOfCurrentOrder = localStorage.getItem('currentOrder');
@@ -28,7 +22,7 @@ export class OrderService {
     else return null;
   }
 
-  public setViewedOrder(orderId: Number, orderHeader: OrderHeader): void {
+  public setViewedOrder(orderId: Number, orderHeader: OrderHeader) {
     this.viewedOrders.set(orderId, orderHeader);
   }
 

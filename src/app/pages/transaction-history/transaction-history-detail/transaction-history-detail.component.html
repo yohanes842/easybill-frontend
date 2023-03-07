@@ -5,9 +5,7 @@
 >
   <div class="flex justify-content-between">
     <div class="flex flex-column">
-      <ng-container
-        *ngIf="transaction.receiver.id === currentUser!.id; else to"
-      >
+      <ng-container *ngIf="transaction.receiver.id === currentUserId; else to">
         <p class="m-0 text-sm text-secondary">
           <span>from</span>
           <span>

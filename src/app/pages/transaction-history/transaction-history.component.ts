@@ -1,14 +1,14 @@
-import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs';
 import { LazyLoadPaging } from 'src/app/classes/lazy-load-paging';
-import { OrderHeader } from 'src/app/classes/order-header';
 import { Transaction } from 'src/app/classes/transaction';
-import { User } from 'src/app/classes/user';
 import { Severity } from 'src/app/enums/Severity';
 import { LazyLoadService } from 'src/app/services/lazy-load/lazy-load.service';
 import { CustomMessageService } from 'src/app/services/message/custom-message.service';
-import { OrderService } from 'src/app/services/order/order.service';
 import { TransactionService } from 'src/app/services/transaction/transaction.service';
+import { AppState } from 'src/app/state/app.state';
+import { getTransactionDetailsDialogDisplay } from 'src/app/state/dialogDisplay/dialogDisplay.selectors';
 
 @Component({
   selector: 'app-transaction-history',
@@ -16,14 +16,8 @@ import { TransactionService } from 'src/app/services/transaction/transaction.ser
   styleUrls: ['./transaction-history.component.css'],
 })
 export class TransactionHistoryComponent implements OnInit {
-  currentUser!: User;
-  selectedTransaction!: Transaction;
-  transactions!: Transaction[];
-  lazyPaging!: LazyLoadPaging<Transaction>;
-
-  relatedOrderDialogDisplay: boolean = false;
-  orderDetailDialogDisplay: boolean = false;
-  selectedOrder!: OrderHeader;
+  lazyPaging: LazyLoadPaging<Transaction> = new LazyLoadPaging<Transaction>();
+  relatedOrderDialogDisplay$: Observable<boolean>;
 
   onScrollEvent = () => {
     if (this.lazyLoadService.isNeedLazyLoad()) {
@@ -35,50 +29,51 @@ export class TransactionHistoryComponent implements OnInit {
   constructor(
     private transactionService: TransactionService,
     private messageService: CustomMessageService,
-    private lazyLoadService: LazyLoadService<Transaction>
-  ) {}
+    private lazyLoadService: LazyLoadService<Transaction>,
+    private store: Store<Pick<AppState, 'currentSelected'>>
+  ) {
+    this.relatedOrderDialogDisplay$ = this.store.select(
+      getTransactionDetailsDialogDisplay
+    );
+  }
 
-  ngDoCheck(): void {
+  ngDoCheck() {
     if (this.lazyLoadService.currentLazyPaging)
       this.lazyLoadService.calculateMaxScroll();
   }
 
-  ngOnInit(): void {
+  ngOnInit() {
     window.addEventListener('scroll', this.onScrollEvent);
-    this.lazyPaging = new LazyLoadPaging();
     this.loadData();
   }
 
-  loadData(): void {
+  loadData() {
     this.transactionService
       .getTransactionsHistory(this.lazyPaging.nextPage)
-      .subscribe(
-        (res: any) => {
-          this.transactions = res.output.data.bill_transaction_list;
-          this.currentUser = res.output.data;
-          let latestFetchTransactions: Transaction[] = this.currentUser
-            .bill_transaction_list as Transaction[];
+      .subscribe({
+        next: (res) => {
+          const currentUser = res.output.data;
+          const latestFetchTransactions = currentUser.bill_transaction_list;
+
+          if (!latestFetchTransactions) {
+            this.messageService.showMessage(Severity.ERROR, 'REQUEST ERROR');
+            return;
+          }
 
           this.lazyPaging.objects = this.lazyPaging.objects.concat([
             ...latestFetchTransactions,
           ]);
-          this.lazyPaging.maxPage = res.output.total_pages;
-          this.lazyPaging.pageFetchIndicator = res.output.page;
+          this.lazyPaging.maxPage = res.output.total_pages!;
+          this.lazyPaging.pageFetchIndicator = res.output.page!;
           this.lazyPaging.nextPage =
             res.output.total_pages === res.output.page &&
             res.output.total_pages != 0
-              ? res.output.total_pages
-              : res.output.page + 1;
+              ? res.output.total_pages!
+              : res.output.page! + 1;
           this.lazyLoadService.setCurrentLazyPaging(this.lazyPaging);
         },
-        (error: HttpErrorResponse) => {
-          this.messageService.showMessage(Severity.ERROR, 'REQUEST ERROR');
-        }
-      );
-  }
-
-  showDialog(transaction: Transaction): void {
-    this.selectedTransaction = transaction;
-    this.relatedOrderDialogDisplay = true;
+        error: () =>
+          this.messageService.showMessage(Severity.ERROR, 'REQUEST ERROR'),
+      });
   }
 }

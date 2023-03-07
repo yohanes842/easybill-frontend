@@ -1,8 +1,13 @@
-import { outputAst } from '@angular/compiler';
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
+import { Store } from '@ngrx/store';
 import { Transaction } from 'src/app/classes/transaction';
-import { User } from 'src/app/classes/user';
 import { AuthService } from 'src/app/services/auth/auth.service';
+import { AppState } from 'src/app/state/app.state';
+import { setSelectedTransaction } from 'src/app/state/currentSelected/currentSelected.actions';
+import {
+  setDialogDisplayAction,
+  setTransactionDetailsDialogDisplay,
+} from 'src/app/state/dialogDisplay/dialogDisplay.actions';
 
 @Component({
   selector: 'transaction-history-detail',
@@ -11,18 +16,24 @@ import { AuthService } from 'src/app/services/auth/auth.service';
 })
 export class TransactionHistoryDetailComponent implements OnInit {
   @Input() transaction!: Transaction;
-  @Output() onSeeDetails: EventEmitter<Transaction> = new EventEmitter();
-  currentUser!: User;
+  currentUserId: number;
 
-  constructor(private authService: AuthService) {
+  constructor(
+    private authService: AuthService,
+    private store: Store<AppState>
+  ) {
     this.authService
       .getAuthUser()
-      .subscribe((user) => (this.currentUser = user));
+      .subscribe((user) => (this.currentUserId = user.id));
   }
 
-  ngOnInit(): void {}
+  ngOnInit() {}
 
-  showDialog(transaction: Transaction): void {
-    this.onSeeDetails.emit(transaction);
+  showDialog(transaction: Transaction) {
+    this.store.dispatch(setSelectedTransaction({ transaction: transaction }));
+    this.store.dispatch(setTransactionDetailsDialogDisplay({ display: true }));
+    this.store.dispatch(
+      setDialogDisplayAction({ action: setTransactionDetailsDialogDisplay })
+    );
   }
 }

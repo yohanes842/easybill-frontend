@@ -30,7 +30,6 @@
       >
         <transaction-history-detail
           [transaction]="transaction"
-          (onSeeDetails)="showDialog($event)"
         ></transaction-history-detail>
       </div>
     </ng-template>
@@ -44,6 +43,5 @@
 ></transaction-related-orders-dialog> -->
 
 <transaction-details-dialog
-  [(dialogDisplay)]="relatedOrderDialogDisplay"
-  [selectedTransaction]="selectedTransaction"
+  *ngIf="relatedOrderDialogDisplay$ | async"
 ></transaction-details-dialog>
