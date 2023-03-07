@@ -2,10 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { CustomErrorResponse } from 'src/app/classes/error-response';
 import { Severity } from 'src/app/enums/Severity';
-import { DialogDisplayState } from 'src/app/interfaces/dialogDisplayState';
 import { CustomMessageService } from 'src/app/services/message/custom-message.service';
 import { UserService } from 'src/app/services/user/user.service';
-import { changePasswordDialogDisplay } from 'src/app/state/dialogDisplay.actions';
+import { AppState } from 'src/app/state/app.state';
+import { setChangePasswordDialogDisplay } from 'src/app/state/dialogDisplay/dialogDisplay.actions';
 
 @Component({
   selector: 'change-password-form',
@@ -21,7 +21,7 @@ export class ChangePasswordFormComponent implements OnInit {
   constructor(
     private messageService: CustomMessageService,
     private userService: UserService,
-    private store: Store<{ dialogDisplay: DialogDisplayState }>
+    private store: Store<Pick<AppState, 'currentSelected'>>
   ) {}
 
   ngOnInit(): void {}
@@ -47,7 +47,7 @@ export class ChangePasswordFormComponent implements OnInit {
               'CHANGE PASSWORD SUCCESS'
             );
             this.store.dispatch(
-              changePasswordDialogDisplay({ display: false })
+              setChangePasswordDialogDisplay({ display: false })
             );
           },
           error: (error: CustomErrorResponse) => {

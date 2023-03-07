@@ -1,7 +1,8 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Action, Store } from '@ngrx/store';
-import { DialogDisplayState } from 'src/app/interfaces/dialogDisplayState';
-import { Props } from 'src/app/state/dialogDisplay.actions';
+import { AppState } from 'src/app/state/app.state';
+import { Props } from 'src/app/state/dialogDisplay/dialogDisplay.actions';
+import { getDialogDisplayAction } from 'src/app/state/dialogDisplay/dialogDisplay.selectors';
 
 @Component({
   selector: 'popup-dialog',
@@ -11,8 +12,9 @@ import { Props } from 'src/app/state/dialogDisplay.actions';
 export class DialogComponent implements OnInit {
   @Input() display: boolean = true;
   @Output() displayChange: EventEmitter<boolean> = new EventEmitter();
+
   @Input() customStyle: any;
-  @Input() popupStateAction!: (actionProps: Props) => Action;
+  popupStateAction: (actionProps: Props) => Action;
 
   defaultStyle = {
     width: 'calc(100vw - 2rem)',
@@ -20,11 +22,15 @@ export class DialogComponent implements OnInit {
     overflow: 'visible',
   };
 
-  constructor(private store: Store<{ dialogDisplay: DialogDisplayState }>) {}
+  constructor(private store: Store<Pick<AppState, 'currentSelected'>>) {
+    this.store
+      .select(getDialogDisplayAction)
+      .subscribe((res) => (this.popupStateAction = res));
+  }
 
-  ngOnInit(): void {}
+  ngOnInit() {}
 
-  hideDialog(): void {
+  hideDialog() {
     this.store.dispatch(this.popupStateAction({ display: false }));
     this.displayChange.emit(this.display);
   }

@@ -67,10 +67,7 @@
   </div>
 </div>
 
-<popup-dialog
-  *ngIf="changeUsernameDialogDisplay$ | async"
-  [popupStateAction]="changeUsernameDialogDisplayAction"
->
+<popup-dialog *ngIf="changeUsernameDialogDisplay$ | async">
   <ng-container header>
     <h3 class="m-0 p-0">Change Username</h3>
   </ng-container>
@@ -80,10 +77,7 @@
   </ng-container>
 </popup-dialog>
 
-<popup-dialog
-  *ngIf="changePasswordDialogDisplay$ | async"
-  [popupStateAction]="changePasswordDialogDisplayAction"
->
+<popup-dialog *ngIf="changePasswordDialogDisplay$ | async">
   <ng-container header>
     <h3 class="m-0 p-0">Change Password</h3>
   </ng-container>
@@ -93,10 +87,7 @@
   </ng-container>
 </popup-dialog>
 
-<popup-dialog
-  *ngIf="changeAccountNumberDialogDisplay$ | async"
-  [popupStateAction]="changeAccountNumberDialogDisplayAction"
->
+<popup-dialog *ngIf="changeAccountNumberDialogDisplay$ | async">
   <ng-container header>
     <h3 class="m-0 p-0">Edit Account Number</h3>
   </ng-container>

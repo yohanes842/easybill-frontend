@@ -1,20 +1,20 @@
 import { Component, OnInit } from '@angular/core';
-import { Action, Store } from '@ngrx/store';
+import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { User } from 'src/app/classes/user';
-import { DialogDisplayState } from 'src/app/interfaces/dialogDisplayState';
 import { AuthService } from 'src/app/services/auth/auth.service';
+import { AppState } from 'src/app/state/app.state';
 import {
-  changeAccountNumberDialogDisplay,
-  changePasswordDialogDisplay,
-  changeUsernameDialogDisplay,
-  Props,
-} from 'src/app/state/dialogDisplay.actions';
+  setChangeAccountNumberDialogDisplay,
+  setChangePasswordDialogDisplay,
+  setChangeUsernameDialogDisplay,
+  setDialogDisplayAction,
+} from 'src/app/state/dialogDisplay/dialogDisplay.actions';
 import {
   getChangeAccountNumberDialogDisplay,
   getChangePasswordDialogDisplay,
   getChangeUsernameDialogDisplay,
-} from 'src/app/state/dialogDisplay.selectors';
+} from 'src/app/state/dialogDisplay/dialogDisplay.selectors';
 
 @Component({
   selector: 'app-user-profile',
@@ -30,9 +30,7 @@ export class UserProfileComponent implements OnInit {
 
   constructor(
     private authService: AuthService,
-    private store: Store<{
-      dialogDisplay: DialogDisplayState;
-    }>
+    private store: Store<Pick<AppState, 'currentSelected'>>
   ) {
     // Get auth user profile
     this.authService.getAuthUser().subscribe((user) => {
@@ -61,26 +59,23 @@ export class UserProfileComponent implements OnInit {
   //Dialog utility function
 
   showChangeUsernameDialog() {
-    this.store.dispatch(changeUsernameDialogDisplay({ display: true }));
+    this.store.dispatch(setChangeUsernameDialogDisplay({ display: true }));
+    this.store.dispatch(
+      setDialogDisplayAction({ action: setChangeUsernameDialogDisplay })
+    );
   }
 
   showChangePasswordDialog() {
-    this.store.dispatch(changePasswordDialogDisplay({ display: true }));
+    this.store.dispatch(setChangePasswordDialogDisplay({ display: true }));
+    this.store.dispatch(
+      setDialogDisplayAction({ action: setChangePasswordDialogDisplay })
+    );
   }
 
   showEditAccountNumberDialog() {
-    this.store.dispatch(changeAccountNumberDialogDisplay({ display: true }));
-  }
-
-  changeUsernameDialogDisplayAction(actionProbs: Props): Action {
-    return changeUsernameDialogDisplay(actionProbs);
-  }
-
-  changePasswordDialogDisplayAction(actionProbs: Props): Action {
-    return changePasswordDialogDisplay(actionProbs);
-  }
-
-  changeAccountNumberDialogDisplayAction(actionProbs: Props): Action {
-    return changeAccountNumberDialogDisplay(actionProbs);
+    this.store.dispatch(setChangeAccountNumberDialogDisplay({ display: true }));
+    this.store.dispatch(
+      setDialogDisplayAction({ action: setChangeAccountNumberDialogDisplay })
+    );
   }
 }

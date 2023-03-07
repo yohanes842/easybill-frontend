@@ -27,7 +27,6 @@ export class AuthService {
         next: (res: Response<User>) => {
           this.authUser = res.output.data;
           localStorage.setItem('accessToken', this.authUser.access_token!);
-          console.log(localStorage.getItem('accessToken'));
         },
       })
     );

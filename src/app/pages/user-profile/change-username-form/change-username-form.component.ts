@@ -1,13 +1,13 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { CustomErrorResponse } from 'src/app/classes/error-response';
 import { User } from 'src/app/classes/user';
 import { Severity } from 'src/app/enums/Severity';
-import { DialogDisplayState } from 'src/app/interfaces/dialogDisplayState';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { CustomMessageService } from 'src/app/services/message/custom-message.service';
 import { UserService } from 'src/app/services/user/user.service';
-import { changeUsernameDialogDisplay } from 'src/app/state/dialogDisplay.actions';
+import { AppState } from 'src/app/state/app.state';
+import { setChangeUsernameDialogDisplay } from 'src/app/state/dialogDisplay/dialogDisplay.actions';
 
 @Component({
   selector: 'change-username-form',
@@ -25,7 +25,7 @@ export class ChangeUsernameFormComponent implements OnInit {
     private messageService: CustomMessageService,
     private userService: UserService,
     private authService: AuthService,
-    private store: Store<{ dialogDisplay: DialogDisplayState }>
+    private store: Store<Pick<AppState, 'currentSelected'>>
   ) {
     // Get auth user profile
     this.authService.getAuthUser().subscribe((user) => {
@@ -65,7 +65,9 @@ export class ChangeUsernameFormComponent implements OnInit {
             'CHANGE USERNAME SUCCESS'
           );
           this.authUser.username = this.newUsernameString.toLowerCase();
-          this.store.dispatch(changeUsernameDialogDisplay({ display: false }));
+          this.store.dispatch(
+            setChangeUsernameDialogDisplay({ display: false })
+          );
         },
         error: (error: CustomErrorResponse) => {
           const res = error.extra_message.match(/[A-z ]+\[(.+)\]/);
