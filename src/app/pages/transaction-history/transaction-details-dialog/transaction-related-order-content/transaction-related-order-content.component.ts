@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { relatedOrder } from 'src/app/classes/related-order';
 import { Transaction } from 'src/app/classes/transaction';
@@ -34,7 +34,7 @@ export class TransactionRelatedOrderContentComponent implements OnInit {
 
   ngOnInit() {}
 
-  showDetail(orderId: number): void {
+  showDetail(orderId: number) {
     let order = this.orderService.getViewedOrder(orderId)!;
 
     if (!order) {

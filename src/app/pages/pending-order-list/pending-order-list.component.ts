@@ -1,11 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { LazyLoadPaging } from 'src/app/classes/lazy-load-paging';
 import { OrderHeader } from 'src/app/classes/order-header';
 import { User } from 'src/app/classes/user';
 import { Route } from 'src/app/enums/Route';
-import { Response } from 'src/app/interfaces/response';
-import { LazyLoadService } from 'src/app/services/lazy-load/lazy-load.service';
 import { OrderService } from 'src/app/services/order/order.service';
 
 @Component({
@@ -23,32 +20,28 @@ export class PendingOrderListComponent implements OnInit {
 
   constructor(private orderService: OrderService, private router: Router) {}
 
-  ngOnInit(): void {
-    this.loadData();
+  ngOnInit() {
+    this.orderService.getPendingOrders().subscribe((res) => {
+      this.pendingOrders = res.output.data.pending_orders!;
+    });
   }
 
-  showDetail(selectedOrder: OrderHeader): void {
+  showDetail(selectedOrder: OrderHeader) {
     this.selectedOrder = selectedOrder;
     this.display = true;
   }
 
-  hideDetail(): void {
+  hideDetail() {
     this.display = false;
   }
 
-  removeOrder(order: OrderHeader): void {
+  removeOrder(order: OrderHeader) {
     let index = this.pendingOrders.indexOf(order);
     this.pendingOrders.splice(index, 1);
   }
 
-  approveOrder(order: OrderHeader): void {
+  approveOrder(order: OrderHeader) {
     this.removeOrder(order);
     this.router.navigateByUrl(Route.HOME_PATH);
-  }
-
-  loadData(): void {
-    this.orderService.getPendingOrders().subscribe((res: Response<User>) => {
-      this.pendingOrders = res.output.data.pending_orders!;
-    });
   }
 }

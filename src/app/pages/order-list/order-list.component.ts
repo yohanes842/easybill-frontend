@@ -1,15 +1,9 @@
-import {
-  Component,
-  DoCheck,
-  OnDestroy,
-  OnInit,
-  ɵclearResolutionOfComponentResourcesQueue,
-} from '@angular/core';
-import { TitleStrategy } from '@angular/router';
+import { Component, DoCheck, OnDestroy, OnInit } from '@angular/core';
 import { LazyLoadPaging } from 'src/app/classes/lazy-load-paging';
 import { OrderHeader } from 'src/app/classes/order-header';
 import { User } from 'src/app/classes/user';
 import { Status } from 'src/app/enums/Status';
+import { PagableOutputResponse } from 'src/app/interfaces/pagable-output-response';
 import { Response } from 'src/app/interfaces/response';
 import { LazyLoadService } from 'src/app/services/lazy-load/lazy-load.service';
 import { OrderService } from 'src/app/services/order/order.service';
@@ -142,7 +136,7 @@ export class OrderListComponent implements OnInit, DoCheck, OnDestroy {
 
   loadData(): void {
     const orderSubscriptions = (
-      res: Response<User>,
+      res: Response<PagableOutputResponse<User>>,
       currentLazyPage: LazyLoadPaging<OrderHeader>
     ): void => {
       if (currentLazyPage == this.currentLazyPage) {

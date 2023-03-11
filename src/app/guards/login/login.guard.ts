@@ -24,11 +24,8 @@ export class LoginGuard implements CanActivate {
     | Promise<boolean | UrlTree>
     | boolean
     | UrlTree {
-    let isLoggedIn = this.authService.isAuthenticated();
-    if (isLoggedIn) {
-      this.router.navigateByUrl(Route.HOME_PATH);
-      return false;
-    }
-    return true;
+    const isAccessTokenAvailable = Boolean(localStorage.getItem('accessToken'));
+    if (isAccessTokenAvailable) this.router.navigateByUrl(Route.HOME_PATH);
+    return !isAccessTokenAvailable;
   }
 }

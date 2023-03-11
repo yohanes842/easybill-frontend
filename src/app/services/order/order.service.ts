@@ -1,8 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
 import { OrderHeader } from 'src/app/classes/order-header';
 import { User } from 'src/app/classes/user';
+import { OutputResponse } from 'src/app/interfaces/output-response';
+import { PagableOutputResponse } from 'src/app/interfaces/pagable-output-response';
 import { Response } from 'src/app/interfaces/response';
 import { environment as env } from 'src/environments/environment';
 
@@ -26,77 +27,69 @@ export class OrderService {
     this.viewedOrders.set(orderId, orderHeader);
   }
 
-  public getViewedOrder(orderId: Number): OrderHeader | undefined {
+  public getViewedOrder(orderId: Number) {
     return this.viewedOrders.get(orderId);
   }
 
-  public getRelevantOrders(
-    page: number,
-    keyword: string,
-    status: string
-  ): Observable<Response<User>> {
+  public getRelevantOrders(page: number, keyword: string, status: string) {
     let params = new URLSearchParams({
       page: page.toString(),
       q: keyword,
       status: status,
     });
 
-    return this.http.get<Response<User>>(
+    return this.http.get<Response<PagableOutputResponse<User>>>(
       `${env.url}/api/orders/relevant-orders?${params.toString()}`
     );
   }
 
-  public getUsersOrders(
-    page: number,
-    keyword: string,
-    status: string
-  ): Observable<Response<User>> {
+  public getUsersOrders(page: number, keyword: string, status: string) {
     let params = new URLSearchParams({
       page: page.toString(),
       q: keyword,
       status: status,
     });
 
-    return this.http.get<Response<User>>(
+    return this.http.get<Response<PagableOutputResponse<User>>>(
       `${env.url}/api/orders/users-orders?${params.toString()}`
     );
   }
 
-  public approveOrder(orderId: number): Observable<Response<void>> {
-    return this.http.put<Response<void>>(
+  public approveOrder(orderId: number) {
+    return this.http.put<Response<OutputResponse<void>>>(
       `${env.url}/api/orders/${orderId}/validity`,
       {}
     );
   }
 
-  public deleteOrder(orderId: number): Observable<Response<void>> {
-    return this.http.delete<Response<void>>(
+  public deleteOrder(orderId: number) {
+    return this.http.delete<Response<OutputResponse<void>>>(
       `${env.url}/api/orders/${orderId}`,
       {}
     );
   }
 
-  public getPendingOrders(): Observable<Response<User>> {
-    return this.http.get<Response<User>>(
+  public getPendingOrders() {
+    return this.http.get<Response<OutputResponse<User>>>(
       `${env.url}/api/orders/pending-orders`
     );
   }
 
-  public addOrder(orderHeader: OrderHeader): Observable<Response<OrderHeader>> {
-    return this.http.post<Response<OrderHeader>>(
+  public addOrder(orderHeader: OrderHeader) {
+    return this.http.post<Response<OutputResponse<OrderHeader>>>(
       `${env.url}/api/orders`,
       orderHeader
     );
   }
 
-  public getOrder(orderId: number): Observable<Response<OrderHeader>> {
-    return this.http.get<Response<OrderHeader>>(
+  public getOrder(orderId: number) {
+    return this.http.get<Response<OutputResponse<OrderHeader>>>(
       `${env.url}/api/orders/${orderId}`
     );
   }
 
-  public reOrder(orderId: number): Observable<Response<OrderHeader>> {
-    return this.http.get<Response<OrderHeader>>(
+  public reOrder(orderId: number) {
+    return this.http.get<Response<OutputResponse<OrderHeader>>>(
       `${env.url}/api/orders/reorder/${orderId}`
     );
   }

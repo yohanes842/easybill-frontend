@@ -8,7 +8,7 @@ import { Severity } from 'src/app/enums/Severity';
 export class CustomMessageService {
   constructor(private messageService: MessageService) {}
 
-  showMessage(severity: Severity, summary: string, detail?: string): void {
+  showMessage(severity: Severity, summary: string, detail?: string) {
     this.messageService.clear();
     this.messageService.add({
       severity: severity,

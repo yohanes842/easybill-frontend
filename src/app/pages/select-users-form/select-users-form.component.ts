@@ -1,14 +1,11 @@
-import { HttpErrorResponse } from '@angular/common/http';
-import { Component, HostListener, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ConfirmationService } from 'primeng/api';
-import { DropdownFilterOptions } from 'primeng/dropdown';
 import { OrderDetail } from 'src/app/classes/order-detail';
 import { OrderHeader } from 'src/app/classes/order-header';
 import { User } from 'src/app/classes/user';
 import { Route } from 'src/app/enums/Route';
 import { Severity } from 'src/app/enums/Severity';
-import { Response } from 'src/app/interfaces/response';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { CustomMessageService } from 'src/app/services/message/custom-message.service';
 import { OrderService } from 'src/app/services/order/order.service';
@@ -182,11 +179,11 @@ export class SelectusersFormComponent implements OnInit {
     }
   }
 
-  selectParticipant(user: User): void {
+  selectParticipant(user: User) {
     this.selectedParticipant = user;
   }
 
-  chooseSubOrder(subOrder: OrderDetail): void {
+  chooseSubOrder(subOrder: OrderDetail) {
     if (this.selectedParticipant) {
       let user = subOrder.users.find(
         (user) => user.id === this.selectedParticipant?.id
@@ -208,7 +205,7 @@ export class SelectusersFormComponent implements OnInit {
   removeParticipantFromSubOrderList(
     subOrder: OrderDetail,
     selectedParticipant: User
-  ): void {
+  ) {
     let deleteIndex = subOrder.users.findIndex(
       (user) => user.id === selectedParticipant.id
     );
@@ -217,40 +214,38 @@ export class SelectusersFormComponent implements OnInit {
     localStorage.setItem('currentOrder', JSON.stringify(this.currentOrder));
   }
 
-  isSelectedUserHasOrder(subOrder: OrderDetail): boolean {
+  isSelectedUserHasOrder(subOrder: OrderDetail) {
     return subOrder.users.some(
       (user) => user.id === this.selectedParticipant?.id
     );
   }
 
-  saveOrder(): void {
+  saveOrder() {
     const isAnySubOrderWithNoUser = this.currentOrder.order_list.some(
       (subOrder) => subOrder.users.length <= 0
     );
 
     if (!isAnySubOrderWithNoUser) {
       // Hit add order service
-      this.orderService
-        .addOrder(this.currentOrder)
-        .subscribe((res: Response<OrderHeader>) => {
-          // Redirect to home page
-          this.messageService.showMessage(
-            Severity.SUCCESS,
-            'Successfully',
-            'Added new order'
-          );
+      this.orderService.addOrder(this.currentOrder).subscribe((res) => {
+        // Redirect to home page
+        this.messageService.showMessage(
+          Severity.SUCCESS,
+          'Successfully',
+          'Added new order'
+        );
 
-          let authUsername = '';
-          this.authService
-            .getAuthUser()
-            .subscribe((user) => (authUsername = user.username));
+        let authUsername = '';
+        this.authService
+          .getAuthUser()
+          .subscribe((user) => (authUsername = user.username));
 
-          if (res.output.data.buyer.username == authUsername)
-            this.router.navigateByUrl(Route.PENDING_ORDERS_PATH);
-          else this.router.navigateByUrl(Route.HOME_PATH);
+        if (res.output.data.buyer.username == authUsername)
+          this.router.navigateByUrl(Route.PENDING_ORDERS_PATH);
+        else this.router.navigateByUrl(Route.HOME_PATH);
 
-          localStorage.removeItem('currentOrder');
-        });
+        localStorage.removeItem('currentOrder');
+      });
     } else {
       this.messageService.showMessage(
         Severity.ERROR,
@@ -260,7 +255,7 @@ export class SelectusersFormComponent implements OnInit {
     }
   }
 
-  showSaveOrderConfirmation(): void {
+  showSaveOrderConfirmation() {
     this.confirmationService.confirm({
       message: 'Are you sure that you want to save this order?',
       accept: () => {
@@ -269,8 +264,8 @@ export class SelectusersFormComponent implements OnInit {
     });
   }
 
-  duplicateOrder(subOrder: OrderDetail): OrderDetail {
-    const newSubOrder: OrderDetail = new OrderDetail();
+  duplicateOrder(subOrder: OrderDetail) {
+    const newSubOrder = new OrderDetail();
     newSubOrder.order_menu_desc = subOrder.order_menu_desc;
     newSubOrder.price = subOrder.price;
     newSubOrder.qty = subOrder.qty;
@@ -279,7 +274,7 @@ export class SelectusersFormComponent implements OnInit {
     return newSubOrder;
   }
 
-  duplicateSubOrderToList(event: Event, subOrder: OrderDetail): void {
+  duplicateSubOrderToList(event: Event, subOrder: OrderDetail) {
     event.stopPropagation();
     const index = this.currentOrder.order_list.findIndex(
       (orderDetail) => orderDetail.id === subOrder.id
@@ -293,7 +288,7 @@ export class SelectusersFormComponent implements OnInit {
     localStorage.setItem('currentOrder', JSON.stringify(this.currentOrder));
   }
 
-  deleteSubOrder(event: Event, index: number): void {
+  deleteSubOrder(event: Event, index: number) {
     event.stopPropagation();
     if (index < this.currentOrder.order_list.length) {
       this.currentOrder.order_list.splice(index, 1);
@@ -302,7 +297,7 @@ export class SelectusersFormComponent implements OnInit {
     localStorage.setItem('currentOrder', JSON.stringify(this.currentOrder));
   }
 
-  stopPropagation(event: Event): void {
+  stopPropagation(event: Event) {
     event.stopPropagation();
   }
 }

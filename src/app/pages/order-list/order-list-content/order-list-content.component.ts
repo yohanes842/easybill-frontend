@@ -5,7 +5,6 @@ import { Router } from '@angular/router';
 import { OrderHeader } from 'src/app/classes/order-header';
 import { Route } from 'src/app/enums/Route';
 import { Severity } from 'src/app/enums/Severity';
-import { Response } from 'src/app/interfaces/response';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { CustomMessageService } from 'src/app/services/message/custom-message.service';
 import { OrderService } from 'src/app/services/order/order.service';
@@ -29,9 +28,9 @@ export class OrderListContentComponent implements OnInit {
     private authService: AuthService
   ) {}
 
-  ngOnInit(): void {}
+  ngOnInit() {}
 
-  showDetail(order: OrderHeader): void {
+  showDetail(order: OrderHeader) {
     this.selectedOrder = this.orderService.getViewedOrder(order.id!)!;
 
     if (this.selectedOrder) this.onShowDetail.emit(this.selectedOrder);
@@ -53,25 +52,23 @@ export class OrderListContentComponent implements OnInit {
     }
   }
 
-  reOrder(event: Event, order: OrderHeader): void {
+  reOrder(event: Event, order: OrderHeader) {
     event.stopPropagation();
-    this.orderService
-      .reOrder(order.id!)
-      .subscribe((res: Response<OrderHeader>) => {
-        const orderObject = res.output.data;
+    this.orderService.reOrder(order.id!).subscribe((res) => {
+      const orderObject = res.output.data;
 
-        this.authService
-          .getAuthUser()
-          .subscribe((user) => (orderObject.username = user.username));
+      this.authService
+        .getAuthUser()
+        .subscribe((user) => (orderObject.username = user.username));
 
-        orderObject.order_at = this.datePipe.transform(
-          new Date(),
-          'yyyy-MM-dd HH:mm:ss'
-        )!;
-        orderObject.order_list.forEach((orderList) => (orderList.users = []));
-        localStorage.setItem('currentOrder', JSON.stringify(orderObject));
+      orderObject.order_at = this.datePipe.transform(
+        new Date(),
+        'yyyy-MM-dd HH:mm:ss'
+      )!;
+      orderObject.order_list.forEach((orderList) => (orderList.users = []));
+      localStorage.setItem('currentOrder', JSON.stringify(orderObject));
 
-        this.router.navigateByUrl(Route.ADD_ORDER_PATH);
-      });
+      this.router.navigateByUrl(Route.ADD_ORDER_PATH);
+    });
   }
 }

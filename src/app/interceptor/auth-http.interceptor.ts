@@ -34,7 +34,7 @@ export class AuthApiInterceptor implements HttpInterceptor {
               this.loadingService.isLoading = false;
             }
           },
-          error: (err: ErrorResponse) => {
+          error: () => {
             this.loadingService.isLoading = false;
           },
         })
@@ -47,7 +47,7 @@ export class AuthApiInterceptor implements HttpInterceptor {
               this.loadingService.isLoading = false;
             }
           },
-          error: (err: ErrorResponse) => {
+          error: () => {
             this.loadingService.isLoading = false;
           },
         })

@@ -1,11 +1,10 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-import { environment as env } from 'src/environments/environment';
-import { Response } from 'src/app/interfaces/response';
-import { Status } from 'src/app/classes/status';
-import { User } from 'src/app/classes/user';
 import { Transaction } from 'src/app/classes/transaction';
+import { User } from 'src/app/classes/user';
+import { OutputResponse } from 'src/app/interfaces/output-response';
+import { Response } from 'src/app/interfaces/response';
+import { environment as env } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -13,23 +12,24 @@ import { Transaction } from 'src/app/classes/transaction';
 export class BillService {
   constructor(private http: HttpClient) {}
 
-  public getBillsPayable(): Observable<Response<User>> {
-    return this.http.get<Response<User>>(`${env.url}/api/bills/payable`);
+  public getBillsPayable() {
+    return this.http.get<Response<OutputResponse<User>>>(
+      `${env.url}/api/bills/payable`
+    );
   }
 
-  public getBillsReceivable(): Observable<Response<User>> {
-    return this.http.get<Response<User>>(`${env.url}/api/bills/receivables`);
+  public getBillsReceivable() {
+    return this.http.get<Response<OutputResponse<User>>>(
+      `${env.url}/api/bills/receivables`
+    );
   }
 
-  public payBill(
-    amount: number,
-    userId: number
-  ): Observable<Response<Transaction>> {
+  public payBill(amount: number, userId: number) {
     let params = {
       amount: amount,
       user_id: userId,
     };
-    return this.http.post<Response<Transaction>>(
+    return this.http.post<Response<OutputResponse<Transaction>>>(
       `${env.url}/api/bill-transactions`,
       params
     );

@@ -34,7 +34,7 @@ export class PendingOrderListContentComponent implements OnInit {
     if (this.selectedOrder) this.onShowDetail.emit(this.selectedOrder);
     else {
       this.orderService.getOrder(order.id!).subscribe(
-        (res: any) => {
+        (res) => {
           this.selectedOrder = res.output.data;
           this.orderService.setViewedOrder(
             this.selectedOrder.id!,
@@ -55,7 +55,7 @@ export class PendingOrderListContentComponent implements OnInit {
     this.confirmationService.confirm({
       message: 'Are you sure that you want to approve this order?',
       accept: () => {
-        this.orderService.approveOrder(this.order.id!).subscribe((res: any) => {
+        this.orderService.approveOrder(this.order.id!).subscribe(() => {
           this.messageService.showMessage(Severity.SUCCESS, 'ORDER APPROVED');
           this.onApproved.emit(this.order);
         });
@@ -68,7 +68,7 @@ export class PendingOrderListContentComponent implements OnInit {
     this.confirmationService.confirm({
       message: 'Are you sure that you want to delete this order?',
       accept: () => {
-        this.orderService.deleteOrder(this.order.id!).subscribe((res: any) => {
+        this.orderService.deleteOrder(this.order.id!).subscribe(() => {
           this.messageService.showMessage(Severity.SUCCESS, 'ORDER DELETED');
           this.onDeleted.emit(this.order);
         });
