@@ -16,7 +16,6 @@
       <div class="w-full px-5">
         <pending-order-list-content
           [order]="order"
-          (onShowDetail)="showDetail($event)"
           (onDeleted)="removeOrder($event)"
           (onApproved)="approveOrder($event)"
         ></pending-order-list-content>
@@ -25,18 +24,14 @@
   </p-dataView>
 </div>
 
-<popup-dialog [(display)]="display">
-  <ng-container *ngIf="selectedOrder" header>
-    <order-detail-header [selectedOrder]="selectedOrder"></order-detail-header>
+<popup-dialog *ngIf="dialogDisplay | async">
+  <ng-container header>
+    <order-detail-header></order-detail-header>
   </ng-container>
 
-  <ng-container *ngIf="selectedOrder" content>
-    <your-order-detail-content
-      [selectedOrder]="selectedOrder"
-    ></your-order-detail-content>
+  <ng-container content>
+    <your-order-detail-content></your-order-detail-content>
 
-    <order-detail-summary-content
-      [selectedOrder]="selectedOrder"
-    ></order-detail-summary-content>
+    <order-detail-summary-content></order-detail-summary-content>
   </ng-container>
 </popup-dialog>
