@@ -9,9 +9,6 @@
   >
     <ng-template pTemplate="header">
       <order-list-header
-        [dv]="dv"
-        headerTitle="Order Header"
-        [withTabMenu]="true"
         (onTapMenu)="changeDataViewContent($event)"
         (onChangeStatusFilter)="changeStatusFilter($event)"
         (onKeywordInput)="changeKeywordInput($event)"
@@ -20,41 +17,27 @@
 
     <ng-template let-order pTemplate="gridItem" class="flex flex-column gap-3">
       <div class="w-full px-5">
-        <order-list-content
-          [order]="order"
-          (onShowDetail)="showDetail($event)"
-        ></order-list-content>
+        <order-list-content [order]="order"></order-list-content>
       </div>
     </ng-template>
   </p-dataView>
 </div>
 
-<dialog-order-details
-  *ngIf="display"
-  [selectedOrder]="selectedOrder"
-  [isRelevantOrder]="isRelevantOrder"
-  (close)="hideDetail()"
-></dialog-order-details>
-
-<popup-dialog [(display)]="display">
-  <ng-container *ngIf="selectedOrder" header>
-    <order-detail-header [selectedOrder]="selectedOrder"></order-detail-header>
+<popup-dialog *ngIf="dialogDisplay | async">
+  <ng-container header>
+    <order-detail-header></order-detail-header>
   </ng-container>
-  <ng-container *ngIf="selectedOrder" content>
+  <ng-container content>
     <ng-container *ngIf="isRelevantOrder; else yourOrderDetailContent">
       <relevant-order-detail-content
-        [selectedOrder]="selectedOrder"
+        [selectedUser]="authUser"
       ></relevant-order-detail-content>
     </ng-container>
 
     <ng-template #yourOrderDetailContent>
-      <your-order-detail-content
-        [selectedOrder]="selectedOrder"
-      ></your-order-detail-content>
+      <your-order-detail-content></your-order-detail-content>
     </ng-template>
 
-    <order-detail-summary-content
-      [selectedOrder]="selectedOrder"
-    ></order-detail-summary-content>
+    <order-detail-summary-content></order-detail-summary-content>
   </ng-container>
 </popup-dialog>

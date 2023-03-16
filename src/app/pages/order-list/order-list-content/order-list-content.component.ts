@@ -2,12 +2,19 @@ import { DatePipe } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Router } from '@angular/router';
+import { Store } from '@ngrx/store';
 import { OrderHeader } from 'src/app/classes/order-header';
 import { Route } from 'src/app/enums/Route';
 import { Severity } from 'src/app/enums/Severity';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { CustomMessageService } from 'src/app/services/message/custom-message.service';
 import { OrderService } from 'src/app/services/order/order.service';
+import { AppState } from 'src/app/state/app.state';
+import { setSelectedOrder } from 'src/app/state/currentSelected/currentSelected.actions';
+import {
+  setDetailOrderDialogDisplay,
+  setDialogDisplayAction,
+} from 'src/app/state/dialogDisplay/dialogDisplay.actions';
 
 @Component({
   selector: 'order-list-content',
@@ -25,31 +32,33 @@ export class OrderListContentComponent implements OnInit {
     private messageService: CustomMessageService,
     private router: Router,
     private datePipe: DatePipe,
-    private authService: AuthService
+    private authService: AuthService,
+    private store: Store<AppState>
   ) {}
 
   ngOnInit() {}
 
-  showDetail(order: OrderHeader) {
-    this.selectedOrder = this.orderService.getViewedOrder(order.id!)!;
+  showDetail(orderId: number) {
+    let order = this.orderService.getViewedOrder(orderId)!;
 
-    if (this.selectedOrder) this.onShowDetail.emit(this.selectedOrder);
-    else {
-      this.orderService.getOrder(order.id!).subscribe(
-        (res: any) => {
-          this.selectedOrder = res.output.data;
-          this.orderService.setViewedOrder(
-            this.selectedOrder.id!,
-            this.selectedOrder
-          );
-
-          this.onShowDetail.emit(this.selectedOrder);
+    if (!order) {
+      this.orderService.getOrder(orderId).subscribe({
+        next: (res) => {
+          order = res.output.data;
+          this.orderService.setViewedOrder(orderId, order);
+          this.showDetail(orderId);
         },
-        (error: HttpErrorResponse) => {
-          this.messageService.showMessage(Severity.ERROR, 'REQUEST ERROR');
-        }
-      );
+        error: () =>
+          this.messageService.showMessage(Severity.ERROR, 'REQUEST ERROR'),
+      });
+      return;
     }
+
+    this.store.dispatch(setSelectedOrder({ order: order }));
+    this.store.dispatch(setDetailOrderDialogDisplay({ display: true }));
+    this.store.dispatch(
+      setDialogDisplayAction({ action: setDetailOrderDialogDisplay })
+    );
   }
 
   reOrder(event: Event, order: OrderHeader) {

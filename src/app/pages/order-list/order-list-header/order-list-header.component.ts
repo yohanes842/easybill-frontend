@@ -1,30 +1,26 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { MenuItem } from 'primeng/api';
-import { DataView } from 'primeng/dataview';
 import { Route } from 'src/app/enums/Route';
 
 @Component({
   selector: 'order-list-header',
-  templateUrl: './header.component.html',
-  styleUrls: ['./header.component.css'],
+  templateUrl: './order-list-header.component.html',
+  styleUrls: ['./order-list-header.component.css'],
 })
 export class OrderListHeaderComponent implements OnInit {
-  @Input() dv!: DataView;
-  @Input() headerTitle!: string;
-  @Input() withTabMenu!: boolean;
   @Output() onTapMenu: EventEmitter<any> = new EventEmitter();
   @Output() onChangeStatusFilter: EventEmitter<any> = new EventEmitter();
   @Output() onKeywordInput: EventEmitter<string> = new EventEmitter();
 
-  tabMenus!: MenuItem[];
-  activeMenu!: MenuItem;
-  statusOptions!: string[];
-  selectedStatusOptions!: string;
+  tabMenus: MenuItem[];
+  activeMenu: MenuItem;
+  statusOptions: string[];
+  selectedStatusOptions: string;
   isRelevantOrder: boolean = true;
   keyword: string = '';
 
-  timeout: any;
+  timeout: NodeJS.Timeout;
 
   constructor(private router: Router) {
     this.tabMenus = [
@@ -49,21 +45,21 @@ export class OrderListHeaderComponent implements OnInit {
     this.selectedStatusOptions = this.statusOptions[0];
   }
 
-  ngOnInit(): void {}
+  ngOnInit() {}
 
-  getValue(event: Event): string {
+  getValue(event: Event) {
     return (event.target as HTMLInputElement).value;
   }
 
-  navigateToAddOrdersForm(): void {
+  navigateToAddOrdersForm() {
     this.router.navigateByUrl(Route.ADD_ORDER_PATH);
   }
 
-  changeStatusFilter(): void {
+  changeStatusFilter() {
     this.onChangeStatusFilter.emit(this.selectedStatusOptions);
   }
 
-  searchOrder(): void {
+  searchOrder() {
     clearTimeout(this.timeout);
     this.timeout = setTimeout(() => {
       this.onKeywordInput.emit(this.keyword);

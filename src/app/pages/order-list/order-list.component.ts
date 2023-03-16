@@ -1,4 +1,6 @@
 import { Component, DoCheck, OnDestroy, OnInit } from '@angular/core';
+import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs';
 import { LazyLoadPaging } from 'src/app/classes/lazy-load-paging';
 import { OrderHeader } from 'src/app/classes/order-header';
 import { User } from 'src/app/classes/user';
@@ -7,6 +9,9 @@ import { PagableOutputResponse } from 'src/app/interfaces/pagable-output-respons
 import { Response } from 'src/app/interfaces/response';
 import { LazyLoadService } from 'src/app/services/lazy-load/lazy-load.service';
 import { OrderService } from 'src/app/services/order/order.service';
+import { AppState } from 'src/app/state/app.state';
+import { setDetailOrderDialogDisplay } from 'src/app/state/dialogDisplay/dialogDisplay.actions';
+import { getDetailOrderDialogDisplay } from 'src/app/state/dialogDisplay/dialogDisplay.selectors';
 
 @Component({
   selector: 'app-order-list',
@@ -15,19 +20,16 @@ import { OrderService } from 'src/app/services/order/order.service';
   providers: [OrderService],
 })
 export class OrderListComponent implements OnInit, DoCheck, OnDestroy {
-  display: boolean = false;
-  isFetching: boolean = false;
-
-  currentUser!: User;
-  orders!: OrderHeader[];
+  authUser: User;
+  orders: OrderHeader[];
+  selectedOrder: OrderHeader;
 
   isRelevantOrder: Boolean = true;
   selectedStatusOptions: string = Status.ALL;
   searchKeyword: string = '';
-  currentLazyPage!: LazyLoadPaging<OrderHeader>;
 
-  selectedOrder!: OrderHeader;
-
+  currentLazyPage: LazyLoadPaging<OrderHeader>;
+  isFetching: boolean = false;
   relevantOrders = {
     allOrders: new LazyLoadPaging<OrderHeader>(),
     paidOrders: new LazyLoadPaging<OrderHeader>(),
@@ -39,6 +41,8 @@ export class OrderListComponent implements OnInit, DoCheck, OnDestroy {
     unpaidOrders: new LazyLoadPaging<OrderHeader>(),
   };
 
+  dialogDisplay: Observable<boolean>;
+
   onScrollEvent = () => {
     if (this.lazyLoadService.isNeedLazyLoad()) {
       this.lazyLoadService.incrementPageFetchIndicator();
@@ -48,33 +52,30 @@ export class OrderListComponent implements OnInit, DoCheck, OnDestroy {
 
   constructor(
     private orderService: OrderService,
-    private lazyLoadService: LazyLoadService<OrderHeader>
-  ) {}
+    private lazyLoadService: LazyLoadService<OrderHeader>,
+    private store: Store<Pick<AppState, 'currentSelected'>>
+  ) {
+    this.isRelevantOrder = true;
+    this.selectedStatusOptions = Status.ALL;
 
-  ngDoCheck(): void {
+    this.dialogDisplay = this.store.select(getDetailOrderDialogDisplay);
+  }
+
+  ngDoCheck() {
     if (this.lazyLoadService.currentLazyPaging)
       this.lazyLoadService.calculateMaxScroll();
   }
 
-  ngOnInit(): void {
+  ngOnInit() {
     //add event listener
     window.addEventListener('scroll', this.onScrollEvent);
-    this.isRelevantOrder = true;
-    this.selectedStatusOptions = Status.ALL;
     this.setCurrentLazyPage();
     this.loadData();
+
+    this.store.dispatch(setDetailOrderDialogDisplay({ display: false }));
   }
 
-  showDetail(selectedOrder: OrderHeader): void {
-    this.selectedOrder = selectedOrder;
-    this.display = true;
-  }
-
-  hideDetail(): void {
-    this.display = false;
-  }
-
-  setCurrentLazyPage(): void {
+  setCurrentLazyPage() {
     if (this.searchKeyword.length > 0)
       this.currentLazyPage = new LazyLoadPaging<OrderHeader>();
     else if (this.isRelevantOrder) {
@@ -104,7 +105,7 @@ export class OrderListComponent implements OnInit, DoCheck, OnDestroy {
     }
   }
 
-  changeLazyPage(): void {
+  changeLazyPage() {
     this.setCurrentLazyPage();
     if (this.currentLazyPage.objects.length <= 0) this.loadData();
     else {
@@ -113,35 +114,35 @@ export class OrderListComponent implements OnInit, DoCheck, OnDestroy {
     }
   }
 
-  changeDataViewContent(isRelevantOrder: Boolean): void {
+  changeDataViewContent(isRelevantOrder: Boolean) {
     if (!this.isFetching) {
       this.isRelevantOrder = isRelevantOrder;
       this.changeLazyPage();
     }
   }
 
-  changeStatusFilter(selectedStatusOptions: string): void {
+  changeStatusFilter(selectedStatusOptions: string) {
     if (!this.isFetching) {
       this.selectedStatusOptions = selectedStatusOptions;
       this.changeLazyPage();
     }
   }
 
-  changeKeywordInput(keyword: string): void {
+  changeKeywordInput(keyword: string) {
     if (!this.isFetching) {
       this.searchKeyword = keyword;
       this.changeLazyPage();
     }
   }
 
-  loadData(): void {
+  loadData() {
     const orderSubscriptions = (
       res: Response<PagableOutputResponse<User>>,
       currentLazyPage: LazyLoadPaging<OrderHeader>
     ): void => {
       if (currentLazyPage == this.currentLazyPage) {
-        this.currentUser = res.output.data;
-        let latestFetchOrders: OrderHeader[] = this.currentUser
+        this.authUser = res.output.data;
+        let latestFetchOrders: OrderHeader[] = this.authUser
           .order_list as OrderHeader[];
 
         this.currentLazyPage.objects = this.currentLazyPage.objects.concat([
@@ -184,7 +185,7 @@ export class OrderListComponent implements OnInit, DoCheck, OnDestroy {
     }
   }
 
-  ngOnDestroy(): void {
+  ngOnDestroy() {
     window.removeEventListener('scroll', this.onScrollEvent);
   }
 }

@@ -21,27 +21,26 @@ import { AddFormComponent } from 'src/app/pages/add-form/add-form.component';
 import { AddSubFormComponent } from 'src/app/pages/add-form/add-sub-form/add-sub-form.component';
 import { BillContentComponent } from 'src/app/pages/bill/bill-content/bill-content.component';
 import { BillDetailsDialogComponent } from 'src/app/pages/bill/bill-details-dialog/bill-details-dialog.component';
-import { BillHeaderComponent } from 'src/app/pages/bill/bill-header/bill-header.component';
 import { BillRelatedOrderContentComponent } from 'src/app/pages/bill/bill-details-dialog/bill-related-order-content/bill-related-order-content.component';
+import { BillHeaderComponent } from 'src/app/pages/bill/bill-header/bill-header.component';
 import { BillComponent } from 'src/app/pages/bill/bill.component';
-import { ChangeAccountNumberFormComponent } from 'src/app/pages/user-profile/change-account-number-form/change-account-number-form.component';
-import { ChangePasswordFormComponent } from 'src/app/pages/user-profile/change-password-form/change-password-form.component';
-import { ChangeUsernameFormComponent } from 'src/app/pages/user-profile/change-username-form/change-username-form.component';
-import { LoginComponent } from 'src/app/pages/login/login.component';
-import { NotFoundPageComponent } from 'src/app/pages/not-found-page/not-found-page.component';
-import { OrderListHeaderComponent } from 'src/app/pages/order-list/header/header.component';
-import { OrderDetailsComponent } from 'src/app/pages/order-list/order-detail-dialog/order-detail-dialog.component';
-import { OrderListContentComponent } from 'src/app/pages/order-list/order-list-content/order-list-content.component';
-import { OrderListComponent } from 'src/app/pages/order-list/order-list.component';
-import { ParticipantListDialogComponent } from 'src/app/pages/select-users-form/participant-list-dialog/participant-list-dialog.component';
 import { PaymentDialogContentComponent } from 'src/app/pages/bill/payment-dialog/payment-dialog-content/payment-dialog-content.component';
 import { PaymentDialogHeaderComponent } from 'src/app/pages/bill/payment-dialog/payment-dialog-header/payment-dialog-header.component';
+import { LoginComponent } from 'src/app/pages/login/login.component';
+import { NotFoundPageComponent } from 'src/app/pages/not-found-page/not-found-page.component';
+import { OrderListHeaderComponent } from 'src/app/pages/order-list/order-list-header/order-list-header.component';
+import { OrderListContentComponent } from 'src/app/pages/order-list/order-list-content/order-list-content.component';
+import { OrderListComponent } from 'src/app/pages/order-list/order-list.component';
 import { PendingOrderListContentComponent } from 'src/app/pages/pending-order-list/pending-order-list-content/pending-order-list-content.component';
 import { PendingOrderListComponent } from 'src/app/pages/pending-order-list/pending-order-list.component';
+import { ParticipantListDialogComponent } from 'src/app/pages/select-users-form/participant-list-dialog/participant-list-dialog.component';
 import { SelectusersFormComponent } from 'src/app/pages/select-users-form/select-users-form.component';
 import { TransactionRelatedOrderContentComponent } from 'src/app/pages/transaction-history/transaction-details-dialog/transaction-related-order-content/transaction-related-order-content.component';
 import { TransactionHistoryDetailComponent } from 'src/app/pages/transaction-history/transaction-history-detail/transaction-history-detail.component';
 import { TransactionHistoryComponent } from 'src/app/pages/transaction-history/transaction-history.component';
+import { ChangeAccountNumberFormComponent } from 'src/app/pages/user-profile/change-account-number-form/change-account-number-form.component';
+import { ChangePasswordFormComponent } from 'src/app/pages/user-profile/change-password-form/change-password-form.component';
+import { ChangeUsernameFormComponent } from 'src/app/pages/user-profile/change-username-form/change-username-form.component';
 import { UserProfileComponent } from 'src/app/pages/user-profile/user-profile.component';
 
 import { AutoCompleteModule } from 'primeng/autocomplete';
@@ -82,8 +81,6 @@ import { OrderService } from 'src/app/services/order/order.service';
 import { UserService } from 'src/app/services/user/user.service';
 import { TransactionDetailsDialogComponent } from './pages/transaction-history/transaction-details-dialog/transaction-details-dialog.component';
 
-import { currentSelectedReducer } from './state/currentSelected/currentSelected.reducer';
-import { dialogDisplayReducer } from './state/dialogDisplay/dialogDisplay.reducer';
 import { appReducer } from './state/app.state';
 
 @NgModule({
@@ -95,7 +92,6 @@ import { appReducer } from './state/app.state';
     BillComponent,
     ContainerComponent,
     AddFormComponent,
-    OrderDetailsComponent,
     AddSubFormComponent,
     LoginComponent,
     SelectusersFormComponent,

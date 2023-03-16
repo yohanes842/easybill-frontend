@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { OrderListHeaderComponent } from './header.component';
+import { OrderListHeaderComponent } from './order-list-header.component';
 
 describe('OrderListHeaderComponent', () => {
   let component: OrderListHeaderComponent;
@@ -8,9 +8,8 @@ describe('OrderListHeaderComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ OrderListHeaderComponent ]
-    })
-    .compileComponents();
+      declarations: [OrderListHeaderComponent],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(OrderListHeaderComponent);
     component = fixture.componentInstance;
