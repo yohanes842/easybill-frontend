@@ -33,7 +33,9 @@
 
     <ng-template #detailContent>
       <ng-container>
-        <relevant-order-detail-content></relevant-order-detail-content>
+        <relevant-order-detail-content
+          [selectedUser]="selectedTransaction.payer"
+        ></relevant-order-detail-content>
 
         <order-detail-summary-content></order-detail-summary-content>
       </ng-container>

@@ -9,10 +9,7 @@ import { Severity } from 'src/app/enums/Severity';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { CustomMessageService } from 'src/app/services/message/custom-message.service';
 import { AppState } from 'src/app/state/app.state';
-import {
-  getSelectedBill,
-  getSelectedOrder,
-} from 'src/app/state/currentSelected/currentSelected.selectors';
+import { getSelectedOrder } from 'src/app/state/currentSelected/currentSelected.selectors';
 
 @Component({
   selector: 'relevant-order-detail-content',
@@ -20,10 +17,9 @@ import {
   styleUrls: ['./relevant-order-detail-content.component.css'],
 })
 export class RelevantOrderDetailContentComponent implements OnInit {
+  @Input() selectedUser: User; // User yang order detailnya akan ditampilkan
   @Input() selectedOrder: OrderHeader;
-  @Input() selectedBill: Status;
 
-  selectedUser: User; // User yang ordernya akan ditampilkan
   authUser: User;
 
   currentRoute: string;
@@ -41,9 +37,6 @@ export class RelevantOrderDetailContentComponent implements OnInit {
     this.store
       .select(getSelectedOrder)
       .subscribe((res) => (this.selectedOrder = res));
-    this.store
-      .select(getSelectedBill)
-      .subscribe((res) => (this.selectedBill = res));
 
     this.authService.getAuthUser().subscribe((user) => (this.authUser = user));
     this.currentRoute = this.router.url;
@@ -51,11 +44,6 @@ export class RelevantOrderDetailContentComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.selectedUser =
-      this.selectedOrder.buyer.username == this.authUser.username
-        ? this.selectedBill.user
-        : this.authUser;
-
     const completeAttUser = this.selectedOrder.order_detail_group_by_user.find(
       (user) => user.id === this.selectedUser.id
     );

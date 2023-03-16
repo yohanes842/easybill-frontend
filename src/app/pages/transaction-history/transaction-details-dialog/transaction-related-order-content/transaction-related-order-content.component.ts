@@ -1,8 +1,10 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { relatedOrder } from 'src/app/classes/related-order';
+import { RelatedOrder } from 'src/app/classes/related-order';
 import { Transaction } from 'src/app/classes/transaction';
+import { User } from 'src/app/classes/user';
 import { Severity } from 'src/app/enums/Severity';
+import { AuthService } from 'src/app/services/auth/auth.service';
 import { CustomMessageService } from 'src/app/services/message/custom-message.service';
 import { OrderService } from 'src/app/services/order/order.service';
 import { AppState } from 'src/app/state/app.state';
@@ -19,10 +21,12 @@ import { setDetailOrderDialogDisplay } from 'src/app/state/dialogDisplay/dialogD
   styleUrls: ['./transaction-related-order-content.component.css'],
 })
 export class TransactionRelatedOrderContentComponent implements OnInit {
-  @Input() relatedOrder: relatedOrder;
+  @Input() relatedOrder: RelatedOrder;
   selectedTransaction: Transaction;
+  authUser: User;
 
   constructor(
+    private authService: AuthService,
     private orderService: OrderService,
     private messageService: CustomMessageService,
     private store: Store<AppState>
@@ -30,6 +34,7 @@ export class TransactionRelatedOrderContentComponent implements OnInit {
     this.store
       .select(getSelectedTransaction)
       .subscribe((res) => (this.selectedTransaction = res));
+    this.authService.getAuthUser().subscribe((res) => (this.authUser = res));
   }
 
   ngOnInit() {}
@@ -49,6 +54,7 @@ export class TransactionRelatedOrderContentComponent implements OnInit {
       });
       return;
     }
+
     this.store.dispatch(setSelectedOrder({ order: order }));
     this.store.dispatch(setDetailOrderDialogDisplay({ display: true }));
   }

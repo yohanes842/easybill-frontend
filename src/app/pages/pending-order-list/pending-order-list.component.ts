@@ -7,6 +7,7 @@ import { User } from 'src/app/classes/user';
 import { Route } from 'src/app/enums/Route';
 import { OrderService } from 'src/app/services/order/order.service';
 import { AppState } from 'src/app/state/app.state';
+import { setDetailOrderDialogDisplay } from 'src/app/state/dialogDisplay/dialogDisplay.actions';
 import { getDetailOrderDialogDisplay } from 'src/app/state/dialogDisplay/dialogDisplay.selectors';
 
 @Component({
@@ -35,7 +36,9 @@ export class PendingOrderListComponent implements OnInit {
     this.dialogDisplay = this.store.select(getDetailOrderDialogDisplay);
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.store.dispatch(setDetailOrderDialogDisplay({ display: false }));
+  }
 
   removeOrder(order: OrderHeader) {
     let index = this.pendingOrders.indexOf(order);

@@ -15,7 +15,7 @@ import { getDetailOrderDialogDisplay } from 'src/app/state/dialogDisplay/dialogD
   styleUrls: ['./bill-details-dialog.component.css'],
 })
 export class BillDetailsDialogComponent implements OnInit {
-  currentUser: User;
+  authUser: User;
   selectedBill: Status;
   isDetailSection: Observable<boolean>;
   isPayable!: boolean; //untuk mengkondisikan header pada payable dan juga receivable
@@ -24,9 +24,7 @@ export class BillDetailsDialogComponent implements OnInit {
     private authService: AuthService,
     private store: Store<AppState>
   ) {
-    this.authService
-      .getAuthUser()
-      .subscribe((user) => (this.currentUser = user));
+    this.authService.getAuthUser().subscribe((user) => (this.authUser = user));
 
     this.store
       .select(getSelectedBill)

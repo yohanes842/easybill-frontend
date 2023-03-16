@@ -1,15 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
-import { OrderHeader } from 'src/app/classes/order-header';
 import { Status } from 'src/app/classes/status';
-import { User } from 'src/app/classes/user';
 import { Severity } from 'src/app/enums/Severity';
-import { AuthService } from 'src/app/services/auth/auth.service';
 import { BillService } from 'src/app/services/bill/bill.service';
 import { CustomMessageService } from 'src/app/services/message/custom-message.service';
 import { AppState } from 'src/app/state/app.state';
-import { setSelectedUser } from 'src/app/state/currentSelected/currentSelected.actions';
 import { setBillPaymentDialogDisplay } from 'src/app/state/dialogDisplay/dialogDisplay.actions';
 import {
   getBillDetailsDialogDisplay,
@@ -27,37 +23,26 @@ export class BillComponent implements OnInit {
   billsPayable: Status[];
   billsReceivable: Status[];
 
-  selectedBill: Status;
-  selectedOrder: OrderHeader;
-  authUser: User;
-
   billPaymentDialogDisplay: Observable<boolean>;
   billDetailsDialogDisplay: Observable<boolean>;
 
   constructor(
     private billService: BillService,
-    private authService: AuthService,
     private messageService: CustomMessageService,
     private store: Store<AppState>
   ) {
     this.bills = [];
 
-    this.authService.getAuthUser().subscribe((res) => {
-      this.authUser = res;
-
-      this.billService.getBillsPayable().subscribe({
-        next: (res) => {
-          this.billsPayable = res.output.data.users_bills.sort(
-            (bill1: Status, bill2: Status) =>
-              bill2.owe_amount - bill1.owe_amount
-          );
-          this.bills = this.billsPayable;
-          this.store.dispatch(setSelectedUser({ user: this.authUser }));
-        },
-        error: () => {
-          this.messageService.showMessage(Severity.ERROR, 'REQUEST ERROR');
-        },
-      });
+    this.billService.getBillsPayable().subscribe({
+      next: (res) => {
+        this.billsPayable = res.output.data.users_bills.sort(
+          (bill1: Status, bill2: Status) => bill2.owe_amount - bill1.owe_amount
+        );
+        this.bills = this.billsPayable;
+      },
+      error: () => {
+        this.messageService.showMessage(Severity.ERROR, 'REQUEST ERROR');
+      },
     });
 
     this.billService.getBillsReceivable().subscribe({

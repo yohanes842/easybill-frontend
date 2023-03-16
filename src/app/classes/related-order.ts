@@ -1,6 +1,6 @@
 import { OrderHeader } from './order-header';
 
-export class relatedOrder {
+export class RelatedOrder {
   contributed_amount!: number;
   related_order_header!: OrderHeader;
 }
