@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Transaction } from 'src/app/classes/transaction';
 import { User } from 'src/app/classes/user';
+import { UserBills } from 'src/app/classes/user-bills';
 import { OutputResponse } from 'src/app/interfaces/output-response';
 import { Response } from 'src/app/interfaces/response';
 import { environment as env } from 'src/environments/environment';
@@ -13,13 +14,13 @@ export class BillService {
   constructor(private http: HttpClient) {}
 
   public getBillsPayable() {
-    return this.http.get<Response<OutputResponse<User>>>(
+    return this.http.get<Response<OutputResponse<UserBills>>>(
       `${env.url}/api/bills/payable`
     );
   }
 
   public getBillsReceivable() {
-    return this.http.get<Response<OutputResponse<User>>>(
+    return this.http.get<Response<OutputResponse<UserBills>>>(
       `${env.url}/api/bills/receivables`
     );
   }

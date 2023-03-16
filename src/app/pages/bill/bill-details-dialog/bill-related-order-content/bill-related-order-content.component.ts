@@ -1,36 +1,26 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { relatedOrder } from 'src/app/classes/related-order';
-import { Transaction } from 'src/app/classes/transaction';
+import { OrderHeader } from 'src/app/classes/order-header';
 import { Severity } from 'src/app/enums/Severity';
 import { CustomMessageService } from 'src/app/services/message/custom-message.service';
 import { OrderService } from 'src/app/services/order/order.service';
 import { AppState } from 'src/app/state/app.state';
-import {
-  setSelectedOrder,
-  setSelectedUser,
-} from 'src/app/state/currentSelected/currentSelected.actions';
-import { getSelectedTransaction } from 'src/app/state/currentSelected/currentSelected.selectors';
+import { setSelectedOrder } from 'src/app/state/currentSelected/currentSelected.actions';
 import { setDetailOrderDialogDisplay } from 'src/app/state/dialogDisplay/dialogDisplay.actions';
 
 @Component({
-  selector: 'transaction-related-order-content',
-  templateUrl: './transaction-related-order-content.component.html',
-  styleUrls: ['./transaction-related-order-content.component.css'],
+  selector: 'bill-related-order-content',
+  templateUrl: './bill-related-order-content.component.html',
+  styleUrls: ['./bill-related-order-content.component.css'],
 })
-export class TransactionRelatedOrderContentComponent implements OnInit {
-  @Input() relatedOrder: relatedOrder;
-  selectedTransaction: Transaction;
+export class BillRelatedOrderContentComponent implements OnInit {
+  @Input() order: OrderHeader;
 
   constructor(
     private orderService: OrderService,
     private messageService: CustomMessageService,
     private store: Store<AppState>
-  ) {
-    this.store
-      .select(getSelectedTransaction)
-      .subscribe((res) => (this.selectedTransaction = res));
-  }
+  ) {}
 
   ngOnInit() {}
 

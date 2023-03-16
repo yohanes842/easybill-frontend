@@ -30,6 +30,16 @@ export const setTransactionDetailsDialogDisplay = createAction(
   props<Props>()
 );
 
+export const setBillDetailsDialogDisplay = createAction(
+  '[Bill Page] setBillDetailsDialogDisplay',
+  props<Props>()
+);
+
+export const setBillPaymentDialogDisplay = createAction(
+  '[Bill Page] setBillPaymentDialogDisplay',
+  props<Props>()
+);
+
 export const setDetailOrderDialogDisplay = createAction(
   '[General] setTransactionDetailsDialogDisplay',
   props<Props>()

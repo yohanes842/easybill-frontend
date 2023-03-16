@@ -1,5 +1,8 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { Store } from '@ngrx/store';
 import { Status } from 'src/app/classes/status';
+import { AppState } from 'src/app/state/app.state';
+import { getSelectedBill } from 'src/app/state/currentSelected/currentSelected.selectors';
 
 @Component({
   selector: 'payment-dialog-header',
@@ -7,9 +10,13 @@ import { Status } from 'src/app/classes/status';
   styleUrls: ['./payment-dialog-header.component.css'],
 })
 export class PaymentDialogHeaderComponent implements OnInit {
-  @Input() selectedBill!: Status;
+  selectedBill: Status;
 
-  constructor() {}
+  constructor(private store: Store<Pick<AppState, 'dialogDisplay'>>) {
+    this.store
+      .select(getSelectedBill)
+      .subscribe((res) => (this.selectedBill = res));
+  }
 
-  ngOnInit(): void {}
+  ngOnInit() {}
 }

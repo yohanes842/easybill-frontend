@@ -3,7 +3,6 @@ import { Store } from '@ngrx/store';
 import { OrderHeader } from 'src/app/classes/order-header';
 import { Transaction } from 'src/app/classes/transaction';
 import { AppState } from 'src/app/state/app.state';
-import { setSelectedOrder } from 'src/app/state/currentSelected/currentSelected.actions';
 import {
   getSelectedOrder,
   getSelectedTransaction,
@@ -39,11 +38,6 @@ export class TransactionDetailsDialogComponent implements OnInit {
   }
 
   backToRelatedOrders() {
-    this.store.dispatch(setDetailOrderDialogDisplay({ display: false }));
-    this.store.dispatch(setSelectedOrder({ order: new OrderHeader() }));
-  }
-
-  displayChange() {
     this.store.dispatch(setDetailOrderDialogDisplay({ display: false }));
   }
 }

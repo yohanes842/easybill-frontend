@@ -22,7 +22,7 @@ import { AddSubFormComponent } from 'src/app/pages/add-form/add-sub-form/add-sub
 import { BillContentComponent } from 'src/app/pages/bill/bill-content/bill-content.component';
 import { BillDetailsDialogComponent } from 'src/app/pages/bill/bill-details-dialog/bill-details-dialog.component';
 import { BillHeaderComponent } from 'src/app/pages/bill/bill-header/bill-header.component';
-import { BillRelatedOrderContentComponent } from 'src/app/pages/bill/bill-related-order-content/bill-related-order-content.component';
+import { BillRelatedOrderContentComponent } from 'src/app/pages/bill/bill-details-dialog/bill-related-order-content/bill-related-order-content.component';
 import { BillComponent } from 'src/app/pages/bill/bill.component';
 import { ChangeAccountNumberFormComponent } from 'src/app/pages/user-profile/change-account-number-form/change-account-number-form.component';
 import { ChangePasswordFormComponent } from 'src/app/pages/user-profile/change-password-form/change-password-form.component';

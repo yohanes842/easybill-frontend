@@ -9,10 +9,9 @@ import { Severity } from 'src/app/enums/Severity';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { CustomMessageService } from 'src/app/services/message/custom-message.service';
 import { AppState } from 'src/app/state/app.state';
-import { setSelectedUser } from 'src/app/state/currentSelected/currentSelected.actions';
 import {
+  getSelectedBill,
   getSelectedOrder,
-  getSelectedUser,
 } from 'src/app/state/currentSelected/currentSelected.selectors';
 
 @Component({
@@ -22,9 +21,11 @@ import {
 })
 export class RelevantOrderDetailContentComponent implements OnInit {
   @Input() selectedOrder: OrderHeader;
-  @Input() selectedUser: User; // User yang ordernya akan ditampilkan
+  @Input() selectedBill: Status;
 
-  currentUser: User;
+  selectedUser: User; // User yang ordernya akan ditampilkan
+  authUser: User;
+
   currentRoute: string;
   billRoute: string;
 
@@ -41,17 +42,20 @@ export class RelevantOrderDetailContentComponent implements OnInit {
       .select(getSelectedOrder)
       .subscribe((res) => (this.selectedOrder = res));
     this.store
-      .select(getSelectedUser)
-      .subscribe((res) => (this.selectedUser = res));
+      .select(getSelectedBill)
+      .subscribe((res) => (this.selectedBill = res));
 
-    this.authService
-      .getAuthUser()
-      .subscribe((user) => (this.currentUser = user));
+    this.authService.getAuthUser().subscribe((user) => (this.authUser = user));
     this.currentRoute = this.router.url;
     this.billRoute = Route.BILL_PATH;
   }
 
   ngOnInit() {
+    this.selectedUser =
+      this.selectedOrder.buyer.username == this.authUser.username
+        ? this.selectedBill.user
+        : this.authUser;
+
     const completeAttUser = this.selectedOrder.order_detail_group_by_user.find(
       (user) => user.id === this.selectedUser.id
     );

@@ -7,6 +7,8 @@ export interface DialogDisplayState {
   changeAccountNumberDialogDisplay: boolean;
   addSubOrderDialogDisplay: boolean;
   transactionDetailsDialogDisplay: boolean;
+  billDetailsDialogDisplay: boolean;
+  billPaymentDialogDisplay: boolean;
   detailOrderDialogDisplay: boolean;
 
   dialogDisplayAction: (actionProps: Props) => Action;
@@ -18,6 +20,8 @@ export const initialState: DialogDisplayState = {
   changeAccountNumberDialogDisplay: false,
   addSubOrderDialogDisplay: false,
   transactionDetailsDialogDisplay: false,
+  billDetailsDialogDisplay: false,
+  billPaymentDialogDisplay: false,
   detailOrderDialogDisplay: false,
 
   dialogDisplayAction: createAction('Default Action'),

@@ -1,5 +1,6 @@
 import { Action, createReducer, on } from '@ngrx/store';
 import {
+  setSelectedBill,
   setSelectedOrder,
   setSelectedSubOrder,
   setSelectedTransaction,
@@ -25,6 +26,12 @@ const _currentSelectedReducer = createReducer(
     return {
       ...state,
       selectedTransaction: action.transaction,
+    };
+  }),
+  on(setSelectedBill, (state, action) => {
+    return {
+      ...state,
+      selectedBill: action.bill,
     };
   }),
   on(setSelectedUser, (state, action) => {

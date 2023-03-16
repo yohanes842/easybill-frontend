@@ -1,5 +1,5 @@
 <div
-  *ngIf="selectedOrder.buyer.id != currentUser!.id"
+  *ngIf="selectedOrder.buyer.id != authUser!.id"
   class="text-sm flex justify-content-between"
 >
   <div>
@@ -10,7 +10,7 @@
       }}</span>
     </p>
     <h2 class="m-2 font-italic" style="color: var(--custom-orange-200)">
-      {{ userStatus.owe_amount | currency: "Rp ":"symbol":"1.0-0" }}
+      {{ userStatus.owe_amount | currency : "Rp " : "symbol" : "1.0-0" }}
     </h2>
   </div>
 
@@ -36,7 +36,7 @@
 <div class="bg-black-alpha-20 border-round p-3">
   <div class="border-bottom-1 border-500 pb-2 mb-2">
     <h5
-      *ngIf="selectedUser.id == currentUser.id; else otherUserOrder"
+      *ngIf="selectedUser.id == authUser.id; else otherUserOrder"
       class="text-lg font-bold text-primary m-1"
     >
       Your Order
@@ -74,7 +74,7 @@
               (subOrder.order_type == "SINGLE_USER"
                 ? subOrder.qty * subOrder.price
                 : subOrder.price
-              ) | currency: "Rp ":"":"1.0-0"
+              ) | currency : "Rp " : "" : "1.0-0"
             }}
           </p>
         </div>
@@ -89,24 +89,26 @@
     <div class="flex justify-content-between">
       <p class="m-0 text-sm">Order fee</p>
       <p class="m-0 text-sm font-italic">
-        {{ selectedUser.total_price | currency: "Rp ":"symbol":"1.0-0" }}
+        {{ selectedUser.total_price | currency : "Rp " : "symbol" : "1.0-0" }}
       </p>
     </div>
     <div class="flex justify-content-between">
       <p class="m-0 text-sm">Others fee</p>
       <p class="m-0 text-sm font-italic">
-        {{ selectedOrder.user_other_fee | currency: "":"":"1.0-0" }}
+        {{ selectedOrder.user_other_fee | currency : "" : "" : "1.0-0" }}
       </p>
     </div>
     <div class="flex justify-content-between text-green-400">
       <div>
-        <p class="m-0 text-sm">Discount ({{ selectedOrder.discount*100 }}%)</p>
+        <p class="m-0 text-sm">
+          Discount ({{ selectedOrder.discount * 100 }}%)
+        </p>
         <h6 class="m-0 px-1 font-italic text-white">
-          *Up to {{ selectedOrder.upto | currency: "":"":"1.0-0" }}
+          *Up to {{ selectedOrder.upto | currency : "" : "" : "1.0-0" }}
         </h6>
       </div>
       <p class="m-0 text-sm font-italic">
-        - {{ selectedUser.discount_total | currency: "":"":"1.0-0" }}
+        - {{ selectedUser.discount_total | currency : "" : "" : "1.0-0" }}
       </p>
     </div>
   </div>
@@ -121,7 +123,7 @@
     >
       <p class="m-0 text-sm">Total Price</p>
       <p class="m-0 font-italic">
-        {{ userStatus.owe_amount | currency: "Rp ":"symbol":"1.0-0" }}
+        {{ userStatus.owe_amount | currency : "Rp " : "symbol" : "1.0-0" }}
       </p>
     </div>
     <div
@@ -131,7 +133,7 @@
     >
       <p class="m-0 text-sm">Total Paid</p>
       <p class="m-0 font-italic">
-        {{ userStatus.total_paid | currency: "":"":"1.0-0" }}
+        {{ userStatus.total_paid | currency : "" : "" : "1.0-0" }}
       </p>
     </div>
   </div>
@@ -141,7 +143,7 @@
     <p class="m-0 font-italic">
       {{
         userStatus.owe_amount - userStatus.total_paid
-          | currency: "Rp ":"symbol":"1.0-0"
+          | currency : "Rp " : "symbol" : "1.0-0"
       }}
     </p>
   </div>

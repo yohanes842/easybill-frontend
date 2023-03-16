@@ -1,11 +1,20 @@
-import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs';
 import { OrderHeader } from 'src/app/classes/order-header';
 import { Status } from 'src/app/classes/status';
+import { User } from 'src/app/classes/user';
 import { Severity } from 'src/app/enums/Severity';
+import { AuthService } from 'src/app/services/auth/auth.service';
 import { BillService } from 'src/app/services/bill/bill.service';
 import { CustomMessageService } from 'src/app/services/message/custom-message.service';
-import { OrderService } from 'src/app/services/order/order.service';
+import { AppState } from 'src/app/state/app.state';
+import { setSelectedUser } from 'src/app/state/currentSelected/currentSelected.actions';
+import { setBillPaymentDialogDisplay } from 'src/app/state/dialogDisplay/dialogDisplay.actions';
+import {
+  getBillDetailsDialogDisplay,
+  getBillPaymentDialogDisplay,
+} from 'src/app/state/dialogDisplay/dialogDisplay.selectors';
 
 @Component({
   selector: 'app-bill',
@@ -14,89 +23,77 @@ import { OrderService } from 'src/app/services/order/order.service';
   providers: [BillService],
 })
 export class BillComponent implements OnInit {
-  bills!: Status[];
-  billsPayable!: Status[];
-  billsReceivable!: Status[];
+  bills: Status[];
+  billsPayable: Status[];
+  billsReceivable: Status[];
 
-  selectedBill!: Status;
-  selectedOrder!: OrderHeader;
-  detailDisplay: boolean = false;
+  selectedBill: Status;
+  selectedOrder: OrderHeader;
+  authUser: User;
 
-  paymentDialogDisplay: boolean = false;
-  billDetailsDialogDisplay: boolean = false;
+  billPaymentDialogDisplay: Observable<boolean>;
+  billDetailsDialogDisplay: Observable<boolean>;
 
   constructor(
     private billService: BillService,
-    private messageService: CustomMessageService
-  ) {}
-
-  ngOnInit() {
+    private authService: AuthService,
+    private messageService: CustomMessageService,
+    private store: Store<AppState>
+  ) {
     this.bills = [];
-    this.getBillsPayable();
-    this.getBillsReceivable();
-  }
 
-  getValue(event: Event): string {
-    return (event.target as HTMLInputElement).value;
-  }
+    this.authService.getAuthUser().subscribe((res) => {
+      this.authUser = res;
 
-  showPaymentDialog(bill: Status) {
-    this.selectedBill = bill;
-    this.paymentDialogDisplay = true;
-  }
+      this.billService.getBillsPayable().subscribe({
+        next: (res) => {
+          this.billsPayable = res.output.data.users_bills.sort(
+            (bill1: Status, bill2: Status) =>
+              bill2.owe_amount - bill1.owe_amount
+          );
+          this.bills = this.billsPayable;
+          this.store.dispatch(setSelectedUser({ user: this.authUser }));
+        },
+        error: () => {
+          this.messageService.showMessage(Severity.ERROR, 'REQUEST ERROR');
+        },
+      });
+    });
 
-  showRelatedOrdersDialog(bill: Status) {
-    this.selectedBill = bill;
-    this.billDetailsDialogDisplay = true;
-  }
-
-  getBillsPayable(): void {
-    this.billService.getBillsPayable().subscribe(
-      (res: any) => {
-        this.billsPayable = res.output.data.users_bills.sort(
-          (bill1: Status, bill2: Status) => bill2.owe_amount - bill1.owe_amount
-        );
-        this.bills = this.billsPayable;
-      },
-      (error: HttpErrorResponse) => {
-        this.messageService.showMessage(Severity.ERROR, 'REQUEST ERROR');
-      }
-    );
-  }
-
-  getBillsReceivable(): void {
-    this.billService.getBillsReceivable().subscribe(
-      (res: any) => {
+    this.billService.getBillsReceivable().subscribe({
+      next: (res) => {
         this.billsReceivable = res.output.data.users_bills.sort(
           (bill1: Status, bill2: Status) => bill2.owe_amount - bill1.owe_amount
         );
       },
-      (error: HttpErrorResponse) => {
+      error: () => {
         this.messageService.showMessage(Severity.ERROR, 'REQUEST ERROR');
-      }
+      },
+    });
+
+    this.billDetailsDialogDisplay = this.store.select(
+      getBillDetailsDialogDisplay
     );
+    this.billPaymentDialogDisplay = this.store.select(
+      getBillPaymentDialogDisplay
+    );
+  }
+
+  ngOnInit() {}
+
+  getValue(event: Event) {
+    return (event.target as HTMLInputElement).value;
   }
 
   changeDataViewContent(isBillsPayable: boolean): void {
     this.bills = isBillsPayable ? this.billsPayable : this.billsReceivable;
   }
 
-  hideDialog(): void {
-    this.paymentDialogDisplay = false;
-    this.billDetailsDialogDisplay = false;
-  }
+  payBill({ bill, amount }: { bill: Status; amount: number }) {
+    let index = this.bills.findIndex((b) => b.id === bill.id);
+    if (amount < bill.owe_amount) this.bills[index].owe_amount -= amount;
+    else if (amount == bill.owe_amount) this.bills.splice(index, 1);
 
-  payBill({ bill, amount }: { bill: Status; amount: number }): void {
-    if (amount < bill.owe_amount) {
-      bill.owe_amount -= amount;
-    } else if (amount == bill.owe_amount) {
-      let index = this.bills.indexOf(bill);
-      this.bills.splice(index, 1);
-    }
-    this.hideDialog();
-  }
-
-  backToRelatedOrders(): void {
-    this.detailDisplay = false;
+    this.store.dispatch(setBillPaymentDialogDisplay({ display: false }));
   }
 }

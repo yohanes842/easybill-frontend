@@ -1,9 +1,11 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { Severity } from 'src/app/enums/Severity';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Store } from '@ngrx/store';
 import { Status } from 'src/app/classes/status';
-import { CustomMessageService } from 'src/app/services/message/custom-message.service';
+import { Severity } from 'src/app/enums/Severity';
 import { BillService } from 'src/app/services/bill/bill.service';
-import { HttpErrorResponse } from '@angular/common/http';
+import { CustomMessageService } from 'src/app/services/message/custom-message.service';
+import { AppState } from 'src/app/state/app.state';
+import { getSelectedBill } from 'src/app/state/currentSelected/currentSelected.selectors';
 
 @Component({
   selector: 'payment-dialog-content',
@@ -11,45 +13,44 @@ import { HttpErrorResponse } from '@angular/common/http';
   styleUrls: ['./payment-dialog-content.component.css'],
 })
 export class PaymentDialogContentComponent implements OnInit {
-  @Input() selectedBill!: Status;
-  @Output() onPay: EventEmitter<any> = new EventEmitter();
-  @Output() onClose: EventEmitter<any> = new EventEmitter();
+  @Output() onPay: EventEmitter<{ bill: Status; amount: number }> =
+    new EventEmitter();
 
-  display: boolean = true;
-  amount!: number;
+  selectedBill: Status;
+  amount: number;
 
   constructor(
     private billService: BillService,
-    private messageService: CustomMessageService
-  ) {}
-
-  ngOnInit(): void {
+    private messageService: CustomMessageService,
+    private store: Store<Pick<AppState, 'dialogDisplay'>>
+  ) {
+    this.store
+      .select(getSelectedBill)
+      .subscribe((res) => (this.selectedBill = res));
     this.amount = this.selectedBill.owe_amount;
   }
 
-  hideDialog(): void {
-    this.onClose.emit();
-  }
+  ngOnInit() {}
 
-  pay(): void {
+  pay() {
     if (this.amount <= this.selectedBill.owe_amount && this.amount >= 0) {
       this.billService
         .payBill(this.amount, this.selectedBill.user.id!)
-        .subscribe(
-          (res: any) => {
+        .subscribe({
+          next: () => {
             this.messageService.showMessage(
               Severity.SUCCESS,
               'Successfully',
               'done payment!'
             );
           },
-          (error: HttpErrorResponse) => {
+          error: () => {
             this.messageService.showMessage(
               Severity.ERROR,
               'REQUEST ERROR Payment failed!'
             );
-          }
-        );
+          },
+        });
       let params: { bill: Status; amount: number } = {
         bill: this.selectedBill,
         amount: this.amount,

@@ -19,6 +19,11 @@ export const getSelectedTransaction = createSelector(
   (state) => state.selectedTransaction
 );
 
+export const getSelectedBill = createSelector(
+  getCurrentSelectedState,
+  (state) => state.selectedBill
+);
+
 export const getSelectedUser = createSelector(
   getCurrentSelectedState,
   (state) => state.selectedUser

@@ -39,8 +39,9 @@
       </div>
     </div>
   </div>
+  <!-- Button hanya muncul jika pemesan dan pemilik bill adalah sama yang artinya merupakan dalam Payable Section -->
   <button
-    *ngIf="isPayable"
+    *ngIf="this.bill.related_order_header[0].buyer.id === this.bill.user.id"
     pButton
     class="p-button p-button-sm text-center border-noround border-round-right font-bold"
     style="background: var(--custom-orange-300); height: 100% !important"

@@ -1,12 +1,13 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { HttpErrorResponse } from '@angular/common/http';
-import { OrderHeader } from 'src/app/classes/order-header';
+import { Component, Input, OnInit } from '@angular/core';
+import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs';
 import { Status } from 'src/app/classes/status';
 import { User } from 'src/app/classes/user';
-import { Severity } from 'src/app/enums/Severity';
 import { AuthService } from 'src/app/services/auth/auth.service';
-import { CustomMessageService } from 'src/app/services/message/custom-message.service';
-import { OrderService } from 'src/app/services/order/order.service';
+import { AppState } from 'src/app/state/app.state';
+import { getSelectedBill } from 'src/app/state/currentSelected/currentSelected.selectors';
+import { setDetailOrderDialogDisplay } from 'src/app/state/dialogDisplay/dialogDisplay.actions';
+import { getDetailOrderDialogDisplay } from 'src/app/state/dialogDisplay/dialogDisplay.selectors';
 
 @Component({
   selector: 'bill-details-dialog',
@@ -14,55 +15,34 @@ import { OrderService } from 'src/app/services/order/order.service';
   styleUrls: ['./bill-details-dialog.component.css'],
 })
 export class BillDetailsDialogComponent implements OnInit {
-  @Input() dialogDisplay!: boolean;
-  @Output() dialogDisplayChange: EventEmitter<boolean> = new EventEmitter();
-  @Input() selectedBill!: Status;
-  @Input() isPayable!: boolean;
-
-  currentUser!: User;
-  display: boolean = true;
-  selectedOrder!: OrderHeader;
-  isDetailSection: boolean = false;
+  currentUser: User;
+  selectedBill: Status;
+  isDetailSection: Observable<boolean>;
+  isPayable!: boolean; //untuk mengkondisikan header pada payable dan juga receivable
 
   constructor(
-    private orderService: OrderService,
-    private messageService: CustomMessageService,
-    private authService: AuthService
+    private authService: AuthService,
+    private store: Store<AppState>
   ) {
     this.authService
       .getAuthUser()
       .subscribe((user) => (this.currentUser = user));
+
+    this.store
+      .select(getSelectedBill)
+      .subscribe((res) => (this.selectedBill = res));
+    this.isDetailSection = this.store.select(getDetailOrderDialogDisplay);
+
+    this.isPayable =
+      this.selectedBill.related_order_header[0].buyer.id ===
+      this.selectedBill.user.id;
   }
 
-  ngOnInit(): void {}
-
-  showDetail(order: OrderHeader): void {
-    this.selectedOrder = this.orderService.getViewedOrder(order.id!)!;
-
-    if (this.selectedOrder) this.isDetailSection = true;
-    else {
-      this.orderService.getOrder(order.id!).subscribe(
-        (res: any) => {
-          this.selectedOrder = res.output.data;
-          this.orderService.setViewedOrder(
-            this.selectedOrder.id!,
-            this.selectedOrder
-          );
-          this.isDetailSection = true;
-        },
-        (error: HttpErrorResponse) => {
-          this.messageService.showMessage(Severity.ERROR, 'REQUEST ERROR');
-        }
-      );
-    }
+  ngOnInit() {
+    this.store.dispatch(setDetailOrderDialogDisplay({ display: false }));
   }
 
-  backToRelatedOrders(): void {
-    this.isDetailSection = false;
-  }
-
-  displayChange(): void {
-    this.isDetailSection = false;
-    this.dialogDisplayChange.emit(this.dialogDisplay);
+  backToRelatedOrders() {
+    this.store.dispatch(setDetailOrderDialogDisplay({ display: false }));
   }
 }

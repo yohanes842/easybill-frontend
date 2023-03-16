@@ -1,6 +1,7 @@
 import { createAction, props } from '@ngrx/store';
 import { OrderDetail } from 'src/app/classes/order-detail';
 import { OrderHeader } from 'src/app/classes/order-header';
+import { Status } from 'src/app/classes/status';
 import { Transaction } from 'src/app/classes/transaction';
 import { User } from 'src/app/classes/user';
 
@@ -17,6 +18,11 @@ export const setSelectedSubOrder = createAction(
 export const setSelectedTransaction = createAction(
   '[Transaction History Page] setSelectedTransaction',
   props<{ transaction: Transaction }>()
+);
+
+export const setSelectedBill = createAction(
+  '[Bill Page] setSelectedBill',
+  props<{ bill: Status }>()
 );
 
 export const setSelectedUser = createAction(

@@ -29,6 +29,16 @@ export const getTransactionDetailsDialogDisplay = createSelector(
   (state) => state.transactionDetailsDialogDisplay
 );
 
+export const getBillDetailsDialogDisplay = createSelector(
+  getDialogDisplayState,
+  (state) => state.billDetailsDialogDisplay
+);
+
+export const getBillPaymentDialogDisplay = createSelector(
+  getDialogDisplayState,
+  (state) => state.billPaymentDialogDisplay
+);
+
 export const getDetailOrderDialogDisplay = createSelector(
   getDialogDisplayState,
   (state) => state.detailOrderDialogDisplay
