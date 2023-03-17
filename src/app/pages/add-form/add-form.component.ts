@@ -1,8 +1,9 @@
 import { DatePipe } from '@angular/common';
-import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { Store } from '@ngrx/store';
 import { ConfirmationService } from 'primeng/api';
+import { Observable } from 'rxjs';
 import { OrderDetail } from 'src/app/classes/order-detail';
 import { OrderHeader } from 'src/app/classes/order-header';
 import { User } from 'src/app/classes/user';
@@ -13,6 +14,12 @@ import { AuthService } from 'src/app/services/auth/auth.service';
 import { CustomMessageService } from 'src/app/services/message/custom-message.service';
 import { OrderService } from 'src/app/services/order/order.service';
 import { UserService } from 'src/app/services/user/user.service';
+import { AppState } from 'src/app/state/app.state';
+import {
+  setAddSubOrderDialogDisplay,
+  setDialogDisplayAction,
+} from 'src/app/state/dialogDisplay/dialogDisplay.actions';
+import { getAddSubOrderDialogDisplay } from 'src/app/state/dialogDisplay/dialogDisplay.selectors';
 
 @Component({
   selector: 'app-add-form',
@@ -21,19 +28,19 @@ import { UserService } from 'src/app/services/user/user.service';
   styles: ['span { width: 3rem !important; }'],
 })
 export class AddFormComponent implements OnInit {
-  dialogDisplay = false;
-  modalType!: string;
+  dialogDisplay: Observable<boolean>;
+  modalType: string;
   isWithDiscount = true;
   isFlatDiscount = false;
 
-  users!: User[];
-  filteredUsernames!: string[];
+  users: User[];
+  filteredUsernames: string[];
 
-  currentOrder!: OrderHeader;
-  currentTime!: Date;
+  currentOrder: OrderHeader;
+  currentTime: Date;
   participants: User[] = [];
-  selectedUser!: User;
-  selectedSubOrder!: OrderDetail;
+  selectedUser: User;
+  subOrderInAction: OrderDetail;
 
   dialogStyle = {
     'min-width': '20rem',
@@ -48,10 +55,13 @@ export class AddFormComponent implements OnInit {
     private datePipe: DatePipe,
     private router: Router,
     private messageService: CustomMessageService,
-    private confirmationService: ConfirmationService
-  ) {}
+    private confirmationService: ConfirmationService,
+    private store: Store<Pick<AppState, 'currentSelected'>>
+  ) {
+    this.dialogDisplay = this.store.select(getAddSubOrderDialogDisplay);
+  }
 
-  ngOnInit(): void {
+  ngOnInit() {
     const stringOfCurrentOrder = localStorage.getItem('currentOrder');
     let retrievedCurrentOrder: OrderHeader | null;
 
@@ -81,27 +91,32 @@ export class AddFormComponent implements OnInit {
       if (this.currentOrder.upto <= 0) this.isWithDiscount = false;
     }
 
-    this.userService.getUsers().subscribe(
-      (response: any) => {
-        this.users = response.output.data;
+    this.userService.getUsers().subscribe({
+      next: (res) => {
+        this.users = res.output.data;
       },
-      (error: HttpErrorResponse) => {
+      error: () => {
         this.messageService.showMessage(Severity.ERROR, 'Request Error');
-      }
-    );
+      },
+    });
   }
 
   showAddSubOrderDialog() {
-    this.hideDialog();
     this.modalType = SubOrderModalType.ADD;
-    this.selectedSubOrder = new OrderDetail();
-    this.dialogDisplay = true;
+    this.subOrderInAction = new OrderDetail();
+    this.store.dispatch(setAddSubOrderDialogDisplay({ display: true }));
+    this.store.dispatch(
+      setDialogDisplayAction({ action: setAddSubOrderDialogDisplay })
+    );
   }
 
   showEditSubOrderDialog(subOrder: OrderDetail) {
     this.modalType = SubOrderModalType.EDIT;
-    this.selectedSubOrder = subOrder;
-    this.dialogDisplay = true;
+    this.subOrderInAction = subOrder;
+    this.store.dispatch(setAddSubOrderDialogDisplay({ display: true }));
+    this.store.dispatch(
+      setDialogDisplayAction({ action: setAddSubOrderDialogDisplay })
+    );
   }
 
   deleteSubOrder(index: number) {
@@ -160,16 +175,11 @@ export class AddFormComponent implements OnInit {
     }
   }
 
-  hideDialog(): void {
-    this.dialogDisplay = false;
-    this.saveToLocalStorage();
-  }
-
-  backToHome(): void {
+  backToHome() {
     this.router.navigateByUrl(Route.HOME_PATH);
   }
 
-  showDeleteSubOrderConfirmation(index: number): void {
+  showDeleteSubOrderConfirmation(index: number) {
     this.confirmationService.confirm({
       message: 'Are you sure that you want to delete this sub-order?',
       accept: () => {
@@ -178,14 +188,14 @@ export class AddFormComponent implements OnInit {
     });
   }
 
-  setDiscountPercentage(): void {
+  setDiscountPercentage() {
     this.currentOrder.discount = this.isFlatDiscount
       ? 100
       : this.currentOrder.discount;
     this.saveToLocalStorage();
   }
 
-  saveToLocalStorage(): void {
+  saveToLocalStorage() {
     //set order_at attribute
     this.currentOrder.order_at = this.datePipe.transform(
       this.currentTime,
@@ -195,7 +205,7 @@ export class AddFormComponent implements OnInit {
     localStorage.setItem('currentOrder', JSON.stringify(this.currentOrder));
   }
 
-  clearOrder(): void {
+  clearOrder() {
     localStorage.removeItem('currentOrder');
     this.currentOrder = new OrderHeader();
     this.currentOrder.order_list = [];

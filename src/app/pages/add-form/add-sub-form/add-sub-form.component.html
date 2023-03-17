@@ -9,7 +9,7 @@
       pInputText
       [style]="{ 'margin-block': '0.5rem' }"
       class="w-full py-2"
-      [(ngModel)]="selectedSubOrder.order_menu_desc"
+      [(ngModel)]="subOrderInAction.order_menu_desc"
       name="subOrderMenuDesc"
       placeholder="Order description"
       maxlength="50"
@@ -32,7 +32,7 @@
             'max-width': '7rem',
             'padding-block': '0.5rem'
           }"
-          [(ngModel)]="selectedSubOrder.price"
+          [(ngModel)]="subOrderInAction.price"
           name="subOrderPrice"
           placeholder="Price"
           mode="decimal"
@@ -60,7 +60,7 @@
             'text-align': 'center',
             'padding-inline': '0.1rem'
           }"
-          [(ngModel)]="selectedSubOrder.qty"
+          [(ngModel)]="subOrderInAction.qty"
           name="qty"
           class="text-center"
           [showButtons]="true"
@@ -83,9 +83,9 @@
       pButton
       class="p-button-primary py-2 px-7 w-fit"
       [disabled]="
-        !selectedSubOrder.order_menu_desc ||
-        !selectedSubOrder.price ||
-        !selectedSubOrder.qty
+        !subOrderInAction.order_menu_desc ||
+        !subOrderInAction.price ||
+        !subOrderInAction.qty
       "
     >
       Save

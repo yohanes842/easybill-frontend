@@ -250,16 +250,16 @@
   </form>
 </div>
 
-<popup-dialog [(display)]="dialogDisplay" [customStyle]="dialogStyle">
+<popup-dialog *ngIf="dialogDisplay | async" [customStyle]="dialogStyle">
   <ng-container header>
     <h3 class="m-0 p-0">{{ modalType }} Sub-Order</h3>
   </ng-container>
-  <ng-container *ngIf="selectedSubOrder && dialogDisplay" content>
+  <ng-container content>
     <add-sub-form
       [modalType]="modalType"
       [subOrders]="currentOrder.order_list"
-      [selectedSubOrder]="selectedSubOrder"
-      (onSuccess)="hideDialog()"
+      [subOrderInAction]="subOrderInAction"
+      (onSuccess)="saveToLocalStorage()"
     ></add-sub-form>
   </ng-container>
 </popup-dialog>
