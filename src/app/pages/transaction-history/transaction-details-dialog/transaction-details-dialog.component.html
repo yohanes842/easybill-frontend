@@ -9,13 +9,13 @@
         pButton
         class="button-no-outline p-button-link p-button-sm w-fit p-0 text-left outline-none my-2"
         label="back"
-        (click)="backToRelatedOrders()"
+        (click)="hideDetail()"
       ></button>
       <order-detail-header></order-detail-header>
     </ng-template>
   </ng-container>
 
-  <ng-container *ngIf="selectedTransaction" content>
+  <ng-container content>
     <ng-container *ngIf="!isDetailSection; else detailContent">
       <div
         *ngFor="

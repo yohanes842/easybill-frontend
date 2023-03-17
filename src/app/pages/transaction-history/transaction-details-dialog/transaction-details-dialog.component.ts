@@ -7,7 +7,10 @@ import {
   getSelectedOrder,
   getSelectedTransaction,
 } from 'src/app/state/currentSelected/currentSelected.selectors';
-import { setDetailOrderDialogDisplay } from 'src/app/state/dialogDisplay/dialogDisplay.actions';
+import {
+  setDetailOrderDialogDisplay,
+  setTransactionDetailsDialogDisplay,
+} from 'src/app/state/dialogDisplay/dialogDisplay.actions';
 import { getDetailOrderDialogDisplay } from 'src/app/state/dialogDisplay/dialogDisplay.selectors';
 
 @Component({
@@ -34,10 +37,10 @@ export class TransactionDetailsDialogComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.store.dispatch(setDetailOrderDialogDisplay({ display: false }));
+    this.hideDetail();
   }
 
-  backToRelatedOrders() {
+  hideDetail() {
     this.store.dispatch(setDetailOrderDialogDisplay({ display: false }));
   }
 }

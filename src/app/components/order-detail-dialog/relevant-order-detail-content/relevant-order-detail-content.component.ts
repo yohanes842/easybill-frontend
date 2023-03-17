@@ -11,6 +11,11 @@ import { AuthService } from 'src/app/services/auth/auth.service';
 import { CustomMessageService } from 'src/app/services/message/custom-message.service';
 import { AppState } from 'src/app/state/app.state';
 import { getSelectedOrder } from 'src/app/state/currentSelected/currentSelected.selectors';
+import {
+  setBillDetailsDialogDisplay,
+  setDetailOrderDialogDisplay,
+  setTransactionDetailsDialogDisplay,
+} from 'src/app/state/dialogDisplay/dialogDisplay.actions';
 
 @Component({
   selector: 'relevant-order-detail-content',
@@ -34,7 +39,7 @@ export class RelevantOrderDetailContentComponent implements OnInit {
     private router: Router,
     private authService: AuthService,
     private messageService: CustomMessageService,
-    private store: Store<Pick<AppState, 'dialogDisplay'>>
+    private store: Store<AppState>
   ) {
     this.store
       .select(getSelectedOrder)
@@ -68,6 +73,9 @@ export class RelevantOrderDetailContentComponent implements OnInit {
   }
 
   navigateToBillPage() {
+    this.store.dispatch(setTransactionDetailsDialogDisplay({ display: false }));
+    this.store.dispatch(setBillDetailsDialogDisplay({ display: false }));
+    this.store.dispatch(setDetailOrderDialogDisplay({ display: false }));
     this.router.navigateByUrl(Route.BILL_PATH);
   }
 }
