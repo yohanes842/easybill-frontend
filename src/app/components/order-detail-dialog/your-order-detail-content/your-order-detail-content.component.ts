@@ -13,9 +13,8 @@ import { getSelectedOrder } from 'src/app/state/currentSelected/currentSelected.
   styleUrls: ['./your-order-detail-content.component.css'],
 })
 export class YourRelevantOrderDetailContentComponent implements OnInit {
-  @Input() selectedOrder!: OrderHeader;
-
-  currentUser: User;
+  selectedOrder: OrderHeader;
+  authUser: User;
   yourStatus: Status;
   othersStatus: Status[] = [];
 
@@ -23,9 +22,7 @@ export class YourRelevantOrderDetailContentComponent implements OnInit {
     private authService: AuthService,
     private store: Store<Pick<AppState, 'dialogDisplay'>>
   ) {
-    this.authService
-      .getAuthUser()
-      .subscribe((user) => (this.currentUser = user));
+    this.authService.getAuthUser().subscribe((user) => (this.authUser = user));
 
     this.store
       .select(getSelectedOrder)
@@ -34,7 +31,7 @@ export class YourRelevantOrderDetailContentComponent implements OnInit {
 
   ngOnInit() {
     this.selectedOrder.bills.forEach((bill) => {
-      if (bill.user.id === this.currentUser.id) this.yourStatus = bill;
+      if (bill.user.id === this.authUser.id) this.yourStatus = bill;
       else this.othersStatus.push(bill);
     });
   }

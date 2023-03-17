@@ -1,7 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Transaction } from 'src/app/classes/transaction';
-import { User } from 'src/app/classes/user';
 import { UserBills } from 'src/app/classes/user-bills';
 import { OutputResponse } from 'src/app/interfaces/output-response';
 import { Response } from 'src/app/interfaces/response';

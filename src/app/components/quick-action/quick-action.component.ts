@@ -7,9 +7,7 @@ import {
 } from '@angular/core';
 import { Router } from '@angular/router';
 import { MenuItem } from 'primeng/api';
-import { Severity } from 'src/app/enums/Severity';
 import { AuthService } from 'src/app/services/auth/auth.service';
-import { CustomMessageService } from 'src/app/services/message/custom-message.service';
 import { Route } from '../../enums/Route';
 
 @Component({
@@ -20,18 +18,14 @@ import { Route } from '../../enums/Route';
 })
 export class QuickActionComponent implements OnInit, AfterViewInit {
   @Output() updateUrl: EventEmitter<Route> = new EventEmitter();
-  items!: MenuItem[];
+  items: MenuItem[];
 
-  quickActionDiv!: HTMLElement;
-  quickActionMainBtn!: HTMLElement;
+  quickActionDiv: HTMLElement;
+  quickActionMainBtn: HTMLElement;
 
-  constructor(
-    private router: Router,
-    private messageService: CustomMessageService,
-    private authService: AuthService
-  ) {}
+  constructor(private router: Router, private authService: AuthService) {}
 
-  ngOnInit(): void {
+  ngOnInit() {
     this.items = [
       {
         icon: 'pi pi-sign-out',
@@ -66,7 +60,7 @@ export class QuickActionComponent implements OnInit, AfterViewInit {
     ];
   }
 
-  ngAfterViewInit(): void {
+  ngAfterViewInit() {
     this.quickActionDiv = document.querySelector(
       'p-speeddial>div'
     ) as HTMLElement;

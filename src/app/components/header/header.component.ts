@@ -1,9 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { User } from 'src/app/classes/user';
-import { AuthService } from 'src/app/services/auth/auth.service';
-import { VERSION } from 'src/app/easybill.config';
 import { Router } from '@angular/router';
+import { VERSION } from 'src/app/easybill.config';
 import { Route } from 'src/app/enums/Route';
+import { AuthService } from 'src/app/services/auth/auth.service';
 
 @Component({
   selector: 'app-header',
@@ -21,9 +20,9 @@ export class HeaderComponent implements OnInit {
       .subscribe((user) => (this.username = user.username));
   }
 
-  ngOnInit(): void {}
+  ngOnInit() {}
 
-  navigateToProfile(): void {
+  navigateToProfile() {
     this.router.navigateByUrl(Route.PROFILE_PATH);
   }
 }

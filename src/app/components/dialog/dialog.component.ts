@@ -10,10 +10,9 @@ import { getDialogDisplayAction } from 'src/app/state/dialogDisplay/dialogDispla
   styleUrls: ['./dialog.component.css'],
 })
 export class DialogComponent implements OnInit {
-  @Input() display: boolean = true;
-  @Output() displayChange: EventEmitter<boolean> = new EventEmitter();
-
   @Input() customStyle: any;
+
+  display: boolean = true;
   popupStateAction: (actionProps: Props) => Action;
 
   defaultStyle = {
@@ -32,6 +31,5 @@ export class DialogComponent implements OnInit {
 
   hideDialog() {
     this.store.dispatch(this.popupStateAction({ display: false }));
-    this.displayChange.emit(this.display);
   }
 }

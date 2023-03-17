@@ -7,11 +7,11 @@ import { LoadingService } from 'src/app/services/loading/loading.service';
   styleUrls: ['./loading.component.css'],
 })
 export class LoadingComponent implements OnInit {
+  opacityIsFull: boolean;
+
   constructor(public loadingService: LoadingService) {}
 
-  opacityIsFull!: boolean;
-
-  ngOnInit(): void {
+  ngOnInit() {
     this.opacityIsFull = true;
   }
 }

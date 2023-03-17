@@ -24,10 +24,10 @@ import {
 })
 export class RelevantOrderDetailContentComponent implements OnInit {
   @Input() selectedUserId: number; // User yang order detailnya akan ditampilkan
-  @Input() selectedOrder: OrderHeader;
 
   authUser: User;
   selectedUserOrderDetails: UserOrderDetails;
+  selectedOrder: OrderHeader;
 
   currentRoute: string;
   billRoute: string;

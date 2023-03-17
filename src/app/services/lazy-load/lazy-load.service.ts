@@ -5,26 +5,26 @@ import { LazyLoadPaging } from 'src/app/classes/lazy-load-paging';
   providedIn: 'root',
 })
 export class LazyLoadService<T> {
+  currentLazyPaging: LazyLoadPaging<T>;
+
   constructor() {}
 
-  currentLazyPaging!: LazyLoadPaging<T>;
-
-  setCurrentLazyPaging(lazyPaging: LazyLoadPaging<T>): void {
+  setCurrentLazyPaging(lazyPaging: LazyLoadPaging<T>) {
     this.currentLazyPaging = lazyPaging;
   }
 
-  incrementPageFetchIndicator(): number {
+  incrementPageFetchIndicator() {
     return ++this.currentLazyPaging.pageFetchIndicator;
   }
 
-  calculateMaxScroll(): number {
+  calculateMaxScroll() {
     this.currentLazyPaging.maxScroll =
       document.documentElement.scrollHeight -
       document.documentElement.clientHeight;
     return this.currentLazyPaging.maxScroll;
   }
 
-  isNeedLazyLoad(): boolean {
+  isNeedLazyLoad() {
     return (
       window.scrollY / this.currentLazyPaging.maxScroll >= 0.9 &&
       this.currentLazyPaging.pageFetchIndicator <

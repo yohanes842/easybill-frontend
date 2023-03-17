@@ -10,7 +10,7 @@ import { getSelectedOrder } from 'src/app/state/currentSelected/currentSelected.
   styleUrls: ['./order-detail-summary-content.component.css'],
 })
 export class OrderDetailSummaryContentComponent implements OnInit {
-  @Input() selectedOrder: OrderHeader;
+  selectedOrder: OrderHeader;
 
   constructor(private store: Store<Pick<AppState, 'dialogDisplay'>>) {
     this.store

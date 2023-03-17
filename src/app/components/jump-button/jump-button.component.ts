@@ -6,16 +6,16 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./jump-button.component.css'],
 })
 export class JumpButtonComponent implements OnInit {
-  display: boolean = false;
-  isVisible: boolean = true;
-  previousScrollY: number = 0;
-  timeoutToBeDisplayed!: any; //opacity 100
-  timeoutToBeHidden!: any; //opacity 0
-  timeoutToBeInvisible!: any; //visibility hidden
+  display = false;
+  isVisible = true;
+  previousScrollY = 0;
+  timeoutToBeDisplayed!: NodeJS.Timeout; //opacity 100
+  timeoutToBeHidden!: NodeJS.Timeout; //opacity 0
+  timeoutToBeInvisible!: NodeJS.Timeout; //visibility hidden
 
   constructor() {}
 
-  ngOnInit(): void {
+  ngOnInit() {
     window.addEventListener('scroll', () => {
       clearTimeout(this.timeoutToBeDisplayed);
       clearTimeout(this.timeoutToBeHidden);
@@ -34,7 +34,7 @@ export class JumpButtonComponent implements OnInit {
     });
   }
 
-  toPageTop(): void {
+  toPageTop() {
     document.documentElement.scrollIntoView({ behavior: 'smooth' });
   }
 }
