@@ -28,7 +28,7 @@ import { PaymentDialogContentComponent } from 'src/app/pages/bill/payment-dialog
 import { PaymentDialogHeaderComponent } from 'src/app/pages/bill/payment-dialog/payment-dialog-header/payment-dialog-header.component';
 import { LoginComponent } from 'src/app/pages/login/login.component';
 import { NotFoundPageComponent } from 'src/app/pages/not-found-page/not-found-page.component';
-import { OrderListHeaderComponent } from 'src/app/pages/order-list/order-list-header/order-list-header.component';
+import { OrderListHeaderComponent } from 'src/app/pages/order-list/header/order-list-header.component';
 import { OrderListContentComponent } from 'src/app/pages/order-list/order-list-content/order-list-content.component';
 import { OrderListComponent } from 'src/app/pages/order-list/order-list.component';
 import { PendingOrderListContentComponent } from 'src/app/pages/pending-order-list/pending-order-list-content/pending-order-list-content.component';
