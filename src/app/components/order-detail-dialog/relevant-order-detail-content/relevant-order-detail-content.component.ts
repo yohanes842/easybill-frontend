@@ -4,6 +4,7 @@ import { Store } from '@ngrx/store';
 import { OrderHeader } from 'src/app/classes/order-header';
 import { Status } from 'src/app/classes/status';
 import { User } from 'src/app/classes/user';
+import { UserOrderDetails } from 'src/app/classes/userOrderDetails';
 import { Route } from 'src/app/enums/Route';
 import { Severity } from 'src/app/enums/Severity';
 import { AuthService } from 'src/app/services/auth/auth.service';
@@ -17,10 +18,11 @@ import { getSelectedOrder } from 'src/app/state/currentSelected/currentSelected.
   styleUrls: ['./relevant-order-detail-content.component.css'],
 })
 export class RelevantOrderDetailContentComponent implements OnInit {
-  @Input() selectedUser: User; // User yang order detailnya akan ditampilkan
+  @Input() selectedUserId: number; // User yang order detailnya akan ditampilkan
   @Input() selectedOrder: OrderHeader;
 
   authUser: User;
+  selectedUserOrderDetails: UserOrderDetails;
 
   currentRoute: string;
   billRoute: string;
@@ -45,7 +47,7 @@ export class RelevantOrderDetailContentComponent implements OnInit {
 
   ngOnInit() {
     const completeAttUser = this.selectedOrder.order_detail_group_by_user.find(
-      (user) => user.id === this.selectedUser.id
+      (user) => user.id === this.selectedUserId
     );
 
     if (!completeAttUser) {
@@ -57,10 +59,10 @@ export class RelevantOrderDetailContentComponent implements OnInit {
       return;
     }
 
-    this.selectedUser = completeAttUser; // Tidak perlu disimpan ke dalam state karena hanya dipakai dalam komponen ini saja
+    this.selectedUserOrderDetails = completeAttUser; // Tidak perlu disimpan ke dalam state karena hanya dipakai dalam komponen ini saja
 
     this.selectedOrder.bills.forEach((bill) => {
-      if (bill.user.id === this.selectedUser.id) this.userStatus = bill;
+      if (bill.user.id === this.selectedUserId) this.userStatus = bill;
       else this.othersStatus.push(bill);
     });
   }

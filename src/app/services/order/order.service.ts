@@ -1,7 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { OrderHeader } from 'src/app/classes/order-header';
-import { User } from 'src/app/classes/user';
+import { UserPendingOrders } from 'src/app/classes/user-pending-orders';
+import { UserOrders } from 'src/app/classes/userOrders';
 import { OutputResponse } from 'src/app/interfaces/output-response';
 import { PagableOutputResponse } from 'src/app/interfaces/pagable-output-response';
 import { Response } from 'src/app/interfaces/response';
@@ -38,7 +39,7 @@ export class OrderService {
       status: status,
     });
 
-    return this.http.get<Response<PagableOutputResponse<User>>>(
+    return this.http.get<Response<PagableOutputResponse<UserOrders>>>(
       `${env.url}/api/orders/relevant-orders?${params.toString()}`
     );
   }
@@ -50,7 +51,7 @@ export class OrderService {
       status: status,
     });
 
-    return this.http.get<Response<PagableOutputResponse<User>>>(
+    return this.http.get<Response<PagableOutputResponse<UserOrders>>>(
       `${env.url}/api/orders/users-orders?${params.toString()}`
     );
   }
@@ -70,7 +71,7 @@ export class OrderService {
   }
 
   public getPendingOrders() {
-    return this.http.get<Response<OutputResponse<User>>>(
+    return this.http.get<Response<OutputResponse<UserPendingOrders>>>(
       `${env.url}/api/orders/pending-orders`
     );
   }

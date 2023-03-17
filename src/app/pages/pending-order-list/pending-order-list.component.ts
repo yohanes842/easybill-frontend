@@ -30,7 +30,7 @@ export class PendingOrderListComponent implements OnInit {
     this.orderService
       .getPendingOrders()
       .subscribe(
-        (res) => (this.pendingOrders = res.output.data.pending_orders!)
+        (res) => (this.pendingOrders = res.output.data.pending_orders)
       );
 
     this.dialogDisplay = this.store.select(getDetailOrderDialogDisplay);

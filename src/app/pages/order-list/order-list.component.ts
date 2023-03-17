@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { LazyLoadPaging } from 'src/app/classes/lazy-load-paging';
 import { OrderHeader } from 'src/app/classes/order-header';
 import { User } from 'src/app/classes/user';
+import { UserOrders } from 'src/app/classes/userOrders';
 import { Status } from 'src/app/enums/Status';
 import { PagableOutputResponse } from 'src/app/interfaces/pagable-output-response';
 import { Response } from 'src/app/interfaces/response';
@@ -20,7 +21,7 @@ import { getDetailOrderDialogDisplay } from 'src/app/state/dialogDisplay/dialogD
   providers: [OrderService],
 })
 export class OrderListComponent implements OnInit, DoCheck, OnDestroy {
-  authUser: User;
+  currentUser: UserOrders;
   orders: OrderHeader[];
   selectedOrder: OrderHeader;
 
@@ -137,12 +138,12 @@ export class OrderListComponent implements OnInit, DoCheck, OnDestroy {
 
   loadData() {
     const orderSubscriptions = (
-      res: Response<PagableOutputResponse<User>>,
+      res: Response<PagableOutputResponse<UserOrders>>,
       currentLazyPage: LazyLoadPaging<OrderHeader>
-    ): void => {
+    ) => {
       if (currentLazyPage == this.currentLazyPage) {
-        this.authUser = res.output.data;
-        let latestFetchOrders: OrderHeader[] = this.authUser
+        this.currentUser = res.output.data;
+        let latestFetchOrders: OrderHeader[] = this.currentUser
           .order_list as OrderHeader[];
 
         this.currentLazyPage.objects = this.currentLazyPage.objects.concat([

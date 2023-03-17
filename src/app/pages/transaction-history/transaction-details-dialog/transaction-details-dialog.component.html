@@ -34,7 +34,7 @@
     <ng-template #detailContent>
       <ng-container>
         <relevant-order-detail-content
-          [selectedUser]="selectedTransaction.payer"
+          [selectedUserId]="selectedTransaction.payer.id"
         ></relevant-order-detail-content>
 
         <order-detail-summary-content></order-detail-summary-content>

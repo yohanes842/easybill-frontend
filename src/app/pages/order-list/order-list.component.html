@@ -30,7 +30,7 @@
   <ng-container content>
     <ng-container *ngIf="isRelevantOrder; else yourOrderDetailContent">
       <relevant-order-detail-content
-        [selectedUser]="authUser"
+        [selectedUserId]="currentUser.id"
       ></relevant-order-detail-content>
     </ng-container>
 

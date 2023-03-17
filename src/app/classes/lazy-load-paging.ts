@@ -1,7 +1,7 @@
 export class LazyLoadPaging<T> {
-  nextPage: number = 1;
-  maxPage: number = 0;
-  pageFetchIndicator: number = 0;
-  maxScroll: number = 0;
+  nextPage = 1;
+  maxPage = 0;
+  pageFetchIndicator = 0;
+  maxScroll = 0;
   objects: T[] = [];
 }

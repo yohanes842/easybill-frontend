@@ -139,11 +139,11 @@ export class AddFormComponent implements OnInit {
   }
 
   navigateToSelectUsers() {
-    this.currentOrder.buyer_id = this.users.find(
+    const buyer = this.users.find(
       (u: User) => u.username === this.currentOrder.username
-    )?.id;
+    );
     //validate if user not exist in the list
-    if (this.currentOrder.buyer_id === 0) {
+    if (!buyer) {
       this.messageService.showMessage(
         Severity.ERROR,
         'Input Error',
@@ -151,6 +151,8 @@ export class AddFormComponent implements OnInit {
       );
       return;
     }
+
+    this.currentOrder.buyer_id = buyer.id;
 
     if (this.currentOrder.order_list.length < 1) {
       this.messageService.showMessage(

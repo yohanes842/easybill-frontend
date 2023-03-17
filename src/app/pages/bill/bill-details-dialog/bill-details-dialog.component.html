@@ -53,7 +53,7 @@
 
     <ng-template #detailOrder>
       <relevant-order-detail-content
-        [selectedUser]="isPayable ? authUser : selectedBill.user"
+        [selectedUserId]="isPayable ? authUser.id : selectedBill.user.id"
       ></relevant-order-detail-content>
       <order-detail-summary-content></order-detail-summary-content>
     </ng-template>
