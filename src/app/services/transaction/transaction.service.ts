@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { UserTransactions } from 'src/app/classes/UserTransactions';
+import { UserTransactions } from 'src/app/classes/userTransactions';
 import { PagableOutputResponse } from 'src/app/interfaces/pagable-output-response';
 import { Response } from 'src/app/interfaces/response';
 import { environment as env } from 'src/environments/environment';
