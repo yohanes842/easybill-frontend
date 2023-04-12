@@ -35,16 +35,16 @@
     <label for="newAccountNumber" class="font-bold"
       >New BCA Account Number</label
     >
-    <p-inputMask
+    <input
+      pInputText
       [style]="{ 'margin-block': '0.5rem' }"
-      styleClass="w-full py-2"
-      mask="9999999999"
-      name="newAccountNumber"
-      [autoClear]="false"
-      [required]="true"
+      class="w-full py-2"
+      type="text"
+      name="lala"
       [(ngModel)]="newAccountNumber"
-    ></p-inputMask>
-    <!--check the ngModel binding variable is not null to ensure that the initial state will not shown the error message-->
+      oninput="this.value=this.value.replace(/[^0-9]/g,'')"
+    />
+    <!-- check the ngModel binding variable is not null to ensure that the initial state will not shown the error message -->
     <span
       *ngIf="errors.get('new_account_number') && newAccountNumber != null"
       class="text-red-400"
