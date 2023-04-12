@@ -75,7 +75,7 @@ export class BillComponent implements OnInit {
   }
 
   payBill({ bill, amount }: { bill: Status; amount: number }) {
-    let index = this.bills.findIndex((b) => b.id === bill.id);
+    let index = this.bills.findIndex((b) => b.user.id === bill.user.id);
     if (amount < bill.owe_amount) this.bills[index].owe_amount -= amount;
     else if (amount == bill.owe_amount) this.bills.splice(index, 1);
 
