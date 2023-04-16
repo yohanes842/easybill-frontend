@@ -1,69 +1,76 @@
-<button
-  class="reset p-col-12 w-full px-3 py-0 mt-3 border-round-top text-left border-none cursor-pointer"
-  style="background: var(--custom-light-black)"
-  (click)="showDetail(order)"
->
-  <div class="flex justify-content-between py-3">
-    <div class="flex flex-column gap-1" style="max-width: 60%">
-      <p class="m-0 mb-2 text-sm text-secondary">
-        {{ order.order_at | date : "EEEE, d/M/yy, h:mm a" }}
-      </p>
-      <h4 class="m-0 overflow-x-hidden" style="color: var(--custom-orange-300)">
-        {{ order.order_description }}
-      </h4>
-      <p class="m-0 text-sm text-secondary">
-        by
-        <span>
-          <p-avatar
-            styleClass="p-mr-2 font-bold"
-            [style]="{
-              'background-color': 'var(--custom-orange-50)',
-              color: 'black',
-              transform: 'scale(70%)'
-            }"
-            shape="circle"
-            >{{ order.buyer.username | uppercase | slice : 0 : 1 }}</p-avatar
-          >
-        </span>
-        <span style="color: var(--custom-orange-100)">{{
-          order.buyer.username | uppercase
-        }}</span>
-      </p>
-    </div>
-    <div class="flex flex-column justify-content-between align-items-end gap-2">
-      <div style="white-space: nowrap">
-        <span class="p-buttonset">
-          <button
-            pButton
-            class="button-set-item p-button-sm py-2 px-3 w-fit"
-            style="background: var(--custom-green-300)"
-            type="button"
-            icon="pi pi-check"
-            (click)="showApproveConfirmation($event)"
-          ></button>
-          <!-- <button
+<div class="flex align-items-center gap-3 px-3 py-2">
+  <button
+    class="reset p-col-12 w-full px-3 py-0 mt-3 border-round-top text-left border-none cursor-pointer"
+    style="background: var(--custom-light-black)"
+    (click)="showDetail(order)"
+  >
+    <div class="flex justify-content-between py-3">
+      <div class="flex flex-column gap-1" style="max-width: 60%">
+        <p class="m-0 mb-2 text-sm text-secondary">
+          {{ order.order_at | date : "EEEE, d/M/yy, h:mm a" }}
+        </p>
+        <h4
+          class="m-0 overflow-x-hidden"
+          style="color: var(--custom-orange-300)"
+        >
+          {{ order.order_description }}
+        </h4>
+        <p class="m-0 text-sm text-secondary">
+          by
+          <span>
+            <p-avatar
+              styleClass="p-mr-2 font-bold"
+              [style]="{
+                'background-color': 'var(--custom-orange-50)',
+                color: 'black',
+                transform: 'scale(70%)'
+              }"
+              shape="circle"
+              >{{ order.buyer.username | uppercase | slice : 0 : 1 }}</p-avatar
+            >
+          </span>
+          <span style="color: var(--custom-orange-100)">{{
+            order.buyer.username | uppercase
+          }}</span>
+        </p>
+      </div>
+      <div
+        class="flex flex-column justify-content-between align-items-end gap-2"
+      >
+        <div style="white-space: nowrap">
+          <span class="p-buttonset">
+            <button
+              pButton
+              class="button-set-item p-button-sm py-2 px-3 w-fit"
+              style="background: var(--custom-green-300)"
+              type="button"
+              icon="pi pi-check"
+              (click)="showApproveConfirmation($event)"
+            ></button>
+            <!-- <button
             pButton
             class="button-set-item p-button-sm py-2 px-3 w-fit"
             style="background: var(--custom-orange-300)"
             type="button"
             icon="pi pi-pencil"
           ></button> -->
-          <button
-            pButton
-            class="button-set-item p-button-sm py-2 px-3 w-fit"
-            style="background: var(--custom-red-300)"
-            type="button"
-            icon="pi pi-trash"
-            (click)="showDeleteConfirmation($event)"
-          ></button>
-        </span>
+            <button
+              pButton
+              class="button-set-item p-button-sm py-2 px-3 w-fit"
+              style="background: var(--custom-red-300)"
+              type="button"
+              icon="pi pi-trash"
+              (click)="showDeleteConfirmation($event)"
+            ></button>
+          </span>
+        </div>
+        <button
+          pButton
+          class="p-button-sm p-button-link text-right p-1"
+          label="see details"
+          type="button"
+        ></button>
       </div>
-      <button
-        pButton
-        class="p-button-sm p-button-link text-right p-1"
-        label="see details"
-        type="button"
-      ></button>
     </div>
-  </div>
-</button>
+  </button>
+</div>

@@ -6,14 +6,13 @@
     [paginator]="false"
     emptyMessage="No orders found..."
     filterBy="order_description,buyer.username"
-    layout="grid"
   >
     <ng-template pTemplate="header">
       <h2 class="m-1 font-italic">Pending Orders</h2>
     </ng-template>
 
-    <ng-template let-order pTemplate="gridItem" class="flex flex-column gap-3">
-      <div class="w-full px-5">
+    <ng-template let-order pTemplate="listItem">
+      <div class="w-full border-0">
         <pending-order-list-content
           [order]="order"
           (onDeleted)="removeOrder($event)"
