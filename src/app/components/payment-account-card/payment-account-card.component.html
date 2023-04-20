@@ -1,9 +1,10 @@
-<div class="flex mb-2 w-25rem">
+<div class="flex mb-2" style="min-width: 22rem">
   <ng-container *ngIf="!isEditing; else editingSection">
     <div
-      class="flex align-items-center justify-content-center w-7rem px-2 overflow-hidden border-3 border-round-left-lg text-gray-900 font-semibold"
+      class="flex align-items-center justify-content-center px-2 overflow-hidden border-3 border-round-left-lg text-gray-900 font-semibold"
       style="
-        max-width: 7rem;
+        max-width: 6rem;
+        width: 6rem;
         border-color: var(--custom-orange-300);
         background: var(--custom-orange-300);
       "
@@ -17,10 +18,10 @@
       </p>
     </div>
     <div
-      class="flex align-items-center justify-content-center gap-3 border-round-right-lg px-3"
+      class="flex align-items-center justify-content-center gap-3 border-round-right-lg px-3 flex-1"
       style="background: var(--custom-light-black)"
     >
-      <div class="flex align-items-center justify-content-between w-17rem">
+      <div class="flex align-items-center justify-content-between flex-1">
         <p class="m-0">{{ paymentAccount.payment_account }}</p>
         <div class="flex align-items-center gap-2">
           <copy-button

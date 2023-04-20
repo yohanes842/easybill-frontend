@@ -15,11 +15,6 @@ export const setChangePasswordDialogDisplay = createAction(
   props<Props>()
 );
 
-export const setChangeAccountNumberDialogDisplay = createAction(
-  '[User Profile Page] setChangeAccountNumberDialogDisplay',
-  props<Props>()
-);
-
 export const setAddSubOrderDialogDisplay = createAction(
   '[Add Order Page] setAddSubOrderDialogDisplay',
   props<Props>()

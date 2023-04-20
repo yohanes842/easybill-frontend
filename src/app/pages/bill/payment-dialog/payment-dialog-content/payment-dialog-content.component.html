@@ -1,6 +1,6 @@
 <form
   #paymentForm="ngForm"
-  class="flex flex-column gap-3 p-3"
+  class="flex flex-column gap-3 py-3 px-1"
   (ngSubmit)="pay()"
 >
   <ng-container
@@ -12,7 +12,7 @@
     <div>
       <h4 class="m-0">Transfer to</h4>
       <div
-        class="flex flex-column gap-1 p-4 mt-1 border-round-md"
+        class="flex flex-column gap-1 px-4 py-3 mt-3 border-round-md"
         style="background-color: var(--custom-light-black)"
       >
         <ng-container
@@ -28,27 +28,26 @@
             "
           >
             <div
-              class="flex justify-content-between border-gray-600 py-2"
+              class="flex justify-content-between border-gray-600 py-2 align-items-center"
               [class.border-top-1]="i > 0"
-              style="letter-spacing: 0.025em"
             >
-              <div class="font-semibold">
-                <i
-                  class="pi pi-credit-card"
-                  style="color: var(--custom-orange-300)"
-                ></i>
-                {{ acc.payment_account_label }}
-              </div>
-              <div class="flex">
-                <span
-                  style="color: var(--custom-red-100)"
-                  class="px-2 line-height-2"
-                  >{{ acc.payment_account }}</span
+              <div class="flex flex-column" style="letter-spacing: 0.025em">
+                <div
+                  class="text-xs font-semibold flex align-items-center gap-1"
                 >
-                <copy-button
-                  [stringToBeCopy]="acc.payment_account"
-                ></copy-button>
+                  {{ acc.payment_account_label }}
+                  <i
+                    class="pi pi-credit-card line-height-2"
+                    style="color: var(--custom-orange-300)"
+                  ></i>
+                </div>
+                <div class="flex align-items-center">
+                  <span style="color: var(--custom-orange-200)" class="pt-1">
+                    {{ acc.payment_account }}
+                  </span>
+                </div>
               </div>
+              <copy-button [stringToBeCopy]="acc.payment_account"></copy-button>
             </div>
           </ng-container>
         </ng-container>

@@ -6,7 +6,6 @@ import { User } from 'src/app/classes/user';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { AppState } from 'src/app/state/app.state';
 import {
-  setChangeAccountNumberDialogDisplay,
   setChangePasswordDialogDisplay,
   setChangeUsernameDialogDisplay,
   setDialogDisplayAction,
@@ -75,13 +74,6 @@ export class UserProfileComponent implements OnInit {
     this.store.dispatch(setChangePasswordDialogDisplay({ display: true }));
     this.store.dispatch(
       setDialogDisplayAction({ action: setChangePasswordDialogDisplay })
-    );
-  }
-
-  showEditAccountNumberDialog() {
-    this.store.dispatch(setChangeAccountNumberDialogDisplay({ display: true }));
-    this.store.dispatch(
-      setDialogDisplayAction({ action: setChangeAccountNumberDialogDisplay })
     );
   }
 

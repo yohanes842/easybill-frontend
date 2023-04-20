@@ -38,7 +38,6 @@ import { SelectusersFormComponent } from 'src/app/pages/select-users-form/select
 import { TransactionRelatedOrderContentComponent } from 'src/app/pages/transaction-history/transaction-details-dialog/transaction-related-order-content/transaction-related-order-content.component';
 import { TransactionHistoryDetailComponent } from 'src/app/pages/transaction-history/transaction-history-detail/transaction-history-detail.component';
 import { TransactionHistoryComponent } from 'src/app/pages/transaction-history/transaction-history.component';
-import { ChangeAccountNumberFormComponent } from 'src/app/pages/user-profile/change-account-number-form/change-account-number-form.component';
 import { ChangePasswordFormComponent } from 'src/app/pages/user-profile/change-password-form/change-password-form.component';
 import { ChangeUsernameFormComponent } from 'src/app/pages/user-profile/change-username-form/change-username-form.component';
 import { UserProfileComponent } from 'src/app/pages/user-profile/user-profile.component';
@@ -115,7 +114,6 @@ import { appReducer } from './state/app.state';
     UserProfileComponent,
     ChangeUsernameFormComponent,
     ChangePasswordFormComponent,
-    ChangeAccountNumberFormComponent,
     CopyButtonComponent,
     PendingOrderListComponent,
     PendingOrderListContentComponent,

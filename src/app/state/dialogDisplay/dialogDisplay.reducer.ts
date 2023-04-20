@@ -1,15 +1,14 @@
 import { Action, createReducer, on } from '@ngrx/store';
 import {
-  setChangeAccountNumberDialogDisplay,
-  setChangePasswordDialogDisplay,
-  setChangeUsernameDialogDisplay,
   setAddSubOrderDialogDisplay,
-  setTransactionDetailsDialogDisplay,
-  setDialogDisplayAction,
-  setDetailOrderDialogDisplay,
   setBillDetailsDialogDisplay,
   setBillPaymentDialogDisplay,
+  setChangePasswordDialogDisplay,
+  setChangeUsernameDialogDisplay,
+  setDetailOrderDialogDisplay,
+  setDialogDisplayAction,
   setPasswordConfirmationDialogDisplay,
+  setTransactionDetailsDialogDisplay,
 } from './dialogDisplay.actions';
 import { DialogDisplayState, initialState } from './dialogDisplay.state';
 
@@ -25,12 +24,6 @@ const _dialogDisplayReducer = createReducer(
     return {
       ...state,
       changePasswordDialogDisplay: action.display,
-    };
-  }),
-  on(setChangeAccountNumberDialogDisplay, (state, action) => {
-    return {
-      ...state,
-      changeAccountNumberDialogDisplay: action.display,
     };
   }),
   on(setAddSubOrderDialogDisplay, (state, action) => {

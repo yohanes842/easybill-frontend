@@ -4,7 +4,6 @@ import { Props } from './dialogDisplay.actions';
 export interface DialogDisplayState {
   changeUsernameDialogDisplay: boolean;
   changePasswordDialogDisplay: boolean;
-  changeAccountNumberDialogDisplay: boolean;
   addSubOrderDialogDisplay: boolean;
   transactionDetailsDialogDisplay: boolean;
   billDetailsDialogDisplay: boolean;
@@ -18,7 +17,6 @@ export interface DialogDisplayState {
 export const initialState: DialogDisplayState = {
   changeUsernameDialogDisplay: false,
   changePasswordDialogDisplay: false,
-  changeAccountNumberDialogDisplay: false,
   addSubOrderDialogDisplay: false,
   transactionDetailsDialogDisplay: false,
   billDetailsDialogDisplay: false,

@@ -14,11 +14,6 @@ export const getChangePasswordDialogDisplay = createSelector(
   (state) => state.changePasswordDialogDisplay
 );
 
-export const getChangeAccountNumberDialogDisplay = createSelector(
-  getDialogDisplayState,
-  (state) => state.changeAccountNumberDialogDisplay
-);
-
 export const getAddSubOrderDialogDisplay = createSelector(
   getDialogDisplayState,
   (state) => state.addSubOrderDialogDisplay
