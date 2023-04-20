@@ -183,56 +183,61 @@
         ></button>
       </div>
     </div>
-    <div
-      *ngIf="currentOrder.order_list.length > 0"
-      class="card p-component border-1 border-300 border-round"
-    >
-      <div
-        *ngFor="
-          let subOrder of currentOrder.order_list;
-          let subOrderIndex = index
-        "
-        [attr.data-index]="subOrderIndex"
-        class="flex gap-1 align-items-center border-top-1 border-300 py-1 pl-2"
-        [class.border-top-1]="subOrderIndex > 0"
-      >
-        <div class="p-2 text-pink-300 font-bold w-3rem text-center text-sm">
-          {{ subOrder.qty }}x
-        </div>
-        <div class="flex align-items-center justify-content-between w-full">
-          <div>
-            <p class="m-0 text-sm" style="overflow-wrap: break-word">
-              {{ subOrder.order_menu_desc }}
-            </p>
-            <p class="m-0 text-sm" style="color: var(--custom-orange)">
-              {{ subOrder.price * subOrder.qty | currency : "Rp " }}
-            </p>
+    <div *ngIf="currentOrder.order_list.length > 0">
+      <p class="text-xs text-right text-gray-500">
+        Total before discount :
+        <span class="text-xl font-semibold text-white">{{
+          getTotalPrice() | currency : "Rp "
+        }}</span>
+      </p>
+      <div class="card p-component border-1 border-300 border-round">
+        <div
+          *ngFor="
+            let subOrder of currentOrder.order_list;
+            let subOrderIndex = index
+          "
+          [attr.data-index]="subOrderIndex"
+          class="flex gap-1 align-items-center border-top-1 border-300 py-1 pl-2"
+          [class.border-top-1]="subOrderIndex > 0"
+        >
+          <div class="p-2 text-pink-300 font-bold w-3rem text-center text-sm">
+            {{ subOrder.qty }}x
           </div>
-          <div class="flex">
-            <button
-              pButton
-              class="p-button-sm p-button-link"
-              [style]="{
-                'padding-block': '0.5rem',
-                'padding-inline': '1rem',
-                width: 'fit-content'
-              }"
-              type="button"
-              icon="pi pi-pencil"
-              (click)="showEditSubOrderDialog(subOrder)"
-            ></button>
-            <button
-              pButton
-              class="p-button-sm p-button-link p-button-danger text-red-300"
-              [style]="{
-                'padding-block': '0.5rem',
-                'padding-inline': '1rem',
-                width: 'fit-content'
-              }"
-              type="button"
-              icon="pi pi-trash"
-              (click)="showDeleteSubOrderConfirmation(subOrderIndex)"
-            ></button>
+          <div class="flex align-items-center justify-content-between w-full">
+            <div>
+              <p class="m-0 text-sm" style="overflow-wrap: break-word">
+                {{ subOrder.order_menu_desc }}
+              </p>
+              <p class="m-0 text-sm" style="color: var(--custom-orange)">
+                {{ subOrder.price * subOrder.qty | currency : "Rp " }}
+              </p>
+            </div>
+            <div class="flex">
+              <button
+                pButton
+                class="p-button-sm p-button-link"
+                [style]="{
+                  'padding-block': '0.5rem',
+                  'padding-inline': '1rem',
+                  width: 'fit-content'
+                }"
+                type="button"
+                icon="pi pi-pencil"
+                (click)="showEditSubOrderDialog(subOrder)"
+              ></button>
+              <button
+                pButton
+                class="p-button-sm p-button-link p-button-danger text-red-300"
+                [style]="{
+                  'padding-block': '0.5rem',
+                  'padding-inline': '1rem',
+                  width: 'fit-content'
+                }"
+                type="button"
+                icon="pi pi-trash"
+                (click)="showDeleteSubOrderConfirmation(subOrderIndex)"
+              ></button>
+            </div>
           </div>
         </div>
       </div>

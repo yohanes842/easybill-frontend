@@ -213,4 +213,10 @@ export class AddFormComponent implements OnInit {
     this.currentOrder.order_list = [];
     this.currentTime = new Date();
   }
+
+  getTotalPrice(): number {
+    return this.currentOrder.order_list
+      .map((subOrder) => subOrder.qty * subOrder.price)
+      .reduce((accumulator, subOrderPrice) => accumulator + subOrderPrice, 0);
+  }
 }
