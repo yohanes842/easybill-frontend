@@ -147,10 +147,7 @@ export class PaymentAccountCardComponent implements OnInit {
 
   cancel() {
     this.isEditing = false;
-    if (
-      this.paymentAccount.payment_account_label == '' ||
-      this.paymentAccount.payment_account == ''
-    ) {
+    if (!this.paymentAccount.id) {
       const deletedIndex = this.paymentAccountList.findIndex(
         (acc) => acc === this.paymentAccount
       );

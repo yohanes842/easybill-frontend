@@ -6,6 +6,10 @@
   z-index: 9999;
 }
 
+:host ::ng-deep .p-confirm-dialog {
+  padding: 1rem !important;
+}
+
 ::ng-deep .p-dialog .p-dialog-header {
   display: flex;
   justify-content: space-between;
@@ -19,7 +23,7 @@
   transform: scale(0.8);
 }
 
-:host ::ng-deep .p-confirm-dalog .p-dialog-content {
+:host ::ng-deep .p-confirm-dialog .p-dialog-content {
   padding: 0.5rem 1.5rem !important;
 }
 
