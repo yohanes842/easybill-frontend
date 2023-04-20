@@ -44,6 +44,11 @@ export const getDetailOrderDialogDisplay = createSelector(
   (state) => state.detailOrderDialogDisplay
 );
 
+export const getPasswordConfirmationDialogDisplay = createSelector(
+  getDialogDisplayState,
+  (state) => state.passwordConfirmationDialogDisplay
+);
+
 export const getDialogDisplayAction = createSelector(
   getDialogDisplayState,
   (state) => state.dialogDisplayAction

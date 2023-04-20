@@ -1,4 +1,4 @@
-import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
@@ -57,6 +57,7 @@ import { FieldsetModule } from 'primeng/fieldset';
 import { InputMaskModule } from 'primeng/inputmask';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { InputTextModule } from 'primeng/inputtext';
+import { KeyFilterModule } from 'primeng/keyfilter';
 import { MessageModule } from 'primeng/message';
 import { MessagesModule } from 'primeng/messages';
 import { PanelModule } from 'primeng/panel';
@@ -81,6 +82,8 @@ import { OrderService } from 'src/app/services/order/order.service';
 import { UserService } from 'src/app/services/user/user.service';
 import { TransactionDetailsDialogComponent } from './pages/transaction-history/transaction-details-dialog/transaction-details-dialog.component';
 
+import { PasswordConfirmationFormComponent } from './components/password-confirmation-form/password-confirmation-form.component';
+import { PaymentAccountCardComponent } from './components/payment-account-card/payment-account-card.component';
 import { appReducer } from './state/app.state';
 
 @NgModule({
@@ -123,6 +126,8 @@ import { appReducer } from './state/app.state';
     BillDetailsDialogComponent,
     BillRelatedOrderContentComponent,
     TransactionDetailsDialogComponent,
+    PaymentAccountCardComponent,
+    PasswordConfirmationFormComponent,
   ],
   imports: [
     BrowserModule,
@@ -156,6 +161,7 @@ import { appReducer } from './state/app.state';
     CheckboxModule,
     RadioButtonModule,
     ProgressBarModule,
+    KeyFilterModule,
     StoreModule.forRoot(appReducer),
   ],
   providers: [

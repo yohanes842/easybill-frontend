@@ -10,6 +10,7 @@ export interface DialogDisplayState {
   billDetailsDialogDisplay: boolean;
   billPaymentDialogDisplay: boolean;
   detailOrderDialogDisplay: boolean;
+  passwordConfirmationDialogDisplay: boolean;
 
   dialogDisplayAction: (actionProps: Props) => Action;
 }
@@ -23,6 +24,7 @@ export const initialState: DialogDisplayState = {
   billDetailsDialogDisplay: false,
   billPaymentDialogDisplay: false,
   detailOrderDialogDisplay: false,
+  passwordConfirmationDialogDisplay: false,
 
   dialogDisplayAction: createAction('Default Action'),
 };

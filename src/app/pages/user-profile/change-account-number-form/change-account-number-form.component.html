@@ -25,9 +25,8 @@
       pInputText
       [style]="{ 'margin-block': '0.5rem' }"
       class="w-full py-2"
-      type="text"
       name="currentAccountNumber"
-      [(ngModel)]="authUser.account_number"
+      [(ngModel)]="authUser.payment_account_list[0].payment_account"
       disabled
     />
   </div>
@@ -39,11 +38,11 @@
       pInputText
       [style]="{ 'margin-block': '0.5rem' }"
       class="w-full py-2"
-      type="text"
-      name="lala"
+      name="newAccountNumber"
       [(ngModel)]="newAccountNumber"
-      oninput="this.value=this.value.replace(/[^0-9]/g,'')"
+      [pKeyFilter]="accountNumberRegex"
     />
+
     <!-- check the ngModel binding variable is not null to ensure that the initial state will not shown the error message -->
     <span
       *ngIf="errors.get('new_account_number') && newAccountNumber != null"

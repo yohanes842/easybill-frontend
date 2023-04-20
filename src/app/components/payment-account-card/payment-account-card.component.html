@@ -1,0 +1,107 @@
+<div class="flex mb-2 w-25rem">
+  <ng-container *ngIf="!isEditing; else editingSection">
+    <div
+      class="flex align-items-center justify-content-center w-7rem px-2 py-1 border-3 border-round-left-lg text-gray-900 font-semibold"
+      style="
+        border-color: var(--custom-orange-300);
+        background: var(--custom-orange-300);
+      "
+    >
+      <p class="text-sm overflow-hidden text-overflow-ellipsis">
+        {{ paymentAccount.payment_account_label }}
+      </p>
+    </div>
+    <div
+      class="flex align-items-center justify-content-center gap-3 border-round-right-lg px-3 py-1"
+      style="background: var(--custom-light-black)"
+    >
+      <div class="flex align-items-center justify-content-between w-17rem">
+        <p class="m-0">{{ paymentAccount.payment_account }}</p>
+        <div class="flex align-items-center gap-2">
+          <copy-button
+            [stringToBeCopy]="paymentAccount.payment_account"
+          ></copy-button>
+          <button
+            pButton
+            class="icon-btn w-fit px-1"
+            style="background: none; color: var(--custom-blue-200)"
+            icon="pi pi-user-edit"
+            type="button"
+            (click)="edit()"
+          ></button>
+          <button
+            pButton
+            class="icon-btn w-fit text-red-500 px-1"
+            style="background: none"
+            icon="pi pi-times"
+            type="button"
+            (click)="delete()"
+          ></button>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+
+  <ng-template #editingSection>
+    <div
+      class="w-full flex justify-content-between border-round-lg px-3 py-1"
+      style="background: var(--custom-light-black)"
+    >
+      <div class="flex gap-3">
+        <input
+          pInputText
+          [style]="{ 'margin-block': '0.5rem' }"
+          class="w-5rem py-2"
+          name="accountLabel"
+          [(ngModel)]="paymentAccountInAction.payment_account_label"
+        />
+        <input
+          pInputText
+          p
+          [style]="{ 'margin-block': '0.5rem' }"
+          class="w-11rem py-2"
+          name="accountNumber"
+          maxlength="15"
+          [(ngModel)]="paymentAccountInAction.payment_account"
+          [pKeyFilter]="accountNumberRegex"
+        />
+      </div>
+
+      <div class="flex align-items-center gap-2">
+        <button
+          pButton
+          class="icon-btn w-fit text-green-500 px-1"
+          style="background: none"
+          icon="pi pi-check"
+          type="button"
+          (click)="save()"
+          [disabled]="
+            paymentAccountInAction.payment_account_label.length <= 0 ||
+            paymentAccountInAction.payment_account.length <= 0
+          "
+        ></button>
+        <button
+          pButton
+          class="icon-btn w-fit text-red-500 px-1"
+          style="background: none"
+          icon="pi pi-refresh"
+          type="button"
+          (click)="cancel()"
+        ></button>
+      </div>
+    </div>
+  </ng-template>
+</div>
+
+<popup-dialog *ngIf="passwordConfirmationDialogDisplay">
+  <ng-container header>
+    <h3 class="m-0 p-0">Password</h3>
+  </ng-container>
+
+  <ng-container content>
+    <password-confirmation-form
+      [errors]="errors"
+      (onSubmit)="paymentAccountAction($event)"
+    ></password-confirmation-form>
+  </ng-container>
+</popup-dialog>

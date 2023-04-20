@@ -45,6 +45,11 @@ export const setDetailOrderDialogDisplay = createAction(
   props<Props>()
 );
 
+export const setPasswordConfirmationDialogDisplay = createAction(
+  '[General] setPasswordConfirmationDialogDisplay',
+  props<Props>()
+);
+
 export const setDialogDisplayAction = createAction(
   '[General] setDialogDisplayAction',
   props<{ action: (actionProps: Props) => Action }>()

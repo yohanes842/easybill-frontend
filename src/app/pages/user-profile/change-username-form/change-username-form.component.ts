@@ -30,8 +30,6 @@ export class ChangeUsernameFormComponent implements OnInit {
     // Get auth user profile
     this.authService.getAuthUser().subscribe((user) => {
       this.authUser = user;
-      this.authUser.account_number =
-        this.authUser.account_number ?? 'Not set up yet';
     });
   }
 

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
+import { PaymentAccount } from 'src/app/classes/payment-account';
 import { User } from 'src/app/classes/user';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { AppState } from 'src/app/state/app.state';
@@ -9,11 +10,12 @@ import {
   setChangePasswordDialogDisplay,
   setChangeUsernameDialogDisplay,
   setDialogDisplayAction,
+  setPasswordConfirmationDialogDisplay,
 } from 'src/app/state/dialogDisplay/dialogDisplay.actions';
 import {
-  getChangeAccountNumberDialogDisplay,
   getChangePasswordDialogDisplay,
   getChangeUsernameDialogDisplay,
+  getPasswordConfirmationDialogDisplay,
 } from 'src/app/state/dialogDisplay/dialogDisplay.selectors';
 
 @Component({
@@ -22,22 +24,20 @@ import {
   styleUrls: ['./user-profile.component.css'],
 })
 export class UserProfileComponent implements OnInit {
-  authUser: User | undefined;
+  authUser = new User();
 
   changeUsernameDialogDisplay$: Observable<boolean>;
   changePasswordDialogDisplay$: Observable<boolean>;
-  changeAccountNumberDialogDisplay$: Observable<boolean>;
+  passwordConfirmationDialogDisplay$: Observable<boolean>;
 
   constructor(
     private authService: AuthService,
     private store: Store<Pick<AppState, 'currentSelected'>>
-  ) {
+  ) {}
+
+  ngOnInit() {
     // Get auth user profile
-    this.authService.getAuthUser().subscribe((user) => {
-      this.authUser = user;
-      this.authUser.account_number =
-        this.authUser.account_number ?? 'Not set up yet';
-    });
+    this.authService.getAuthUser().subscribe((user) => (this.authUser = user));
 
     this.changeUsernameDialogDisplay$ = this.store.select(
       getChangeUsernameDialogDisplay
@@ -45,15 +45,21 @@ export class UserProfileComponent implements OnInit {
     this.changePasswordDialogDisplay$ = this.store.select(
       getChangePasswordDialogDisplay
     );
-    this.changeAccountNumberDialogDisplay$ = this.store.select(
-      getChangeAccountNumberDialogDisplay
+    this.passwordConfirmationDialogDisplay$ = this.store.select(
+      getPasswordConfirmationDialogDisplay
     );
   }
 
-  ngOnInit() {}
-
   back() {
     history.back();
+  }
+
+  addPaymentAccountSlot() {
+    this.authUser.payment_account_list.push(new PaymentAccount());
+  }
+
+  deletePaymentAccount(index: number) {
+    this.authUser.payment_account_list.splice(index, 1);
   }
 
   //Dialog utility function
@@ -76,6 +82,15 @@ export class UserProfileComponent implements OnInit {
     this.store.dispatch(setChangeAccountNumberDialogDisplay({ display: true }));
     this.store.dispatch(
       setDialogDisplayAction({ action: setChangeAccountNumberDialogDisplay })
+    );
+  }
+
+  showPasswordConfirmationDialog() {
+    this.store.dispatch(
+      setPasswordConfirmationDialogDisplay({ display: true })
+    );
+    this.store.dispatch(
+      setDialogDisplayAction({ action: setPasswordConfirmationDialogDisplay })
     );
   }
 }

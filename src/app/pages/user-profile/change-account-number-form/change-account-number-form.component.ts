@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { CustomErrorResponse } from 'src/app/classes/error-response';
+import { PaymentAccount } from 'src/app/classes/payment-account';
 import { User } from 'src/app/classes/user';
 import { Severity } from 'src/app/enums/Severity';
 import { AuthService } from 'src/app/services/auth/auth.service';
@@ -19,6 +20,7 @@ export class ChangeAccountNumberFormComponent implements OnInit {
 
   passwordString: string;
   newAccountNumber: string;
+  accountNumberRegex: RegExp = /[0-9]+/;
   errors: Map<string, string> = new Map();
 
   constructor(
@@ -30,32 +32,32 @@ export class ChangeAccountNumberFormComponent implements OnInit {
     // Get auth user profile
     this.authService.getAuthUser().subscribe((user) => {
       this.authUser = user;
-      this.authUser.account_number =
-        this.authUser.account_number ?? 'Not set up yet';
     });
   }
 
   ngOnInit() {}
 
   submit() {
-    if (this.authUser.account_number == this.newAccountNumber) {
-      this.messageService.showMessage(
-        Severity.ERROR,
-        'INPUT ERROR',
-        'Account number must be different with the old one!'
-      );
-      return;
-    }
+    console.log(this.newAccountNumber);
+    // if (this.authUser.payment_account == this.newAccountNumber) {
+    //   this.messageService.showMessage(
+    //     Severity.ERROR,
+    //     'INPUT ERROR',
+    //     'Account number must be different with the old one!'
+    //   );
+    //   return;
+    // }
 
+    // .saveUserPaymentAccount(this.passwordString!, this.newAccountNumber!)
     this.userService
-      .changeUserAccountNumber(this.passwordString!, this.newAccountNumber!)
+      .saveUserPaymentAccount(this.passwordString!, new PaymentAccount())
       .subscribe({
         next: () => {
           this.messageService.showMessage(
             Severity.SUCCESS,
             'CHANGE ACCOUNT NUMBER SUCCESS'
           );
-          this.authUser.account_number = this.newAccountNumber;
+          // this.authUser.payment_account = this.newAccountNumber;
           this.store.dispatch(
             setChangeAccountNumberDialogDisplay({ display: false })
           );

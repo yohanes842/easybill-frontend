@@ -4,17 +4,33 @@
   (ngSubmit)="pay()"
 >
   <ng-container
-    *ngIf="selectedBill.user.account_number != null; else noAccountNumber"
+    *ngIf="
+      selectedBill.user.payment_account_list.length >= 0;
+      else noAccountNumber
+    "
   >
     <div>
       <h4 class="m-0">Transfer to</h4>
-      <div class="flex align-items-center gap-3">
-        <h4 class="m-0 text-xl ml-3">
-          {{ selectedBill.user.account_number }}
-        </h4>
-        <copy-button
-          [stringToBeCopy]="selectedBill.user.account_number"
-        ></copy-button>
+      <div class="flex flex-column align-items-center gap-3">
+        <ng-container
+          *ngIf="
+            selectedBill.user.payment_account_list.length > 0;
+            else noAccountSection
+          "
+        >
+          <ng-container
+            *ngFor="let acc of selectedBill.user.payment_account_list"
+          >
+            <h4 class="m-0 text-xl ml-3">
+              {{ acc.payment_account }}
+            </h4>
+            <copy-button [stringToBeCopy]="acc.payment_account"></copy-button>
+          </ng-container>
+        </ng-container>
+
+        <ng-template #noAccountSection>
+          <p>This user has not set account number yet</p>
+        </ng-template>
       </div>
     </div>
   </ng-container>

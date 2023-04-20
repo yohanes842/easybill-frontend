@@ -9,6 +9,7 @@ import {
   setDetailOrderDialogDisplay,
   setBillDetailsDialogDisplay,
   setBillPaymentDialogDisplay,
+  setPasswordConfirmationDialogDisplay,
 } from './dialogDisplay.actions';
 import { DialogDisplayState, initialState } from './dialogDisplay.state';
 
@@ -60,6 +61,12 @@ const _dialogDisplayReducer = createReducer(
     return {
       ...state,
       detailOrderDialogDisplay: action.display,
+    };
+  }),
+  on(setPasswordConfirmationDialogDisplay, (state, action) => {
+    return {
+      ...state,
+      passwordConfirmationDialogDisplay: action.display,
     };
   }),
   on(setDialogDisplayAction, (state, action) => {

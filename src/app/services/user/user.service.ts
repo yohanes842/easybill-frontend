@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { PaymentAccount } from 'src/app/classes/payment-account';
 import { User } from 'src/app/classes/user';
 import { OutputResponse } from 'src/app/interfaces/output-response';
 import { Response } from 'src/app/interfaces/response';
@@ -44,14 +45,31 @@ export class UserService {
     );
   }
 
-  public changeUserAccountNumber(password: string, accountNumber: string) {
+  public saveUserPaymentAccount(
+    password: string,
+    paymentAccount: PaymentAccount
+  ) {
     const params = {
       current_password: password,
-      new_account_number: accountNumber,
+      ...paymentAccount,
     };
-    return this.http.put<Response<OutputResponse<void>>>(
-      `${env.url}/api/users/account-number`,
+    return this.http.post<Response<OutputResponse<void>>>(
+      `${env.url}/api/payment-account`,
       params
+    );
+  }
+
+  public deleteUserPaymentAccount(
+    password: string,
+    paymentAccount: PaymentAccount
+  ) {
+    const params = {
+      current_password: password,
+      ...paymentAccount,
+    };
+    return this.http.delete<Response<OutputResponse<void>>>(
+      `${env.url}/api/payment-account/${paymentAccount.id}`,
+      { body: params }
     );
   }
 }

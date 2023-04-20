@@ -1,4 +1,4 @@
-<div class="w-full px-3 mt-3">
+<div class="flex flex-column w-full h-screen p-3">
   <div class="flex align-items-center gap-3">
     <button
       pButton
@@ -11,59 +11,73 @@
     ></button>
     <h2 class="font-italic">Your Profile</h2>
   </div>
+
   <div
-    class="flex flex-column justify-content-center align-items-center gap-3 mt-5"
+    class="flex flex-wrap flex-1 justify-content-center align-items-center gap-5 md:gap-8 h-full"
   >
-    <div class="text-center">
-      <p-avatar
-        [style]="{
-          background: 'var(--custom-orange-50)',
-          color: 'black',
-          'font-weight': 'bold',
-          transform: 'scale(1.7)'
-        }"
-        shape="circle"
-        size="xlarge"
-      >
-        {{ authUser?.username | slice : 0 : 1 | uppercase }}
-      </p-avatar>
-      <h3 class="m-0 mt-4">
-        {{ authUser?.username | uppercase }}
-      </h3>
-    </div>
-    <div class="text-center">
-      <h4 class="m-1">Your account number :</h4>
-      <div class="flex align-items-center justify-content-center gap-3">
-        <h4 class="m-0" style="color: var(--custom-orange-200)">
-          {{ authUser?.account_number }}
-        </h4>
-        <copy-button
-          *ngIf="authUser?.account_number != 'Not set up yet'"
-          [stringToBeCopy]="authUser?.account_number ?? null"
-        ></copy-button>
+    <div class="flex flex-column gap-3">
+      <div class="text-center">
+        <p-avatar
+          [style]="{
+            background: 'var(--custom-orange-50)',
+            color: 'black',
+            'font-weight': 'bold',
+            transform: 'scale(1.7)'
+          }"
+          shape="circle"
+          size="xlarge"
+        >
+          {{ authUser.username | slice : 0 : 1 | uppercase }}
+        </p-avatar>
+        <h3 class="m-0 mt-4">
+          {{ authUser.username | uppercase }}
+        </h3>
       </div>
+      <button
+        pButton
+        class="p-button-primary py-2 w-20rem text-center"
+        style="color: var(--custom-light-black)"
+        label="Change Username"
+        (click)="showChangeUsernameDialog()"
+      ></button>
+      <button
+        pButton
+        class="p-button-primary py-2 w-20rem text-center"
+        style="color: var(--custom-light-black)"
+        label="Change Password"
+        (click)="showChangePasswordDialog()"
+      ></button>
+      <!-- <button
+        pButton
+        class="p-button-primary py-2 w-15rem text-center"
+        style="color: var(--custom-light-black)"
+        label="Edit Account Number"
+        (click)="showEditAccountNumberDialog()"
+      ></button> -->
     </div>
-    <button
-      pButton
-      class="p-button-primary py-2 w-15rem text-center"
-      style="color: var(--custom-light-black)"
-      label="Change Username"
-      (click)="showChangeUsernameDialog()"
-    ></button>
-    <button
-      pButton
-      class="p-button-primary py-2 w-15rem text-center"
-      style="color: var(--custom-light-black)"
-      label="Change Password"
-      (click)="showChangePasswordDialog()"
-    ></button>
-    <button
-      pButton
-      class="p-button-primary py-2 w-15rem text-center"
-      style="color: var(--custom-light-black)"
-      label="Edit Account Number"
-      (click)="showEditAccountNumberDialog()"
-    ></button>
+
+    <div *ngIf="authUser" class="text-center">
+      <h3 class="mb-5">
+        Your account number
+        <span class="text-xs text-gray-200">(Max 3 accounts)</span> :
+      </h3>
+      <div *ngFor="let acc of authUser.payment_account_list; let i = index">
+        <payment-account-card
+          *ngIf="acc"
+          [paymentAccount]="acc"
+        ></payment-account-card>
+      </div>
+
+      <button
+        pButton
+        class="text-gray-900 bg-primary m-3"
+        style="background: none"
+        icon="pi pi-plus"
+        type="button"
+        (click)="addPaymentAccountSlot()"
+        [disabled]="authUser.payment_account_list.length >= 3"
+      ></button>
+    </div>
   </div>
 </div>
 
@@ -84,15 +98,5 @@
 
   <ng-container content>
     <change-password-form></change-password-form>
-  </ng-container>
-</popup-dialog>
-
-<popup-dialog *ngIf="changeAccountNumberDialogDisplay$ | async">
-  <ng-container header>
-    <h3 class="m-0 p-0">Edit Account Number</h3>
-  </ng-container>
-
-  <ng-container content>
-    <change-account-number-form></change-account-number-form>
   </ng-container>
 </popup-dialog>
