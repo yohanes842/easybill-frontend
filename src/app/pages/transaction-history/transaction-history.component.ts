@@ -76,4 +76,8 @@ export class TransactionHistoryComponent implements OnInit {
           this.messageService.showMessage(Severity.ERROR, 'REQUEST ERROR'),
       });
   }
+
+  ngOnDestroy() {
+    window.removeEventListener('scroll', this.onScrollEvent);
+  }
 }

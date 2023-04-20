@@ -29,7 +29,8 @@ export class OrderListComponent implements OnInit, DoCheck, OnDestroy {
   selectedStatusOptions: string = Status.ALL;
   searchKeyword: string = '';
 
-  currentLazyPage: LazyLoadPaging<OrderHeader>;
+  currentLazyPage: LazyLoadPaging<OrderHeader> =
+    new LazyLoadPaging<OrderHeader>();
   isFetching: boolean = false;
   relevantOrders = {
     allOrders: new LazyLoadPaging<OrderHeader>(),
