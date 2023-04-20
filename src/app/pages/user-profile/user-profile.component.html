@@ -52,6 +52,14 @@
         Your account number
         <span class="text-xs text-gray-400">(max 3)</span>
       </h4>
+      <p
+        *ngIf="authUser.payment_account_list.length <= 0"
+        class="p-5 w-23rem border-round-md"
+        style="background-color: var(--custom-light-black)"
+      >
+        Please add your payment account, so others can pay their bills
+        <span class="text-2xl">🤑</span> to you!
+      </p>
       <div *ngFor="let acc of authUser.payment_account_list; let i = index">
         <payment-account-card
           *ngIf="acc"

@@ -1,4 +1,11 @@
+import { Location } from '@angular/common';
 import { Component, DoCheck, OnDestroy, OnInit } from '@angular/core';
+import {
+  ActivatedRoute,
+  NavigationExtras,
+  Route,
+  Router,
+} from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { LazyLoadPaging } from 'src/app/classes/lazy-load-paging';
@@ -54,6 +61,7 @@ export class OrderListComponent implements OnInit, DoCheck, OnDestroy {
   constructor(
     private orderService: OrderService,
     private lazyLoadService: LazyLoadService<OrderHeader>,
+    private router: Router,
     private store: Store<Pick<AppState, 'currentSelected'>>
   ) {
     this.isRelevantOrder = true;
@@ -133,6 +141,13 @@ export class OrderListComponent implements OnInit, DoCheck, OnDestroy {
     if (!this.isFetching) {
       this.searchKeyword = keyword;
       this.changeLazyPage();
+
+      const queryParams = { q: keyword };
+      console.log(queryParams);
+      this.router.navigate([], {
+        queryParams,
+        queryParamsHandling: 'merge',
+      });
     }
   }
 

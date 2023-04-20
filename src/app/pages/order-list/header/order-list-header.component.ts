@@ -1,5 +1,5 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { MenuItem } from 'primeng/api';
 import { Route } from 'src/app/enums/Route';
 
@@ -22,7 +22,7 @@ export class OrderListHeaderComponent implements OnInit {
 
   timeout: NodeJS.Timeout;
 
-  constructor(private router: Router) {
+  constructor(private router: Router, private route: ActivatedRoute) {
     this.tabMenus = [
       {
         label: 'Include you',
@@ -45,7 +45,10 @@ export class OrderListHeaderComponent implements OnInit {
     this.selectedStatusOptions = this.statusOptions[0];
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.keyword = this.route.snapshot.queryParamMap.get('q') ?? '';
+    if (this.keyword.length > 0) this.onKeywordInput.emit(this.keyword);
+  }
 
   getValue(event: Event) {
     return (event.target as HTMLInputElement).value;

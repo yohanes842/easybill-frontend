@@ -1,12 +1,11 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { Store } from '@ngrx/store';
 import { CustomErrorResponse } from 'src/app/classes/error-response';
 import { PaymentAccount } from 'src/app/classes/payment-account';
+import { User } from 'src/app/classes/user';
 import { Severity } from 'src/app/enums/Severity';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { CustomMessageService } from 'src/app/services/message/custom-message.service';
 import { UserService } from 'src/app/services/user/user.service';
-import { AppState } from 'src/app/state/app.state';
 
 @Component({
   selector: 'payment-account-card',
@@ -18,7 +17,7 @@ export class PaymentAccountCardComponent implements OnInit {
   @Input() readOnly: boolean;
 
   paymentAccountList: PaymentAccount[];
-  isEditing: boolean;
+  isEditing = false;
   paymentAccountInAction: PaymentAccount;
   accountNumberRegex: RegExp = /[0-9]+/;
 
@@ -30,14 +29,15 @@ export class PaymentAccountCardComponent implements OnInit {
   constructor(
     private authService: AuthService,
     private userService: UserService,
-    private messageService: CustomMessageService,
-    private store: Store<Pick<AppState, 'currentSelected'>>
+    private messageService: CustomMessageService
   ) {}
 
   ngOnInit() {
-    this.authService.getAuthUser().subscribe((user) => {
-      this.paymentAccountList = user.payment_account_list;
-    });
+    this.authService
+      .getAuthUser()
+      .subscribe(
+        (user) => (this.paymentAccountList = user.payment_account_list)
+      );
 
     this.isEditing =
       !this.paymentAccount.payment_account_label ||
@@ -106,7 +106,10 @@ export class PaymentAccountCardComponent implements OnInit {
                 'SAVE PAYMENT ACCOUNT SUCCESS'
               );
               this.isEditing = false;
-              this.paymentAccount = this.paymentAccountInAction;
+              this.paymentAccount.payment_account_label =
+                this.paymentAccountInAction.payment_account_label;
+              this.paymentAccount.payment_account =
+                this.paymentAccountInAction.payment_account;
             },
             error: (error: CustomErrorResponse) => {
               const res = error.extra_message.match(/[A-z ]+\[(.+)\]/);
@@ -119,7 +122,8 @@ export class PaymentAccountCardComponent implements OnInit {
               });
               this.messageService.showMessage(
                 Severity.ERROR,
-                this.errors.entries().next().value.replace(/_/g, ' ')
+                'REQUEST ERROR',
+                this.errors.entries().next().value[1].replace(/_/g, ' ')
               );
             },
           });

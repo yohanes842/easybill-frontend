@@ -64,17 +64,19 @@
           [(ngModel)]="paymentAccountInAction.payment_account_label"
           minlength="1"
           maxlength="15"
+          placeholder="Label"
         />
         <input
           pInputText
           p
           [style]="{ 'margin-block': '0.5rem' }"
-          class="w-9rem py-2"
+          class="w-10rem py-2"
           name="accountNumber"
           [(ngModel)]="paymentAccountInAction.payment_account"
           [pKeyFilter]="accountNumberRegex"
           minlength="5"
           maxlength="15"
+          placeholder="Account number"
         />
       </form>
 
