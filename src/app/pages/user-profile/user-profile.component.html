@@ -13,7 +13,7 @@
   </div>
 
   <div class="flex flex-wrap justify-content-center mt-8">
-    <div class="flex flex-column gap-3 p-4">
+    <div class="flex flex-column gap-3 px-4">
       <div class="text-center">
         <p-avatar
           [style]="{
@@ -50,7 +50,7 @@
     <div *ngIf="authUser" class="text-center pt-4 px-4">
       <h4 class="mb-3">
         Your account number
-        <span class="text-xs text-gray-200">(Max 3 accounts)</span> :
+        <span class="text-xs text-gray-400">(max 3)</span>
       </h4>
       <div *ngFor="let acc of authUser.payment_account_list; let i = index">
         <payment-account-card
