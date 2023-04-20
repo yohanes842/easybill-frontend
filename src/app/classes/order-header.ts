@@ -23,4 +23,5 @@ export class OrderHeader {
   order_header_status: string;
   user_other_fee: number;
   total_bill: number;
+  deletable: boolean;
 }

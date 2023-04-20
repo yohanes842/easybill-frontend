@@ -16,7 +16,11 @@
 
     <ng-template let-order pTemplate="listItem">
       <div class="w-full border-0">
-        <order-list-content [order]="order"></order-list-content>
+        <order-list-content
+          [order]="order"
+          [withDeleteButton]="!isRelevantOrder"
+          (onDelete)="removeOrder($event)"
+        ></order-list-content>
       </div>
     </ng-template>
   </p-dataView>

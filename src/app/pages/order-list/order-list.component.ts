@@ -3,7 +3,6 @@ import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { LazyLoadPaging } from 'src/app/classes/lazy-load-paging';
 import { OrderHeader } from 'src/app/classes/order-header';
-import { User } from 'src/app/classes/user';
 import { UserOrders } from 'src/app/classes/userOrders';
 import { Status } from 'src/app/enums/Status';
 import { PagableOutputResponse } from 'src/app/interfaces/pagable-output-response';
@@ -25,7 +24,7 @@ export class OrderListComponent implements OnInit, DoCheck, OnDestroy {
   orders: OrderHeader[];
   selectedOrder: OrderHeader;
 
-  isRelevantOrder: Boolean = true;
+  isRelevantOrder: boolean = true;
   selectedStatusOptions: string = Status.ALL;
   searchKeyword: string = '';
 
@@ -115,7 +114,7 @@ export class OrderListComponent implements OnInit, DoCheck, OnDestroy {
     }
   }
 
-  changeDataViewContent(isRelevantOrder: Boolean) {
+  changeDataViewContent(isRelevantOrder: boolean) {
     if (!this.isFetching) {
       this.isRelevantOrder = isRelevantOrder;
       this.changeLazyPage();
@@ -184,6 +183,11 @@ export class OrderListComponent implements OnInit, DoCheck, OnDestroy {
           orderSubscriptions(res, currentLazyPage);
         });
     }
+  }
+
+  removeOrder(order: OrderHeader) {
+    let index = this.orders.indexOf(order);
+    this.orders.splice(index, 1);
   }
 
   ngOnDestroy() {
