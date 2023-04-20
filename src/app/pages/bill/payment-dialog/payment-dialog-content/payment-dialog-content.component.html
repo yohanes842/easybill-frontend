@@ -11,7 +11,10 @@
   >
     <div>
       <h4 class="m-0">Transfer to</h4>
-      <div class="flex flex-column align-items-center gap-3">
+      <div
+        class="flex flex-column gap-1 p-4 mt-1 border-round-md"
+        style="background-color: var(--custom-light-black)"
+      >
         <ng-container
           *ngIf="
             selectedBill.user.payment_account_list.length > 0;
@@ -19,12 +22,34 @@
           "
         >
           <ng-container
-            *ngFor="let acc of selectedBill.user.payment_account_list"
+            *ngFor="
+              let acc of selectedBill.user.payment_account_list;
+              let i = index
+            "
           >
-            <h4 class="m-0 text-xl ml-3">
-              {{ acc.payment_account }}
-            </h4>
-            <copy-button [stringToBeCopy]="acc.payment_account"></copy-button>
+            <div
+              class="flex justify-content-between border-gray-600 py-2"
+              [class.border-top-1]="i > 0"
+              style="letter-spacing: 0.025em"
+            >
+              <div class="font-semibold">
+                <i
+                  class="pi pi-credit-card"
+                  style="color: var(--custom-orange-300)"
+                ></i>
+                {{ acc.payment_account_label }}
+              </div>
+              <div class="flex">
+                <span
+                  style="color: var(--custom-red-100)"
+                  class="px-2 line-height-2"
+                  >{{ acc.payment_account }}</span
+                >
+                <copy-button
+                  [stringToBeCopy]="acc.payment_account"
+                ></copy-button>
+              </div>
+            </div>
           </ng-container>
         </ng-container>
 

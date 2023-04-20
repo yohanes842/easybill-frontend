@@ -69,6 +69,7 @@ import { RippleModule } from 'primeng/ripple';
 import { SpeedDialModule } from 'primeng/speeddial';
 import { TableModule } from 'primeng/table';
 import { TabMenuModule } from 'primeng/tabmenu';
+import { TooltipModule } from 'primeng/tooltip';
 
 import { DatePipe } from '@angular/common';
 import { AuthApiInterceptor } from 'src/app/interceptor/auth-http.interceptor';
@@ -162,6 +163,7 @@ import { appReducer } from './state/app.state';
     RadioButtonModule,
     ProgressBarModule,
     KeyFilterModule,
+    TooltipModule,
     StoreModule.forRoot(appReducer),
   ],
   providers: [

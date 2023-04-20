@@ -15,6 +15,7 @@ import { AppState } from 'src/app/state/app.state';
 })
 export class PaymentAccountCardComponent implements OnInit {
   @Input() paymentAccount: PaymentAccount;
+  @Input() readOnly: boolean;
 
   paymentAccountList: PaymentAccount[];
   isEditing: boolean;
@@ -71,6 +72,10 @@ export class PaymentAccountCardComponent implements OnInit {
   }
 
   save() {
+    // Validating input
+    this.paymentAccountInAction.payment_account_label.length < 1 ||
+      this.paymentAccountInAction.payment_account_label.length > 15;
+
     // Validating the field must be different than before in edit process
     const isNothingChange =
       this.paymentAccount.payment_account_label ==
@@ -112,10 +117,9 @@ export class PaymentAccountCardComponent implements OnInit {
                 const [key, value] = s.split(':');
                 this.errors.set(key, value);
               });
-
               this.messageService.showMessage(
                 Severity.ERROR,
-                error.code.replace(/_/g, ' ')
+                this.errors.entries().next().value.replace(/_/g, ' ')
               );
             },
           });
@@ -148,5 +152,9 @@ export class PaymentAccountCardComponent implements OnInit {
       );
       this.paymentAccountList.splice(deletedIndex, 1);
     }
+  }
+
+  hideDialog() {
+    this.passwordConfirmationDialogDisplay = false;
   }
 }

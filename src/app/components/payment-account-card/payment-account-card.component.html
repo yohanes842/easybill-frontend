@@ -1,18 +1,23 @@
 <div class="flex mb-2 w-25rem">
   <ng-container *ngIf="!isEditing; else editingSection">
     <div
-      class="flex align-items-center justify-content-center w-7rem px-2 py-1 border-3 border-round-left-lg text-gray-900 font-semibold"
+      class="flex align-items-center justify-content-center w-7rem px-2 overflow-hidden border-3 border-round-left-lg text-gray-900 font-semibold"
       style="
+        max-width: 7rem;
         border-color: var(--custom-orange-300);
         background: var(--custom-orange-300);
       "
     >
-      <p class="text-sm overflow-hidden text-overflow-ellipsis">
+      <p
+        class="w-full text-sm text-overflow-ellipsis overflow-hidden"
+        [pTooltip]="paymentAccount.payment_account_label"
+        tooltipPosition="top"
+      >
         {{ paymentAccount.payment_account_label }}
       </p>
     </div>
     <div
-      class="flex align-items-center justify-content-center gap-3 border-round-right-lg px-3 py-1"
+      class="flex align-items-center justify-content-center gap-3 border-round-right-lg px-3"
       style="background: var(--custom-light-black)"
     >
       <div class="flex align-items-center justify-content-between w-17rem">
@@ -22,6 +27,7 @@
             [stringToBeCopy]="paymentAccount.payment_account"
           ></copy-button>
           <button
+            *ngIf="!readOnly"
             pButton
             class="icon-btn w-fit px-1"
             style="background: none; color: var(--custom-blue-200)"
@@ -30,6 +36,7 @@
             (click)="edit()"
           ></button>
           <button
+            *ngIf="!readOnly"
             pButton
             class="icon-btn w-fit text-red-500 px-1"
             style="background: none"
@@ -47,13 +54,15 @@
       class="w-full flex justify-content-between border-round-lg px-3 py-1"
       style="background: var(--custom-light-black)"
     >
-      <div class="flex gap-3">
+      <form class="flex gap-3" #form="ngForm">
         <input
           pInputText
           [style]="{ 'margin-block': '0.5rem' }"
           class="w-5rem py-2"
           name="accountLabel"
           [(ngModel)]="paymentAccountInAction.payment_account_label"
+          minlength="1"
+          maxlength="15"
         />
         <input
           pInputText
@@ -61,11 +70,12 @@
           [style]="{ 'margin-block': '0.5rem' }"
           class="w-11rem py-2"
           name="accountNumber"
-          maxlength="15"
           [(ngModel)]="paymentAccountInAction.payment_account"
           [pKeyFilter]="accountNumberRegex"
+          minlength="5"
+          maxlength="15"
         />
-      </div>
+      </form>
 
       <div class="flex align-items-center gap-2">
         <button
@@ -75,10 +85,7 @@
           icon="pi pi-check"
           type="button"
           (click)="save()"
-          [disabled]="
-            paymentAccountInAction.payment_account_label.length <= 0 ||
-            paymentAccountInAction.payment_account.length <= 0
-          "
+          [disabled]="form.invalid"
         ></button>
         <button
           pButton
@@ -93,7 +100,7 @@
   </ng-template>
 </div>
 
-<popup-dialog *ngIf="passwordConfirmationDialogDisplay">
+<popup-dialog *ngIf="passwordConfirmationDialogDisplay" (onHide)="hideDialog()">
   <ng-container header>
     <h3 class="m-0 p-0">Password</h3>
   </ng-container>

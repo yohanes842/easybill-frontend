@@ -11,6 +11,7 @@ import { getDialogDisplayAction } from 'src/app/state/dialogDisplay/dialogDispla
 })
 export class DialogComponent implements OnInit {
   @Input() customStyle: any;
+  @Output() onHide: EventEmitter<void> = new EventEmitter();
 
   display: boolean = true;
   popupStateAction: (actionProps: Props) => Action;
@@ -31,5 +32,6 @@ export class DialogComponent implements OnInit {
 
   hideDialog() {
     this.store.dispatch(this.popupStateAction({ display: false }));
+    this.onHide.emit();
   }
 }
