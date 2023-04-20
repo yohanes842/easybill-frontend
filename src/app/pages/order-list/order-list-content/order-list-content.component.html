@@ -56,6 +56,16 @@
     </div>
     <div class="flex justify-content-end gap-3 h-fit">
       <button
+        *ngIf="withDeleteButton && order.deletable"
+        pButton
+        type="button"
+        class="p-button-link p-button-sm m-0 p-1 mb-2 text-red-400 text-right font-italic"
+        label="delete"
+        icon="pi pi-trash"
+        iconPos="right"
+        (click)="deleteOrder($event, order)"
+      ></button>
+      <button
         pButton
         type="button"
         class="p-button-link p-button-sm m-0 p-1 mb-2 text-secondary text-right font-italic"

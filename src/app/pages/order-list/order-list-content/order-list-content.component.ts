@@ -3,6 +3,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
+import { ConfirmationService } from 'primeng/api';
 import { OrderHeader } from 'src/app/classes/order-header';
 import { Route } from 'src/app/enums/Route';
 import { Severity } from 'src/app/enums/Severity';
@@ -23,13 +24,16 @@ import {
 })
 export class OrderListContentComponent implements OnInit {
   @Input() order!: OrderHeader;
+  @Input() withDeleteButton: boolean;
   @Output() onShowDetail: EventEmitter<any> = new EventEmitter();
+  @Output() onDelete: EventEmitter<OrderHeader> = new EventEmitter();
 
   selectedOrder!: OrderHeader;
 
   constructor(
     private orderService: OrderService,
     private messageService: CustomMessageService,
+    private confirmationService: ConfirmationService,
     private router: Router,
     private datePipe: DatePipe,
     private authService: AuthService,
@@ -78,6 +82,19 @@ export class OrderListContentComponent implements OnInit {
       localStorage.setItem('currentOrder', JSON.stringify(orderObject));
 
       this.router.navigateByUrl(Route.ADD_ORDER_PATH);
+    });
+  }
+
+  deleteOrder(event: Event, order: OrderHeader) {
+    event.stopPropagation();
+    this.confirmationService.confirm({
+      message: 'Are you sure that you want to delete this order?',
+      accept: () => {
+        this.orderService.deleteOrder(this.order.id!).subscribe(() => {
+          this.messageService.showMessage(Severity.SUCCESS, 'ORDER DELETED');
+          this.onDelete.emit(this.order);
+        });
+      },
     });
   }
 }
