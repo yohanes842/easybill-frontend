@@ -85,6 +85,7 @@ import { TransactionDetailsDialogComponent } from './pages/transaction-history/t
 import { PasswordConfirmationFormComponent } from './components/password-confirmation-form/password-confirmation-form.component';
 import { PaymentAccountCardComponent } from './components/payment-account-card/payment-account-card.component';
 import { appReducer } from './state/app.state';
+import { AutoFocusModule } from 'primeng/autofocus';
 
 @NgModule({
   declarations: [
@@ -162,6 +163,7 @@ import { appReducer } from './state/app.state';
     ProgressBarModule,
     KeyFilterModule,
     TooltipModule,
+    AutoFocusModule,
     StoreModule.forRoot(appReducer),
   ],
   providers: [

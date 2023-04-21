@@ -7,7 +7,7 @@
 }
 
 :host ::ng-deep .p-confirm-dialog {
-  padding: 1rem !important;
+  margin: 1rem;
 }
 
 ::ng-deep .p-dialog .p-dialog-header {
