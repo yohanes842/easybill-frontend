@@ -5,7 +5,6 @@ pipeline {
         DOCKER_IMAGE_NAME = "${DOCKER_REGISTRY}/yohanes842/easybill-frontend"
     }
     stages {
-        env.EASYBILL_VERSION = readJSON(file: '../package.json')['version']
         stage("Project and build information") {
             steps {
                 script {
