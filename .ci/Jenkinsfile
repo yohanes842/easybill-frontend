@@ -28,15 +28,19 @@ pipeline {
         stage("Push image") {
             steps {
                 script {
+                    tags = []
                     docker.withRegistry("https://${env.DOCKER_REGISTRY}", "private-image-registry") {
                         if (env.BRANCH_NAME == "master"){
+                            tags.addAll("- `${EASYBILL_VERSION}`", "- `latest`")
                             image.push("${EASYBILL_VERSION}")
                             image.push("latest")
                         } else if (env.BRANCH_NAME == "dev") {
+                            tags.addAll("- `dev-${EASYBILL_VERSION}`", "- `dev-latest`")
                             image.push("dev-${EASYBILL_VERSION}")
                             image.push("dev-latest")
                         } else {
                             def sanitizeBranchName = env.BRANCH_NAME.replace("feat/", "")
+                            tags.addAll("- `${sanitizeBranchName}-${EASYBILL_VERSION}`", "- `${sanitizeBranchName}-latest`")
                             image.push("${sanitizeBranchName}-${EASYBILL_VERSION}")
                             image.push("${sanitizeBranchName}-latest")
                         }
@@ -52,7 +56,7 @@ pipeline {
                     webhookURL: WEBHOOK_URL,
                     result: currentBuild.currentResult,
                     showChangeset: true,
-                    description: "**Image:** `${env.DOCKER_IMAGE_NAME}`\n**Branch:** ${env.BRANCH_NAME}\n**Build:** ${BUILD_NUMBER}",
+                    description: "**Branch:** ${env.BRANCH_NAME}\n**Build:** ${BUILD_NUMBER}\n\n**Image:** `${env.DOCKER_IMAGE_NAME}`**Tags:**\n${tags.join('\n')}\n\n",
                     link: env.BUILD_URL, title: "${JOB_NAME} #${BUILD_NUMBER}"
                 )
             }
