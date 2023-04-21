@@ -50,13 +50,24 @@ pipeline {
         }
     }
     post {
-        always {
+        success {
             script {
                 discordSend(
                     webhookURL: WEBHOOK_URL,
                     result: currentBuild.currentResult,
                     showChangeset: true,
-                    description: "**Branch:** ${env.BRANCH_NAME}\n**Build:** ${BUILD_NUMBER}\n**Image:** `${env.DOCKER_IMAGE_NAME}`\n**Tags:**\n${tags.join('\n')}\n\n",
+                    description: "**Version**: ${env.EASYBILL_VERSION}\n**Branch:** ${env.BRANCH_NAME}\n**Image:** `${env.DOCKER_IMAGE_NAME}`\n**Tags:**\n${tags.join('\n')}\n",
+                    link: env.BUILD_URL, title: "${JOB_NAME} #${BUILD_NUMBER}"
+                )
+            }
+        }
+        failure {
+            script {
+                discordSend(
+                    webhookURL: WEBHOOK_URL,
+                    result: currentBuild.currentResult,
+                    showChangeset: true,
+                    description: "**Version**: ${env.EASYBILL_VERSION}\n**Branch:** ${env.BRANCH_NAME}\n",
                     link: env.BUILD_URL, title: "${JOB_NAME} #${BUILD_NUMBER}"
                 )
             }
