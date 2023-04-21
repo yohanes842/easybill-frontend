@@ -16,7 +16,7 @@ export class AddSubFormComponent implements OnInit {
   @Input() modalType: string;
   @Input() subOrders: OrderDetail[];
   @Input() subOrderInAction: OrderDetail;
-  @Output() onSuccess: EventEmitter<any> = new EventEmitter();
+  @Output() onSuccess = new EventEmitter<void>();
 
   constructor(
     private messageService: CustomMessageService,

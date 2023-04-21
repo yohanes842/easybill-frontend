@@ -1,10 +1,11 @@
-<app-header [title]="pageTitle" id="header"></app-header>
-<app-quick-action
-  class="fixed z-4"
-  style="bottom: 6rem; right: 5rem"
-></app-quick-action>
-<div style="padding-bottom: 7rem">
+<div class="mx-auto" style="padding-block: 6rem; max-width: 75rem">
   <router-outlet></router-outlet>
 </div>
 
-<jump-button></jump-button>
+<app-header [title]="pageTitle" id="header" />
+<quick-action
+  class="fixed z-4"
+  style="bottom: 6rem; right: 5rem"
+/>
+<jump-button />
+

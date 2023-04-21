@@ -11,13 +11,13 @@ import { AuthService } from 'src/app/services/auth/auth.service';
 import { Route } from '../../enums/Route';
 
 @Component({
-  selector: 'app-quick-action',
+  selector: 'quick-action',
   templateUrl: './quick-action.component.html',
   styleUrls: ['./quick-action.component.css'],
   providers: [],
 })
 export class QuickActionComponent implements OnInit, AfterViewInit {
-  @Output() updateUrl: EventEmitter<Route> = new EventEmitter();
+  @Output() updateUrl = new EventEmitter<Route>();
   items: MenuItem[];
 
   quickActionDiv: HTMLElement;

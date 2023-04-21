@@ -13,8 +13,7 @@ import { getSelectedBill } from 'src/app/state/currentSelected/currentSelected.s
   styleUrls: ['./payment-dialog-content.component.css'],
 })
 export class PaymentDialogContentComponent implements OnInit {
-  @Output() onPay: EventEmitter<{ bill: Status; amount: number }> =
-    new EventEmitter();
+  @Output() onPay = new EventEmitter<{ bill: Status; amount: number }>();
 
   selectedBill: Status;
   amount: number;

@@ -15,10 +15,29 @@ import { UserProfileComponent } from './pages/user-profile/user-profile.componen
 import { PendingOrderListComponent } from './pages/pending-order-list/pending-order-list.component';
 
 const routes: Routes = [
-  { path: 'login', component: LoginComponent, canActivate: [LoginGuard] },
+  {
+    path: Route.LOGIN_PATH.slice(1),
+    component: LoginComponent,
+    canActivate: [LoginGuard],
+  },
+  {
+    path: Route.PROFILE_PATH.slice(1),
+    component: UserProfileComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: Route.ADD_ORDER_PATH.slice(1),
+    component: AddFormComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: Route.ADD_ORDER_USER_PATH.slice(1),
+    component: SelectusersFormComponent,
+    canActivate: [AuthGuard],
+  },
   {
     path: '',
-    redirectTo: 'home',
+    redirectTo: Route.HOME_PATH.slice(1),
     pathMatch: 'full',
   },
   {
@@ -43,21 +62,6 @@ const routes: Routes = [
         component: TransactionHistoryComponent,
       },
     ],
-  },
-  {
-    path: Route.ADD_ORDER_PATH.slice(1),
-    component: AddFormComponent,
-    canActivate: [AuthGuard],
-  },
-  {
-    path: Route.ADD_ORDER_USER_PATH.slice(1),
-    component: SelectusersFormComponent,
-    canActivate: [AuthGuard],
-  },
-  {
-    path: Route.PROFILE_PATH.slice(1),
-    component: UserProfileComponent,
-    canActivate: [AuthGuard],
   },
   {
     path: '**',

@@ -19,8 +19,8 @@ import {
 })
 export class PendingOrderListContentComponent implements OnInit {
   @Input() order!: OrderHeader;
-  @Output() onDeleted: EventEmitter<OrderHeader> = new EventEmitter();
-  @Output() onApproved: EventEmitter<OrderHeader> = new EventEmitter();
+  @Output() onDeleted = new EventEmitter<OrderHeader>();
+  @Output() onApproved = new EventEmitter<OrderHeader>();
 
   constructor(
     private orderService: OrderService,

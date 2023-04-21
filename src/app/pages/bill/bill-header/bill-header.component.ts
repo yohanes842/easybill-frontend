@@ -4,10 +4,10 @@ import { MenuItem } from 'primeng/api';
 @Component({
   selector: 'bill-header',
   templateUrl: './bill-header.component.html',
-  styleUrls: ['./bill-header.component.css']
+  styleUrls: ['./bill-header.component.css'],
 })
 export class BillHeaderComponent implements OnInit {
-  @Output() onTapMenu: EventEmitter<any> = new EventEmitter();
+  @Output() onTapMenu = new EventEmitter<boolean>();
 
   tabMenus!: MenuItem[];
   activeMenu!: MenuItem;
@@ -25,7 +25,7 @@ export class BillHeaderComponent implements OnInit {
       {
         label: 'Others bills to you',
         command: () => {
-          this.isYourBills = false
+          this.isYourBills = false;
           this.onTapMenu.emit(this.isYourBills);
         },
       },
@@ -33,7 +33,5 @@ export class BillHeaderComponent implements OnInit {
     this.activeMenu = this.tabMenus[0];
   }
 
-  ngOnInit(): void {
-  }
-
+  ngOnInit(): void {}
 }

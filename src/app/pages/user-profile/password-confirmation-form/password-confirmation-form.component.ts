@@ -10,7 +10,7 @@ import { setPasswordConfirmationDialogDisplay } from 'src/app/state/dialogDispla
 })
 export class PasswordConfirmationFormComponent implements OnInit {
   @Input() errors: Map<string, string>;
-  @Output() onSubmit: EventEmitter<string> = new EventEmitter();
+  @Output() onSubmit = new EventEmitter<string>();
 
   password: string;
 
