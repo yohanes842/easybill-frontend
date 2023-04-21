@@ -35,7 +35,7 @@ export class BillRelatedOrderContentComponent implements OnInit {
           this.showDetail(orderId);
         },
         error: () =>
-          this.messageService.showMessage(Severity.ERROR, 'REQUEST ERROR'),
+          this.messageService.showMessage(Severity.ERROR, '', 'REQUEST '),
       });
       return;
     }

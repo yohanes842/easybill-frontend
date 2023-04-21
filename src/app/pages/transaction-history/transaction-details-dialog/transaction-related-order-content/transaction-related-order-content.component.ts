@@ -49,8 +49,6 @@ export class TransactionRelatedOrderContentComponent implements OnInit {
           this.orderService.setViewedOrder(orderId, order);
           this.showDetail(orderId);
         },
-        error: () =>
-          this.messageService.showMessage(Severity.ERROR, 'REQUEST ERROR'),
       });
       return;
     }

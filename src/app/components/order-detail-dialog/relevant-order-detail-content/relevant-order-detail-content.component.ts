@@ -56,11 +56,7 @@ export class RelevantOrderDetailContentComponent implements OnInit {
     );
 
     if (!completeAttUser) {
-      this.messageService.showMessage(
-        Severity.ERROR,
-        'REQUEST ERROR',
-        'User not found!'
-      );
+      this.messageService.showMessage(Severity.ERROR, '', 'User not found!');
       return;
     }
 

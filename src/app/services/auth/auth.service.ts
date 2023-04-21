@@ -8,6 +8,8 @@ import { Route } from 'src/app/enums/Route';
 import { OutputResponse } from 'src/app/interfaces/output-response';
 import { Response } from 'src/app/interfaces/response';
 import { environment as env } from 'src/environments/environment';
+import { CustomMessageService } from '../message/custom-message.service';
+import { Severity } from 'src/app/enums/Severity';
 
 @Injectable({
   providedIn: 'root',
@@ -15,7 +17,11 @@ import { environment as env } from 'src/environments/environment';
 export class AuthService {
   authUser: User;
 
-  constructor(private http: HttpClient, private router: Router) {}
+  constructor(
+    private http: HttpClient,
+    private router: Router,
+    private messageService: CustomMessageService
+  ) {}
 
   login(user: LoginForm) {
     return this.http
@@ -24,6 +30,19 @@ export class AuthService {
         tap({
           next: (res) => {
             this.authUser = res.output.data;
+
+            this.authUser.payment_account_list.length <= 0
+              ? this.messageService.showMessage(
+                  Severity.WARN,
+                  'PROFILE DATA INCOMPLETE',
+                  'Please set your payment account soon'
+                )
+              : this.messageService.showMessage(
+                  Severity.SUCCESS,
+                  '',
+                  'Successfully login'
+                );
+
             localStorage.setItem('accessToken', this.authUser.access_token!);
           },
         })

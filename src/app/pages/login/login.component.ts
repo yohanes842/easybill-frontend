@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { CustomErrorResponse } from 'src/app/classes/error-response';
 import { LoginForm } from 'src/app/classes/login-form';
 import { ResponseStatus } from 'src/app/enums/ResponseStatus';
 import { Route } from 'src/app/enums/Route';
@@ -30,17 +31,14 @@ export class LoginComponent implements OnInit {
     if (!this.user.username || !this.user.password) {
       this.messageService.showMessage(
         Severity.ERROR,
-        'INPUT ERROR',
-        'Username/password can not be empty'
+        '',
+        "Username or password can't be empty"
       );
       return;
     }
     this.authService.login(this.user).subscribe({
-      next: () => {
-        this.router.navigateByUrl(Route.HOME_PATH);
-        this.messageService.showMessage(Severity.SUCCESS, 'LOGIN SUCCESS');
-      },
-      error: (error: ErrorResponse) => {
+      next: () => this.router.navigateByUrl(Route.HOME_PATH),
+      error: (error: CustomErrorResponse) => {
         let { code, message } = error;
         let errorMessage;
         switch (code) {
@@ -52,11 +50,7 @@ export class LoginComponent implements OnInit {
             errorMessage = message;
             break;
         }
-        this.messageService.showMessage(
-          Severity.ERROR,
-          'LOGIN ERROR',
-          errorMessage
-        );
+        this.messageService.showMessage(Severity.ERROR, '', errorMessage);
       },
     });
   }

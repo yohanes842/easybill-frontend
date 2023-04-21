@@ -3901,7 +3901,9 @@ p-treeselect.p-treeselect-clearable .p-treeselect-clear-icon {
 }
 
 .p-organizationchart
-  .p-organizationchart-node-content.p-organizationchart-selectable-node:not(.p-highlight):hover {
+  .p-organizationchart-node-content.p-organizationchart-selectable-node:not(
+    .p-highlight
+  ):hover {
   background: rgba(255, 255, 255, 0.04);
   color: rgba(255, 255, 255, 0.87);
 }
@@ -6568,8 +6570,8 @@ p-treeselect.p-treeselect-clearable .p-treeselect-clear-icon {
 }
 .p-message.p-message-info {
   background: #b3e5fc;
-  border: solid transparent;
-  border-width: 0 0 0 0;
+  border: solid #696cff;
+  border-width: 0 0 0 7px;
   color: #01579b;
 }
 .p-message.p-message-info .p-message-icon {
@@ -6580,8 +6582,8 @@ p-treeselect.p-treeselect-clearable .p-treeselect-clear-icon {
 }
 .p-message.p-message-success {
   background: #c8e6c9;
-  border: solid transparent;
-  border-width: 0 0 0 0;
+  border: solid #1ea97c;
+  border-width: 0 0 0 7px;
   color: #1b5e20;
 }
 .p-message.p-message-success .p-message-icon {
@@ -6592,8 +6594,8 @@ p-treeselect.p-treeselect-clearable .p-treeselect-clear-icon {
 }
 .p-message.p-message-warn {
   background: #ffecb3;
-  border: solid transparent;
-  border-width: 0 0 0 0;
+  border: solid #cc8925;
+  border-width: 0 0 0 7px;
   color: #7f6003;
 }
 .p-message.p-message-warn .p-message-icon {
@@ -6604,8 +6606,8 @@ p-treeselect.p-treeselect-clearable .p-treeselect-clear-icon {
 }
 .p-message.p-message-error {
   background: #ffcdd2;
-  border: solid transparent;
-  border-width: 0 0 0 0;
+  border: solid #ff5757;
+  border-width: 0 0 0 7px;
   color: #b71c1c;
 }
 .p-message.p-message-error .p-message-icon {
@@ -7656,7 +7658,9 @@ p-calendar.ng-dirty.ng-invalid .p-calendar-w-btn:not(.p-disabled).p-focus {
 .p-input-filled
   .p-calendar-w-btn:not(.p-calendar-disabled):not(.p-disabled).p-focus,
 .p-input-filled
-  .p-calendar-w-btn:not(.p-calendar-disabled):not(.p-disabled).p-inputwrapper-focus {
+  .p-calendar-w-btn:not(.p-calendar-disabled):not(
+    .p-disabled
+  ).p-inputwrapper-focus {
   box-shadow: none;
   background-color: rgba(255, 255, 255, 0.1);
   border-color: transparent;
@@ -8696,7 +8700,9 @@ p-multiselect.ng-dirty.ng-invalid .p-multiselect:not(.p-disabled).p-focus {
 .p-radiobutton.p-radiobutton-checked:not(.p-radiobutton-disabled):hover {
   box-shadow: 0 0 1px 10px rgba(159, 168, 218, 0.04);
 }
-.p-radiobutton.p-radiobutton-checked:not(.p-radiobutton-disabled).p-radiobutton-focused {
+.p-radiobutton.p-radiobutton-checked:not(
+    .p-radiobutton-disabled
+  ).p-radiobutton-focused {
   box-shadow: 0 0 1px 10px rgba(159, 168, 218, 0.12);
 }
 

@@ -52,8 +52,6 @@ export class OrderListContentComponent implements OnInit {
           this.orderService.setViewedOrder(orderId, order);
           this.showDetail(orderId);
         },
-        error: () =>
-          this.messageService.showMessage(Severity.ERROR, 'REQUEST ERROR'),
       });
       return;
     }
@@ -91,7 +89,11 @@ export class OrderListContentComponent implements OnInit {
       message: 'Are you sure that you want to delete this order?',
       accept: () => {
         this.orderService.deleteOrder(this.order.id!).subscribe(() => {
-          this.messageService.showMessage(Severity.SUCCESS, 'ORDER DELETED');
+          this.messageService.showMessage(
+            Severity.SUCCESS,
+            '',
+            'Successfully deleted order'
+          );
           this.onDelete.emit(this.order);
         });
       },

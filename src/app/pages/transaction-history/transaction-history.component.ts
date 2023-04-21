@@ -56,7 +56,11 @@ export class TransactionHistoryComponent implements OnInit {
           const latestFetchTransactions = currentUser.bill_transaction_list;
 
           if (!latestFetchTransactions) {
-            this.messageService.showMessage(Severity.ERROR, 'REQUEST ERROR');
+            this.messageService.showMessage(
+              Severity.ERROR,
+              '',
+              'Request error, please try again later...'
+            );
             return;
           }
 
@@ -72,8 +76,6 @@ export class TransactionHistoryComponent implements OnInit {
               : res.output.page! + 1;
           this.lazyLoadService.setCurrentLazyPaging(this.lazyPaging);
         },
-        error: () =>
-          this.messageService.showMessage(Severity.ERROR, 'REQUEST ERROR'),
       });
   }
 

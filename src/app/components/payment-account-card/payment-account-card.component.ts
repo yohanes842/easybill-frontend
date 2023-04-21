@@ -53,7 +53,8 @@ export class PaymentAccountCardComponent implements OnInit {
         .subscribe(() => {
           this.messageService.showMessage(
             Severity.SUCCESS,
-            'DELETE PAYMENT ACCOUNT SUCCESS'
+            '',
+            'Successfully deleted payment account'
           );
         });
       this.onDelete.emit(this.paymentAccount);
@@ -96,7 +97,8 @@ export class PaymentAccountCardComponent implements OnInit {
 
               this.messageService.showMessage(
                 Severity.SUCCESS,
-                'SAVE PAYMENT ACCOUNT SUCCESS'
+                '',
+                'Successfully saved payment account'
               );
               this.isEditing = false;
               this.onSave.emit(user);
@@ -112,7 +114,7 @@ export class PaymentAccountCardComponent implements OnInit {
               });
               this.messageService.showMessage(
                 Severity.ERROR,
-                'REQUEST ERROR',
+                '',
                 this.errors.entries().next().value[1].replace(/_/g, ' ')
               );
             },
@@ -123,13 +125,13 @@ export class PaymentAccountCardComponent implements OnInit {
     } else if (isNothingChange) {
       this.messageService.showMessage(
         Severity.ERROR,
-        'INVALID INPUT',
+        '',
         "You haven't make any changes"
       );
     } else {
       this.messageService.showMessage(
         Severity.ERROR,
-        'INVALID INPUT',
+        '',
         'Account label and account number already exists'
       );
     }
