@@ -70,6 +70,10 @@ export class UserProfileComponent implements OnInit {
     this.authUser = newUser;
   }
 
+  getUser() {
+    this.authService.getAuthUser().subscribe((user) => (this.authUser = user));
+  }
+
   //Dialog utility function
 
   showChangeUsernameDialog() {

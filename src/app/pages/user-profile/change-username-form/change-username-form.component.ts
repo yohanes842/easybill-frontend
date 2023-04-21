@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { CustomErrorResponse } from 'src/app/classes/error-response';
 import { User } from 'src/app/classes/user';
@@ -15,6 +15,7 @@ import { setChangeUsernameDialogDisplay } from 'src/app/state/dialogDisplay/dial
   styleUrls: ['./change-username-form.component.css'],
 })
 export class ChangeUsernameFormComponent implements OnInit {
+  @Output() onChange = new EventEmitter<void>();
   authUser: User;
 
   currentPasswordString: string = '';
@@ -64,6 +65,7 @@ export class ChangeUsernameFormComponent implements OnInit {
             'Successfully changed username'
           );
           this.authUser.username = this.newUsernameString.toLowerCase();
+          this.onChange.emit();
           this.store.dispatch(
             setChangeUsernameDialogDisplay({ display: false })
           );
