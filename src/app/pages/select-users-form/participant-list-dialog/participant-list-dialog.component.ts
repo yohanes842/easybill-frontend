@@ -9,21 +9,21 @@ import { User } from 'src/app/classes/user';
 })
 export class ParticipantListDialogComponent implements OnInit {
   @Input() subOrder!: OrderDetail;
-  @Output() onDeleteParticipant: EventEmitter<any> = new EventEmitter();
-  @Output() onCloseDialog: EventEmitter<User> = new EventEmitter();
+  @Output() onDeleteParticipant = new EventEmitter<User>();
+  @Output() onCloseDialog = new EventEmitter<void>();
 
   display: Boolean = true;
 
   constructor() {}
 
-  ngOnInit(): void {}
+  ngOnInit() {}
 
   hideDialog() {
     this.display = false;
     this.onCloseDialog.emit();
   }
 
-  deleteParticipant(user: User): void {
+  deleteParticipant(user: User) {
     this.onDeleteParticipant.emit(user);
   }
 }

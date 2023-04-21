@@ -11,7 +11,7 @@ import { getDialogDisplayAction } from 'src/app/state/dialogDisplay/dialogDispla
 })
 export class DialogComponent implements OnInit {
   @Input() customStyle: any;
-  @Output() onHide: EventEmitter<void> = new EventEmitter();
+  @Output() onHide = new EventEmitter<void>();
 
   display: boolean = true;
   popupStateAction: (actionProps: Props) => Action;

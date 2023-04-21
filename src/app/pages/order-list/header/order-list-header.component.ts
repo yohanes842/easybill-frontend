@@ -9,9 +9,9 @@ import { Route } from 'src/app/enums/Route';
   styleUrls: ['./order-list-header.component.css'],
 })
 export class OrderListHeaderComponent implements OnInit {
-  @Output() onTapMenu: EventEmitter<any> = new EventEmitter();
-  @Output() onChangeStatusFilter: EventEmitter<any> = new EventEmitter();
-  @Output() onKeywordInput: EventEmitter<string> = new EventEmitter();
+  @Output() onTapMenu = new EventEmitter<boolean>();
+  @Output() onChangeStatusFilter = new EventEmitter<string>();
+  @Output() onKeywordInput = new EventEmitter<string>();
 
   tabMenus: MenuItem[];
   activeMenu: MenuItem;

@@ -82,10 +82,10 @@ import { OrderService } from 'src/app/services/order/order.service';
 import { UserService } from 'src/app/services/user/user.service';
 import { TransactionDetailsDialogComponent } from './pages/transaction-history/transaction-details-dialog/transaction-details-dialog.component';
 
-import { PasswordConfirmationFormComponent } from './components/password-confirmation-form/password-confirmation-form.component';
-import { PaymentAccountCardComponent } from './components/payment-account-card/payment-account-card.component';
 import { appReducer } from './state/app.state';
 import { AutoFocusModule } from 'primeng/autofocus';
+import { PaymentAccountCardComponent } from './pages/user-profile/payment-account-card/payment-account-card.component';
+import { PasswordConfirmationFormComponent } from './pages/user-profile/password-confirmation-form/password-confirmation-form.component';
 
 @NgModule({
   declarations: [

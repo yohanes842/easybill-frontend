@@ -25,8 +25,8 @@ import {
 export class OrderListContentComponent implements OnInit {
   @Input() order!: OrderHeader;
   @Input() withDeleteButton: boolean;
-  @Output() onShowDetail: EventEmitter<any> = new EventEmitter();
-  @Output() onDelete: EventEmitter<OrderHeader> = new EventEmitter();
+  @Output() onShowDetail = new EventEmitter<number>();
+  @Output() onDelete = new EventEmitter<OrderHeader>();
 
   selectedOrder!: OrderHeader;
 
