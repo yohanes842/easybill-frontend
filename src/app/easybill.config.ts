@@ -1,1 +1,3 @@
-export const VERSION: string = '3.1.3';
+import packageMetaData from '../../package.json';
+
+export const VERSION: string = packageMetaData.version;
