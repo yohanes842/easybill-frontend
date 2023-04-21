@@ -28,7 +28,6 @@
             [stringToBeCopy]="paymentAccount.payment_account"
           ></copy-button>
           <button
-            *ngIf="!readOnly"
             pButton
             class="icon-btn w-fit px-1"
             style="background: none; color: var(--custom-blue-200)"
@@ -37,7 +36,6 @@
             (click)="edit()"
           ></button>
           <button
-            *ngIf="!readOnly"
             pButton
             class="icon-btn w-fit text-red-500 px-1"
             style="background: none"
@@ -65,10 +63,10 @@
           minlength="1"
           maxlength="15"
           placeholder="Label"
+          required
         />
         <input
           pInputText
-          p
           [style]="{ 'margin-block': '0.5rem' }"
           class="w-10rem py-2"
           name="accountNumber"
@@ -77,6 +75,7 @@
           minlength="5"
           maxlength="15"
           placeholder="Account number"
+          required
         />
       </form>
 

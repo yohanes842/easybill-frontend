@@ -53,7 +53,7 @@ export class UserService {
       current_password: password,
       ...paymentAccount,
     };
-    return this.http.post<Response<OutputResponse<void>>>(
+    return this.http.post<Response<OutputResponse<User>>>(
       `${env.url}/api/payment-account`,
       params
     );

@@ -36,7 +36,9 @@ export class UserProfileComponent implements OnInit {
 
   ngOnInit() {
     // Get auth user profile
-    this.authService.getAuthUser().subscribe((user) => (this.authUser = user));
+    this.authService.getAuthUser().subscribe((user) => {
+      this.authUser = user;
+    });
 
     this.changeUsernameDialogDisplay$ = this.store.select(
       getChangeUsernameDialogDisplay
@@ -57,8 +59,15 @@ export class UserProfileComponent implements OnInit {
     this.authUser.payment_account_list.push(new PaymentAccount());
   }
 
-  deletePaymentAccount(index: number) {
-    this.authUser.payment_account_list.splice(index, 1);
+  deletePaymentAccount(paymentAccount: PaymentAccount) {
+    const deletedIndex = this.authUser.payment_account_list.findIndex(
+      (acc) => acc === paymentAccount
+    );
+    this.authUser.payment_account_list.splice(deletedIndex, 1);
+  }
+
+  updateUserProfile(newUser: User) {
+    this.authUser = newUser;
   }
 
   //Dialog utility function

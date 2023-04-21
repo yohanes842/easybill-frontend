@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { CustomErrorResponse } from 'src/app/classes/error-response';
 import { PaymentAccount } from 'src/app/classes/payment-account';
 import { User } from 'src/app/classes/user';
@@ -14,9 +14,10 @@ import { UserService } from 'src/app/services/user/user.service';
 })
 export class PaymentAccountCardComponent implements OnInit {
   @Input() paymentAccount: PaymentAccount;
-  @Input() readOnly: boolean;
+  @Input() paymentAccountList: PaymentAccount[];
+  @Output() onSave = new EventEmitter<User>();
+  @Output() onDelete = new EventEmitter<PaymentAccount>();
 
-  paymentAccountList: PaymentAccount[];
   isEditing = false;
   paymentAccountInAction: PaymentAccount;
   accountNumberRegex: RegExp = /[0-9]+/;
@@ -27,18 +28,11 @@ export class PaymentAccountCardComponent implements OnInit {
   paymentAccountAction: (password: string) => void;
 
   constructor(
-    private authService: AuthService,
     private userService: UserService,
     private messageService: CustomMessageService
   ) {}
 
   ngOnInit() {
-    this.authService
-      .getAuthUser()
-      .subscribe(
-        (user) => (this.paymentAccountList = user.payment_account_list)
-      );
-
     this.isEditing =
       !this.paymentAccount.payment_account_label ||
       !this.paymentAccount.payment_account;
@@ -62,10 +56,7 @@ export class PaymentAccountCardComponent implements OnInit {
             'DELETE PAYMENT ACCOUNT SUCCESS'
           );
         });
-      const deletedIndex = this.paymentAccountList.findIndex(
-        (acc) => acc === this.paymentAccount
-      );
-      this.paymentAccountList.splice(deletedIndex, 1);
+      this.onDelete.emit(this.paymentAccount);
     };
 
     this.passwordConfirmationDialogDisplay = true;
@@ -98,7 +89,9 @@ export class PaymentAccountCardComponent implements OnInit {
             ...this.paymentAccountInAction,
           })
           .subscribe({
-            next: () => {
+            next: (res) => {
+              const user = res.output.data;
+
               this.passwordConfirmationDialogDisplay = false;
 
               this.messageService.showMessage(
@@ -106,10 +99,7 @@ export class PaymentAccountCardComponent implements OnInit {
                 'SAVE PAYMENT ACCOUNT SUCCESS'
               );
               this.isEditing = false;
-              this.paymentAccount.payment_account_label =
-                this.paymentAccountInAction.payment_account_label;
-              this.paymentAccount.payment_account =
-                this.paymentAccountInAction.payment_account;
+              this.onSave.emit(user);
             },
             error: (error: CustomErrorResponse) => {
               const res = error.extra_message.match(/[A-z ]+\[(.+)\]/);
@@ -151,8 +141,9 @@ export class PaymentAccountCardComponent implements OnInit {
       const deletedIndex = this.paymentAccountList.findIndex(
         (acc) => acc === this.paymentAccount
       );
-      this.paymentAccountList.splice(deletedIndex, 1);
+      this.onDelete.emit(this.paymentAccount);
     }
+    this.paymentAccountInAction = { ...this.paymentAccount };
   }
 
   hideDialog() {

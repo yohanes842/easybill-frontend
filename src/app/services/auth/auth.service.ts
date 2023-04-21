@@ -36,16 +36,18 @@ export class AuthService {
   }
 
   getAuthUser() {
-    if (!this.authUser) {
-      return this.http
-        .get<Response<OutputResponse<User>>>(`${env.url}/api/users/profile`)
-        .pipe(
-          map((res) => {
-            this.authUser = res.output.data;
-            return res.output.data;
-          })
-        );
-    }
+    if (!this.authUser) return this.getLatestAuthUser();
     return of(this.authUser);
+  }
+
+  getLatestAuthUser() {
+    return this.http
+      .get<Response<OutputResponse<User>>>(`${env.url}/api/users/profile`)
+      .pipe(
+        map((res) => {
+          this.authUser = res.output.data;
+          return res.output.data;
+        })
+      );
   }
 }

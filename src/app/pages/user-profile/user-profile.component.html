@@ -64,6 +64,9 @@
         <payment-account-card
           *ngIf="acc"
           [paymentAccount]="acc"
+          [paymentAccountList]="authUser.payment_account_list"
+          (onDelete)="deletePaymentAccount($event)"
+          (onSave)="updateUserProfile($event)"
         ></payment-account-card>
       </div>
 
