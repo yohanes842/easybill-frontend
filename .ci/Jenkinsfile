@@ -3,6 +3,7 @@ pipeline {
     environment {
         DOCKER_REGISTRY = "ir.arv.cx"
         DOCKER_IMAGE_NAME = "${DOCKER_REGISTRY}/yohanes842/easybill-frontend"
+        WEBHOOK_URL = credentials('easybill-webhook-url');
     }
     stages {
         stage("Project and build information") {
@@ -41,6 +42,19 @@ pipeline {
                         }
                     }
                 }
+            }
+        }
+    }
+    post {
+        always {
+            script {
+                discordSend(
+                    webhookURL: WEBHOOK_URL,
+                    result: currentBuild.currentResult,
+                    showChangeset: true,
+                    description: "**Image:** `${env.DOCKER_IMAGE_NAME}`\n**Branch:** ${env.BRANCH_NAME}\n**Build:** ${BUILD_NUMBER}",
+                    link: env.BUILD_URL, title: "${JOB_NAME} #${BUILD_NUMBER}"
+                )
             }
         }
     }
