@@ -40,9 +40,6 @@ export class BillComponent implements OnInit {
         );
         this.bills = this.billsPayable;
       },
-      error: () => {
-        this.messageService.showMessage(Severity.ERROR, 'REQUEST ERROR');
-      },
     });
 
     this.billService.getBillsReceivable().subscribe({
@@ -50,9 +47,6 @@ export class BillComponent implements OnInit {
         this.billsReceivable = res.output.data.users_bills.sort(
           (bill1: Status, bill2: Status) => bill2.owe_amount - bill1.owe_amount
         );
-      },
-      error: () => {
-        this.messageService.showMessage(Severity.ERROR, 'REQUEST ERROR');
       },
     });
 

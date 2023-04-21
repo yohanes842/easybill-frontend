@@ -70,9 +70,6 @@ export class SelectusersFormComponent implements OnInit {
               .includes(user.id)
         );
       },
-      error: () => {
-        this.messageService.showMessage(Severity.ERROR, 'Request Error');
-      },
     });
   }
 
@@ -124,11 +121,7 @@ export class SelectusersFormComponent implements OnInit {
       (user) => user.id === this.selectedUserDropdown!.id
     );
     if (participant) {
-      this.messageService.showMessage(
-        Severity.ERROR,
-        'Input Error',
-        'User already exist!'
-      );
+      this.messageService.showMessage(Severity.ERROR, '', 'User already exist');
       return;
     }
 
@@ -231,8 +224,10 @@ export class SelectusersFormComponent implements OnInit {
         // Redirect to home page
         this.messageService.showMessage(
           Severity.SUCCESS,
-          'Successfully',
-          'Added new order'
+          '',
+          'Successfully added new order "' +
+            this.currentOrder.order_description +
+            '"'
         );
 
         let authUsername = '';
@@ -249,8 +244,8 @@ export class SelectusersFormComponent implements OnInit {
     } else {
       this.messageService.showMessage(
         Severity.ERROR,
-        'Submit Error',
-        'Please make sure all suborders have participant(s)!'
+        '',
+        'Please make sure every sub-order have participant(s) attached'
       );
     }
   }

@@ -40,14 +40,15 @@ export class PaymentDialogContentComponent implements OnInit {
           next: () => {
             this.messageService.showMessage(
               Severity.SUCCESS,
-              'Successfully',
-              'done payment!'
+              '',
+              'Successfully done payment'
             );
           },
           error: () => {
             this.messageService.showMessage(
               Severity.ERROR,
-              'REQUEST ERROR Payment failed!'
+              '',
+              'Payment is failed, please try again...'
             );
           },
         });
@@ -59,8 +60,8 @@ export class PaymentDialogContentComponent implements OnInit {
     } else {
       this.messageService.showMessage(
         Severity.ERROR,
-        'Payment Error',
-        'Payment amount is invalid!'
+        '',
+        'Payment amount is invalid'
       );
     }
   }

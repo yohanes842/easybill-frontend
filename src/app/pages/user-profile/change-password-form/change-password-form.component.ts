@@ -44,7 +44,8 @@ export class ChangePasswordFormComponent implements OnInit {
           next: () => {
             this.messageService.showMessage(
               Severity.SUCCESS,
-              'CHANGE PASSWORD SUCCESS'
+              '',
+              'Successfully changed password'
             );
             this.store.dispatch(
               setChangePasswordDialogDisplay({ display: false })
@@ -62,6 +63,7 @@ export class ChangePasswordFormComponent implements OnInit {
 
             this.messageService.showMessage(
               Severity.ERROR,
+              '',
               error.code.replace(/_/g, ' ')
             );
           },

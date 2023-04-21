@@ -95,9 +95,6 @@ export class AddFormComponent implements OnInit {
       next: (res) => {
         this.users = res.output.data;
       },
-      error: () => {
-        this.messageService.showMessage(Severity.ERROR, 'Request Error');
-      },
     });
   }
 
@@ -120,12 +117,14 @@ export class AddFormComponent implements OnInit {
   }
 
   deleteSubOrder(index: number) {
-    this.currentOrder.order_list.splice(index, 1);
     this.messageService.showMessage(
       Severity.SUCCESS,
-      'Successfully',
-      'deleted sub-order'
+      '',
+      'Successfully removed "' +
+        this.currentOrder.order_list[index].order_menu_desc +
+        '"'
     );
+    this.currentOrder.order_list.splice(index, 1);
 
     this.saveToLocalStorage();
   }
@@ -144,11 +143,7 @@ export class AddFormComponent implements OnInit {
     );
     //validate if user not exist in the list
     if (!buyer) {
-      this.messageService.showMessage(
-        Severity.ERROR,
-        'Input Error',
-        'User not found!'
-      );
+      this.messageService.showMessage(Severity.ERROR, '', 'User not found!');
       return;
     }
 
@@ -157,7 +152,7 @@ export class AddFormComponent implements OnInit {
     if (this.currentOrder.order_list.length < 1) {
       this.messageService.showMessage(
         Severity.ERROR,
-        'Input Error',
+        '',
         'Order detail can not be empty'
       );
     } else {

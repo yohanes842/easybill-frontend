@@ -26,16 +26,23 @@ export class AddSubFormComponent implements OnInit {
   ngOnInit() {}
 
   submitSubOrder() {
-    if (this.modalType === SubOrderModalType.ADD) {
+    if (this.modalType == SubOrderModalType.ADD) {
       this.subOrders.push(this.subOrderInAction);
       this.subOrderInAction.users = [];
-    }
 
-    this.messageService.showMessage(
-      Severity.SUCCESS,
-      'Successfully',
-      this.modalType === 'add' ? 'added new sub-order' : 'edit sub-order'
-    );
+      this.messageService.showMessage(
+        Severity.SUCCESS,
+        '',
+        'Successfully added new sub-order "' +
+          this.subOrderInAction.order_menu_desc +
+          '"'
+      );
+    } else
+      this.messageService.showMessage(
+        Severity.SUCCESS,
+        '',
+        'Successfully edited "' + this.subOrderInAction.order_menu_desc + '"'
+      );
 
     this.onSuccess.emit();
     this.store.dispatch(setAddSubOrderDialogDisplay({ display: false }));

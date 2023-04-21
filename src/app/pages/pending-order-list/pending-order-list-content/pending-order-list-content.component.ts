@@ -52,9 +52,6 @@ export class PendingOrderListContentComponent implements OnInit {
             setDialogDisplayAction({ action: setDetailOrderDialogDisplay })
           );
         },
-        error: () => {
-          this.messageService.showMessage(Severity.ERROR, 'REQUEST ERROR');
-        },
       });
     }
   }
@@ -65,7 +62,11 @@ export class PendingOrderListContentComponent implements OnInit {
       message: 'Are you sure that you want to approve this order?',
       accept: () => {
         this.orderService.approveOrder(this.order.id!).subscribe(() => {
-          this.messageService.showMessage(Severity.SUCCESS, 'ORDER APPROVED');
+          this.messageService.showMessage(
+            Severity.SUCCESS,
+            '',
+            'Successfully approved "' + this.order.order_description + '"'
+          );
           this.onApproved.emit(this.order);
         });
       },
@@ -78,7 +79,11 @@ export class PendingOrderListContentComponent implements OnInit {
       message: 'Are you sure that you want to delete this order?',
       accept: () => {
         this.orderService.deleteOrder(this.order.id!).subscribe(() => {
-          this.messageService.showMessage(Severity.SUCCESS, 'ORDER DELETED');
+          this.messageService.showMessage(
+            Severity.SUCCESS,
+            '',
+            'Successfully rejected "' + this.order.order_description + '"'
+          );
           this.onDeleted.emit(this.order);
         });
       },

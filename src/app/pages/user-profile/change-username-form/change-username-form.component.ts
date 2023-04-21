@@ -60,7 +60,8 @@ export class ChangeUsernameFormComponent implements OnInit {
         next: () => {
           this.messageService.showMessage(
             Severity.SUCCESS,
-            'CHANGE USERNAME SUCCESS'
+            '',
+            'Successfully changed username'
           );
           this.authUser.username = this.newUsernameString.toLowerCase();
           this.store.dispatch(
@@ -76,11 +77,6 @@ export class ChangeUsernameFormComponent implements OnInit {
             const [key, value] = s.split(':');
             this.errors.set(key, value);
           });
-
-          this.messageService.showMessage(
-            Severity.ERROR,
-            error.code.replace(/_/g, ' ')
-          );
         },
       });
   }
