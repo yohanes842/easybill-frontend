@@ -9,6 +9,8 @@ pipeline {
         stage("Project and build information") {
             steps {
                 script {
+                    def projectMetadata = readJSON file: 'package.json'
+                    env.EASYBILL_VERSION = projectMetadata['version']
                     echo "== Easybill Frontend =="
                     echo "Project version: ${env.EASYBILL_VERSION}"
                     echo "Branch: ${env.BRANCH_NAME}"
