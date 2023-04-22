@@ -56,8 +56,8 @@ export class PaymentAccountCardComponent implements OnInit {
             '',
             'Successfully deleted payment account'
           );
+          this.onDelete.emit(this.paymentAccount);
         });
-      this.onDelete.emit(this.paymentAccount);
     };
 
     this.passwordConfirmationDialogDisplay = true;
