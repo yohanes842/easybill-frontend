@@ -46,17 +46,34 @@ export class PaymentAccountCardComponent implements OnInit {
 
   delete() {
     this.paymentAccountAction = (password: string) => {
-      this.passwordConfirmationDialogDisplay = false;
-
       this.userService
         .deleteUserPaymentAccount(password, { ...this.paymentAccount })
-        .subscribe(() => {
-          this.messageService.showMessage(
-            Severity.SUCCESS,
-            '',
-            'Successfully deleted payment account'
-          );
-          this.onDelete.emit(this.paymentAccount);
+        .subscribe({
+          next: () => {
+            this.passwordConfirmationDialogDisplay = false;
+
+            this.messageService.showMessage(
+              Severity.SUCCESS,
+              '',
+              'Successfully deleted payment account'
+            );
+            this.onDelete.emit(this.paymentAccount);
+          },
+          error: (error: CustomErrorResponse) => {
+            const res = error.extra_message.match(/[A-z ]+\[(.+)\]/);
+            const content = res![1];
+
+            this.errors.clear();
+            content.split(',').forEach((s) => {
+              const [key, value] = s.split(':');
+              this.errors.set(key, value);
+            });
+            this.messageService.showMessage(
+              Severity.ERROR,
+              '',
+              this.errors.entries().next().value[1].replace(/_/g, ' ')
+            );
+          },
         });
     };
 
