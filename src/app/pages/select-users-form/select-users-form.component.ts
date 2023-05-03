@@ -292,6 +292,12 @@ export class SelectusersFormComponent implements OnInit {
     localStorage.setItem('currentOrder', JSON.stringify(this.currentOrder));
   }
 
+  getTotalPrice(): number {
+    return this.currentOrder.order_list
+      .map((subOrder) => subOrder.qty * subOrder.price)
+      .reduce((accumulator, subOrderPrice) => accumulator + subOrderPrice, 0);
+  }
+
   stopPropagation(event: Event) {
     event.stopPropagation();
   }

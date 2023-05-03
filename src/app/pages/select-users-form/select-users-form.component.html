@@ -95,9 +95,16 @@
     </div>
   </div>
 
+  <div class="p-1 text-xs text-right text-gray-500">
+    <p class="m-0">Total before discount :</p>
+    <span class="text-xl font-semibold text-white white-space-nowrap">{{
+      getTotalPrice() | currency : "Rp "
+    }}</span>
+  </div>
+
   <div
     *ngIf="currentOrder.order_list.length > 0"
-    class="mt-2 flex flex-column gap-2"
+    class="mt-2 mb-5 flex flex-column gap-2"
   >
     <div *ngFor="let subOrder of currentOrder.order_list; let i = index">
       <button

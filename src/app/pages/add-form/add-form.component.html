@@ -185,12 +185,12 @@
       </div>
     </div>
     <div *ngIf="currentOrder.order_list.length > 0">
-      <p class="text-xs text-right text-gray-500">
-        Total before discount :
-        <span class="text-xl font-semibold text-white">{{
+      <div class="p-1 text-xs text-right text-gray-500">
+        <p class="m-0">Total before discount :</p>
+        <span class="text-xl font-semibold text-white white-space-nowrap">{{
           getTotalPrice() | currency : "Rp "
         }}</span>
-      </p>
+      </div>
       <div class="card p-component border-1 border-300 border-round">
         <div
           *ngFor="
